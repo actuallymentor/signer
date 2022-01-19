@@ -1,0 +1,16 @@
+/* // //////////////////////////////
+// Globals
+// ////////////////////////////// */
+body {
+  margin: 0;
+  font-family: monospace, 'Courier New',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+textarea, select, input, button {
+    -webkit-appearance: none;
+    outline: none!important;
+  }
