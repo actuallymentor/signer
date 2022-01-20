@@ -7,4 +7,6 @@ export default styled.textarea`
 	border-left: 2px solid gray;
 	height: ${ ( { height='initial' } ) => height };
 	padding: 1rem;
+	background: ${ ( { theme } ) => theme.colors.backdrop };
+	color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
 `

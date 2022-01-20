@@ -19,7 +19,7 @@ const dark_theme = {
 		primary_invert: 'white',
 		text: 'rgb( 255, 255, 255, 1 )',
 		accent: 'orange',
-		hint: 'rgba( 0, 0, 0, .4 )',
+		hint: 'rgba( 255, 255, 255, .4 )',
 		backdrop: 'rgba( 0, 0, 0, .8 )'
 	}
 }

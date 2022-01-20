@@ -13,6 +13,7 @@ const Input = styled.div`
 		background: ${ ( { theme } ) => theme.colors.backdrop };
 		border: none;
 		border-left: 2px solid ${ ( { theme } ) => theme.colors.primary };
+		color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
 	}
 
 	& input {
