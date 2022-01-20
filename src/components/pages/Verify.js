@@ -45,10 +45,6 @@ export default function Verify() {
 				// Set data to state
 				setAuthenticated( authentic_message )
 
-				// Attempt to get ENS
-				const ens = await ens_from_address( claimed_signatory )
-				if( cancelled ) return
-				setENS( ens )
 
 			} catch( e ) {
 
@@ -66,6 +62,35 @@ export default function Verify() {
 		return () => cancelled = true
 
 	}, [ message ] )
+
+	useEffect( (  ) => {
+
+		let cancelled = false;
+
+		( async () => {
+
+			try {
+
+				if( !signature ) return
+
+				// Attempt to get ENS
+				const { claimed_signatory } = signature
+				const ens = await ens_from_address( claimed_signatory )
+				if( cancelled ) return
+				setENS( ens )
+				
+
+			} catch( e ) {
+
+				log( 'Error getting ENS ', e )
+
+			}
+
+		} )( )
+
+		return () => cancelled = true
+
+	}, [ signature ] )
 
 	/* ///////////////////////////////
 	// Functions
@@ -115,7 +140,8 @@ export default function Verify() {
 				<Text>Anyone with this link can see the source message and signature that { ENS || claimed_signatory } left here.</Text>
 				<Text>This link is not saved. If you lose it you will have to generate a new link.</Text>
 				<Br />
-				<Input onClick={ f => clipboard( window.location.href.replace( '/share', '' ) ) } label='Sharable link, click to copy:' value={ window.location.href.replace( '/share', '' ) } readOnly />
+				<Input label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
+				<Button onClick={ f => clipboard( window.location.href.replace( '/share', '' ) ) }>Copy link</Button>
 
 			</> }
 			
