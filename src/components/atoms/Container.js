@@ -3,6 +3,7 @@ import styled from 'styled-components'
 export default styled.div`
 	position: relative;
 	overflow: hidden;
+	background: ${ ( { theme } ) => theme.colors.backdrop };
 	display: flex;
 	flex-direction: column;
 	align-items: ${ ( { align='center' } ) => align };

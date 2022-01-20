@@ -6,5 +6,5 @@ export default styled.textarea`
 	border: none;
 	border-left: 2px solid gray;
 	height: ${ ( { height='initial' } ) => height };
-	padding: 1rem
+	padding: 1rem;
 `

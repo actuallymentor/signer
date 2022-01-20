@@ -5,7 +5,7 @@ export const Text = styled.p`
 	margin: .2rem 0;
 	line-height: 1.5rem;
 	color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
-	background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
+	// background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
 	padding: ${ ( { banner } ) => banner ? '.5rem 1rem' : 'initial' };
 	box-shadow: ${ ( { banner } ) => banner ? '0 0 20px 2px rgb(0 0 0 / 70%)' : '' };
 	text-align: ${ ( { align } ) => align || 'left' };
@@ -21,7 +21,7 @@ export const H1 = styled.h1`
 	text-align: ${ ( { align } ) => align || 'left' };
 	box-shadow: ${ ( { banner } ) => banner ? '0 0 20px 2px rgb(0 0 0 / 70%)' : '' };
 	color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
-	background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
+	// background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
 	padding: ${ ( { banner } ) => banner ? '.5rem 1rem' : 'initial' };
 `
 
@@ -33,7 +33,7 @@ export const H2 = styled.h2`
 	text-align: ${ ( { align } ) => align || 'left' };
 	box-shadow: ${ ( { banner } ) => banner ? '0 0 20px 2px rgb(0 0 0 / 70%)' : '' };
 	color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
-	background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
+	// background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
 	padding: ${ ( { banner } ) => banner ? '.5rem 1rem' : 'initial' };
 `
 

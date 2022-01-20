@@ -86,8 +86,6 @@ export default function Sign() {
 
 			<ResizingTextarea minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
 
-			<Text>Timestamp: { new Date().toString() }</Text>
-
 			<Br />
 			<Button icon={ Fox } onClick={ signMessage }>
 				<Text>Sign message & get sharable link</Text>

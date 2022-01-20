@@ -50,12 +50,13 @@ export async function verify_message( claimed_message, signed_message, claimed_s
 		const recovered_signatory = utils.recoverAddress( message_digest, signed_message ).toLowerCase()
 		const supplied_signatory = utils.verifyMessage( claimed_message, signed_message ).toLowerCase()
 
+		const signatory_confirmed = claimed_signatory === supplied_signatory
 		const message_confirmed = recovered_signatory === supplied_signatory
 
 		log( `Expected signatory: `, recovered_signatory, ` found `, supplied_signatory )
 		log( `Message confirmed: `, message_confirmed )
 
-		return message_confirmed
+		return message_confirmed && signatory_confirmed
 
 
 	} catch( e ) {
