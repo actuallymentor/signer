@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+import ResizingTextArea from './ResizingTextarea'
 
 const Input = styled.div`
 
@@ -45,15 +46,27 @@ const Input = styled.div`
 
 `
 
-export default ( { onChange, type, label, info, id, ...props } ) => {
+export default ( { expand, onChange, type, label, info, id, ...props } ) => {
 
 	const { current: internalId } = useRef( id || `input-${ Math.random() }` )
+	const [ expanded, setExpanded ] = useState( false )
+
+	const handleFocus = f => {
+
+		// If not expandable, exit
+		if( !expand ) return
+
+		// If exbandable, change state to match
+		setExpanded( true )
+
+	}
 
 	return <Input type={ type }>
 
 		{ label && <label htmlFor={ internalId }>{ label } { info && <span onClick={ f => alert( info ) }>?</span> }</label> }
-		<input data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } />
-		
+		{ !expanded && <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } /> }
+		{ expanded && <ResizingTextArea { ...props } data-testid={ internalId } id={ internalId } onChange={ onChange } /> }
+
 	</Input>
 
 }

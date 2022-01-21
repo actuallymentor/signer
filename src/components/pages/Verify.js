@@ -140,7 +140,7 @@ export default function Verify() {
 				<Text>Anyone with this link can see the source message and signature that { ENS || claimed_signatory } left here.</Text>
 				<Text>This link is not saved. If you lose it you will have to generate a new link.</Text>
 				<Br />
-				<Input label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
+				<Input expand={ true } label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
 				<Button onClick={ f => clipboard( window.location.href.replace( '/share', '' ) ) }>Copy link</Button>
 
 			</> }

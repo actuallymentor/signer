@@ -40,28 +40,23 @@ export async function verify_message( claimed_message, signed_message, claimed_s
 
 		log( `Verifying claimed message `, claimed_message, ` on behalf of `, claimed_signatory )
 
-		// Compute what the message digest should look like if the signed message is correct
-		// To future self: the signMessage function salts any signature with the below string + length
-		const salted_message = '\x19Ethereum Signed Message:\n' + claimed_message.length + claimed_message
-		const message_bytes = utils.toUtf8Bytes( salted_message )
-		const message_digest = utils.keccak256( message_bytes )
+		// Check that the signed message equals the claimed message
+		const confirmed_signatory = utils.verifyMessage( claimed_message, signed_message ).toLowerCase()
 
-		// Confirm who the signed would be based on the supposed digest
-		const recovered_signatory = utils.recoverAddress( message_digest, signed_message ).toLowerCase()
-		const supplied_signatory = utils.verifyMessage( claimed_message, signed_message ).toLowerCase()
+		// Verify that the claimed signatory is the one that signed the message
+		const message_valid = confirmed_signatory === claimed_signatory
 
-		const signatory_confirmed = claimed_signatory === supplied_signatory
-		const message_confirmed = recovered_signatory === supplied_signatory
+		log( `Message was signed by ${ confirmed_signatory }, valid: `, message_valid )
 
-		log( `Expected signatory: `, recovered_signatory, ` found `, supplied_signatory )
-		log( `Message confirmed: `, message_confirmed )
-
-		return message_confirmed && signatory_confirmed
+		// Verify that the claimed signatory is the one that signed the message
+		return message_valid
 
 
 	} catch( e ) {
+
 		log( `Verification error: `, e )
 		return false
+
 	}
 
 }
