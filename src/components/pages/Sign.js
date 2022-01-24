@@ -7,8 +7,9 @@ import ResizingTextarea from '../molecules/ResizingTextarea'
 
 import { useAddress, getAddress, useENS, sign_message, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
-import { log, dev } from '../../modules/helpers'
+import { log, dev, wait } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 export default function Sign() {
 
@@ -19,6 +20,7 @@ export default function Sign() {
 	// ///////////////////////////////
 	const [ loading, setLoading ] = useState( 'Detecting web3 wallet' )
 	const [ message, setMessage ] = useState(  )
+	const { signature_request } = useParams()
 	const address = useAddress()
 	const ENS = useENS()
 
@@ -26,21 +28,68 @@ export default function Sign() {
 	// Lifecycle
 	// /////////////////////////////*/
 
-	// On mount wait a second, but if there is no address, forward to login
+	useEffect( (  ) => {
+
+		let cancelled = false;
+
+		( async () => {
+
+
+			// Check for the address, if there is one stop loading, if there is none try a few times
+			if( address ) return setLoading( false )
+
+			await wait( 1000 )
+			if( address ) return setLoading( false )
+			log( `No address after 1 second` )
+			if( cancelled ) return
+
+			await wait( 2000 )
+			if( address ) return setLoading( false )
+			log( `No address after 2 seconds` )
+			if( cancelled ) return
+
+			await wait( 3000 )
+			if( address ) return setLoading( false )
+			log( `No address after 3 seconds` )
+			if( cancelled ) return
+
+			return navigate( `/${ signature_request || '' }` )
+
+
+		} )( )
+
+		return () => cancelled = true
+
+	}, [ address ] )
+
+
 	useEffect( f => {
 
-			setTimeout( f => {
+		try {
 
-				if( !address ) {
-					log( `Address is missing`, address )
-					return navigate( '/' )
-				}
+			const decoded_request = JSON.parse( decodeURIComponent( atob( signature_request ) ) )
+			log( `Requested message signature: `, decoded_request )
 
-				setLoading( false )
+			// Decode in lowercase
+			let { requested_message, requested_signatory='' } = decoded_request
+			requested_signatory = requested_signatory.toLowerCase()
 
-			}, 1000 )
+			// if no requested message, exit
+			if( !requested_message ) return
 
-	}, [] )
+			// If this request was not meant for the current address
+			if( requested_signatory && ( requested_signatory != address ) ) return alert( `This link was requests a signature from ${ requested_signatory }.\n\nYou are currently connected as ${ address }.\n\nYou can still sign, but the requester might not accept your signature as valid.` )
+			
+			// Set the requested message to the interface
+			if( requested_message ) setMessage( requested_message )
+
+		} catch( e ) {
+
+			log( `Error parsing signature request `, e )
+
+		}
+
+	}, [ signature_request , address ] )
 
 	// ///////////////////////////////
 	// Functions

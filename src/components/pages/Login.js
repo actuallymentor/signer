@@ -8,6 +8,7 @@ import { useAddress, getAddress, useIsConnected } from '../../modules/web3'
 import { useState, useEffect } from 'react'
 import { log, dev } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 export default function Login() {
 
@@ -21,6 +22,7 @@ export default function Login() {
 	const [ error, setError ] = useState( undefined )
 	const isConnected = useIsConnected(  )
 	const address = useAddress()
+	const { signature_request } = useParams()
 
 	/* ///////////////////////////////
 	// Lifecycle
@@ -57,7 +59,7 @@ export default function Login() {
 			setLoading( 'Connecting to Metamask' )
 			const address = await getAddress()
 			log( 'Received: ', address )
-			return navigate( '/sign' )
+			return navigate( `/sign/${ signature_request || '' }` )
 
 		} catch( e ) {
 			setError( `Metamask error: ${ e.message || JSON.stringify( e ) }. Please reload the page.` )

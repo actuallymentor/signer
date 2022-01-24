@@ -23,3 +23,9 @@ export function setListenerAndReturnUnlistener( parent, event, callback ) {
 	}
 
 }
+
+export const wait = ( durationInMs=0 ) => new Promise( resolve => {
+
+	setTimeout( resolve, durationInMs )
+
+} )
