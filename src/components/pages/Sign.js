@@ -4,6 +4,7 @@ import { Br, Text } from '../atoms/Text'
 import Button from '../atoms/Button'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
 import ResizingTextarea from '../molecules/ResizingTextarea'
+import Menu from '../molecules/Menu'
 
 import { useAddress, getAddress, useENS, sign_message, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
@@ -130,6 +131,8 @@ export default function Sign() {
 	if( loading ) return <Loading message={ loading } />
 
 	return <Container align='flex-start'>
+
+			<Menu />
 
 			<Text>I { ENS ? `${ ENS } (aka ${ address.slice( 0, 9 ) })` : address } hereby sign,</Text>
 

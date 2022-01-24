@@ -5,6 +5,7 @@ import Button from '../atoms/Button'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
 import ResizingTextarea from '../molecules/ResizingTextarea'
 import Input from '../molecules/Input'
+import Menu from '../molecules/Menu'
 
 import { ens_from_address, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
@@ -118,6 +119,8 @@ export default function Verify() {
 	return <Container align='flex-start'>
 
 			{ !share && <>
+
+				<Menu />
 				
 				<H1>Message verification</H1>
 				<Text>Signer { ENS ? `${ claimed_signatory } (aka ${ ENS })` : claimed_signatory } has verifiably signed:</Text>
@@ -135,6 +138,8 @@ export default function Verify() {
 			</> }
 
 			{ share && <>
+
+				<Menu />
 				
 				<H2>Share this message</H2>
 				<Text>Anyone with this link can see the source message and signature that { ENS || claimed_signatory } left here.</Text>

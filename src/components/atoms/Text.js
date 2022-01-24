@@ -13,6 +13,20 @@ export const Text = styled.p`
   	overflow-wrap: anywhere;
 `
 
+export const A = styled.a`
+	font-size: 1rem;
+	margin: .2rem 0;
+	line-height: 1.5rem;
+	color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
+	text-decoration: none;
+	// background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
+	padding: ${ ( { banner } ) => banner ? '.5rem 1rem' : 'initial' };
+	box-shadow: ${ ( { banner } ) => banner ? '0 0 20px 2px rgb(0 0 0 / 70%)' : '' };
+	text-align: ${ ( { align } ) => align || 'left' };
+	max-width: 90%;
+  	overflow-wrap: anywhere;
+`
+
 export const H1 = styled.h1`
 	font-size: 2.5rem;
 	font-weight: 500;

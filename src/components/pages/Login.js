@@ -3,6 +3,7 @@ import Loading from '../molecules/Loading'
 import { H1, H2, Text, Br } from '../atoms/Text'
 import Button from '../atoms/Button'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
+import Menu from '../molecules/Menu'
 
 import { useAddress, getAddress, useIsConnected } from '../../modules/web3'
 import { useState, useEffect } from 'react'
@@ -77,6 +78,8 @@ export default function Login() {
 
 	return <Container align={ 'flex-start' } gutter={ true }>
 			
+			<Menu />
+
 			<H1>Sign and share a cryptographic message</H1>
 			<H2>Speak on behalf of your wallet and get a sharable link</H2>
 			<Text>It is free and costs no gas</Text>
