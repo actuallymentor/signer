@@ -139,12 +139,13 @@ export function useENS(  ) {
 	useEffect( (  ) => {
 
 
-	( async () => {
+		( async () => {
 
 			try {
 
 				const ens = await ens_from_address( address )
-				if( ens ) setENS( ens )
+				log( `ENS changed to `, ens )
+				setENS( ens )
 
 			} catch( e ) {
 				log( `Error in useENS: `, e )

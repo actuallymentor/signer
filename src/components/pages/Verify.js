@@ -6,6 +6,7 @@ import Fox from '../../assets/metamask-fox-cleaned.svg'
 import ResizingTextarea from '../molecules/ResizingTextarea'
 import Input from '../molecules/Input'
 import Menu from '../molecules/Menu'
+import Footer from '../molecules/Footer'
 
 import { ens_from_address, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
@@ -150,7 +151,7 @@ export default function Verify() {
 
 			</> }
 			
-			
+			<Footer />
 
 	</Container>
 

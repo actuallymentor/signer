@@ -4,6 +4,7 @@ import { H1, H2, Text, Br } from '../atoms/Text'
 import Button from '../atoms/Button'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
 import Menu from '../molecules/Menu'
+import Footer from '../molecules/Footer'
 
 import { useAddress, getAddress, useIsConnected } from '../../modules/web3'
 import { useState, useEffect } from 'react'
@@ -89,6 +90,8 @@ export default function Login() {
 			<Button icon={ Fox } onClick={ metamasklogin }>
 				Connect wallet
 			</Button>
+
+			<Footer />
 
 	</Container>
 

@@ -5,6 +5,7 @@ import Button from '../atoms/Button'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
 import ResizingTextarea from '../molecules/ResizingTextarea'
 import Menu from '../molecules/Menu'
+import Footer from '../molecules/Footer'
 
 import { useAddress, getAddress, useENS, sign_message, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
@@ -68,6 +69,8 @@ export default function Sign() {
 
 		try {
 
+			if( !signature_request ) return log( `No signature request in URL` )
+
 			const decoded_request = JSON.parse( decodeURIComponent( atob( signature_request ) ) )
 			log( `Requested message signature: `, decoded_request )
 
@@ -99,6 +102,8 @@ export default function Sign() {
 		
 		try {
 
+			if( !message ) throw new Error( `No message input` )
+
 			setLoading( 'Signing message...' )
 			const signature = await sign_message( message, address )
 			log( `Signed message: `, signature )
@@ -127,6 +132,7 @@ export default function Sign() {
 	/* ///////////////////////////////
 	// Render component
 	// /////////////////////////////*/
+	log( address, ENS )
 
 	if( loading ) return <Loading message={ loading } />
 
@@ -142,6 +148,8 @@ export default function Sign() {
 			<Button icon={ Fox } onClick={ signMessage }>
 				<Text>Sign message & get sharable link</Text>
 			</Button>
+
+			<Footer />
 
 	</Container>
 
