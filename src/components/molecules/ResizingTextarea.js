@@ -10,7 +10,6 @@ export default ( { minRows=3,value='', ...props } ) => {
 	
 	useEffect( f => {
 
-		console.log( 'Ref changed: ', ref.current.scrollHeight )
 		if( ref.current?.scrollHeight ) setHeight( `${ref.current.scrollHeight}px` )
 
 	}, [ ref.current?.scrollHeight ])
