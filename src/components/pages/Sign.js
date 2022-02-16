@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { log, dev, wait } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+import { log_event } from '../../modules/firebase'
 
 export default function Sign() {
 
@@ -55,6 +56,8 @@ export default function Sign() {
 			log( `No address after 3 seconds` )
 			if( cancelled ) return
 
+			log_event( 'sign_wallet_failed' )
+
 			return navigate( `/${ signature_request || '' }` )
 
 
@@ -70,6 +73,8 @@ export default function Sign() {
 		try {
 
 			if( !signature_request ) return log( `No signature request in URL` )
+
+			log_event( 'sign_signature_request' )
 
 			const decoded_request = JSON.parse( decodeURIComponent( atob( signature_request ) ) )
 			log( `Requested message signature: `, decoded_request )
@@ -118,6 +123,7 @@ export default function Sign() {
 
 			// Forward to reading URL
 			const url_safe_base64 = btoa( encodeURIComponent( JSON.stringify( signature ) ) )
+			log_event( 'sign_message_signed' )
 			return navigate( `/verify/${ url_safe_base64 }/share` )
 
 		} catch( e ) {

@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react'
 import { log, dev } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
+import { log_event } from '../../modules/firebase'
 
 export default function Login() {
 
@@ -61,6 +62,7 @@ export default function Login() {
 			setLoading( 'Connecting to Metamask' )
 			const address = await getAddress()
 			log( 'Received: ', address )
+			log_event( 'login_metamask' )
 			return navigate( `/sign/${ signature_request || '' }` )
 
 		} catch( e ) {

@@ -12,6 +12,7 @@ import { ens_from_address, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
 import { log, dev } from '../../modules/helpers'
 import { useParams } from 'react-router-dom'
+import { log_event } from '../../modules/firebase'
 
 export default function Verify() {
 
@@ -43,6 +44,8 @@ export default function Verify() {
 				// Check signature authenticity
 				const authentic_message = await verify_message( claimed_message, signed_message, claimed_signatory )
 				if( cancelled ) return
+
+				log_event( 'verify_signature_verified' )
 
 				// Set data to state
 				setAuthenticated( authentic_message )
@@ -100,6 +103,7 @@ export default function Verify() {
 	const clipboard = async text => {
 		if( !navigator.clipboard ) return alert( `Your browser doesn't support auto-copying text, please manually copy the link.` )
 		await navigator.clipboard?.writeText( text )
+		log_event( 'verify_copied_to_clipboard' )
 		alert( 'Copied to clipboard!' )
 	}
 
