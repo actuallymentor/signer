@@ -43,7 +43,7 @@ jobs:
 
           
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+        uses: docker://w9jds/firebase-action@master
         with:
           # Enable --force since merging from dev should never require a manual deploy
           args: deploy --force --only=functions
