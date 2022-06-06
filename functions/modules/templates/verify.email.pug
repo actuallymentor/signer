@@ -1,0 +1,13 @@
+doctype html
+html( lang='en' )
+	head
+		style= headStyles
+	body
+		p Hello,
+		p Someone requested for emails to #{ data.address }@signer.is (and #{ data.ENS } ENS) to be delivered to this email address.
+		p If this was not you, you can safely ignore this email.
+		p To receive emails at this address, please verify your ownership of this email by clicking the link below.
+		a( href=data.verification_link ) Click here to verify your email address.
+		p Is the above link not working? Visit this page manually: #{ data.verification_link }
+		p Have a great day,
+		p ~ Signer.is

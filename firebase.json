@@ -1,6 +1,9 @@
 {
   "hosting": {
     "public": "build",
+    "rewrites": [
+      { "source": "/verify_email/**", "function": "verify_email_by_request" }
+    ],
     "ignore": [
       "firebase.json",
       "**/.*",

@@ -17,6 +17,8 @@ const Menu = styled.nav`
 export default ( { ...props } ) => <Menu>
 	
 	<A href='/'>Home</A>
+	<A href='/#/sign'>Sign</A>
+	<A href='/#/email'>Email</A>
 	<A href='https://signer.docs.apiary.io/' target='_blank'>API</A>
 
 </Menu>

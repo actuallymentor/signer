@@ -1,6 +1,7 @@
 import Login from './pages/Login'
 import Sign from './pages/Sign'
 import Verify from './pages/Verify'
+import Email from './pages/Email'
 import { Routes, Route } from 'react-router-dom'
 
 
@@ -25,6 +26,13 @@ function Router() {
 		<Route exact path='/sign' element={ <Sign /> }>
 			<Route exact path='/sign/:signature_request' element={ <Sign /> } />
 		</Route>
+
+		<Route exact path='/email' element={ <Email /> }>
+
+			<Route exact path='/email/:notice' element={ <Email /> } />
+
+		</Route>
+
 		<Route exact path='/verify/:message/' element={ <Verify /> }>
 			<Route exact path='/verify/:message/:share' element={ <Verify /> } />
 		</Route>

@@ -1,8 +1,7 @@
 import Container from '../atoms/Container'
 import Loading from '../molecules/Loading'
 import { Br, Text } from '../atoms/Text'
-import Button from '../atoms/Button'
-import Fox from '../../assets/metamask-fox-cleaned.svg'
+import MetamaskButton from '../molecules/MetamaskButton'
 import ResizingTextarea from '../molecules/ResizingTextarea'
 import Menu from '../molecules/Menu'
 import Footer from '../molecules/Footer'
@@ -21,7 +20,7 @@ export default function Sign() {
 	// ///////////////////////////////
 	// States
 	// ///////////////////////////////
-	const [ loading, setLoading ] = useState( 'Detecting web3 wallet' )
+	const [ loading, setLoading ] = useState( )
 	const [ message, setMessage ] = useState(  )
 	const { signature_request } = useParams()
 	const address = useAddress()
@@ -30,42 +29,6 @@ export default function Sign() {
 	/* ///////////////////////////////
 	// Lifecycle
 	// /////////////////////////////*/
-
-	useEffect( (  ) => {
-
-		let cancelled = false;
-
-		( async () => {
-
-
-			// Check for the address, if there is one stop loading, if there is none try a few times
-			if( address ) return setLoading( false )
-
-			await wait( 1000 )
-			if( address ) return setLoading( false )
-			log( `No address after 1 second` )
-			if( cancelled ) return
-
-			await wait( 2000 )
-			if( address ) return setLoading( false )
-			log( `No address after 2 seconds` )
-			if( cancelled ) return
-
-			await wait( 3000 )
-			if( address ) return setLoading( false )
-			log( `No address after 3 seconds` )
-			if( cancelled ) return
-
-			log_event( 'sign_wallet_failed' )
-
-			return navigate( `/${ signature_request || '' }` )
-
-
-		} )( )
-
-		return () => cancelled = true
-
-	}, [ address ] )
 
 
 	useEffect( f => {
@@ -142,18 +105,18 @@ export default function Sign() {
 
 	if( loading ) return <Loading message={ loading } />
 
-	return <Container align='flex-start'>
+	return <Container justify='center' align='flex-start'>
 
 			<Menu />
 
-			<Text>I { ENS ? `${ ENS } (aka ${ address.slice( 0, 9 ) })` : address } hereby sign,</Text>
+			<Text>I { ENS ? `${ ENS } (aka ${ address?.slice( 0, 9 ) })` : address } hereby sign,</Text>
 
 			<ResizingTextarea minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
 
 			<Br />
-			<Button icon={ Fox } onClick={ signMessage }>
+			<MetamaskButton onClick={ signMessage }>
 				<Text>Sign message & get sharable link</Text>
-			</Button>
+			</MetamaskButton>
 
 			<Footer />
 

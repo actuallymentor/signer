@@ -115,9 +115,6 @@ export function useAddress() {
 			log( 'Addresses changed to ', addresses )
 			const [ newAddress ] = addresses
 
-			// No new address? Change nothing
-			if( !newAddress ) return
-
 			// New address? Set it to state and stop interval
 			setAddress( newAddress )
 			

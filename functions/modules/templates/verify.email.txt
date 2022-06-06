@@ -1,0 +1,13 @@
+Hello,
+
+Someone requested for emails to %%address%%@signer.is (and %%ENS%% ENS) to be delivered to this email address.
+
+If this was not you, you can safely ignore this email.
+
+To receive emails at this address, please verify your ownership of this email by clicking the link below.
+
+Open this link to verify your email address: %%verification_link%%.
+
+Have a great day,
+
+~ Signer.is

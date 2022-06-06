@@ -1,4 +1,4 @@
-name: Deploy Minter on push/merge
+name: Deploy Signer frontend on push/merge
 
 # Only trigger on PR/push and only for frontend files
 on:
@@ -10,17 +10,18 @@ on:
       - '*.js'
       - 'src/**'
       - 'public/**'
-      - '.github/workflows/deploy.yml'
-    branches:
-      - main
+      - '.github/workflows/deploy-frontend-prod.yml'
+    branches-ignore:
+      - '!main'
   
-  # Trigger on push to master (edge case, local merge)
+  # Trigger on push to master
   push:
     paths:
       - '*.json'
       - '*.js'
       - 'src/**'
-      - '.github/workflows/deploy.yml'
+      - 'public/**'
+      - '.github/workflows/deploy-frontend-prod.yml'
     branches:
       - main
 

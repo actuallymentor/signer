@@ -3,7 +3,8 @@ export const dev = process.env.NODE_ENV === 'development' || ( typeof location !
 
 
 export const log = ( ...messages ) => {
-	if( dev ) console.log( ...messages )
+	const now = new Date()
+	if( dev ) console.log( `[ ${ now.toLocaleTimeString() }:${ now.getMilliseconds() } ]`, ...messages )
 }
 
 export function setListenerAndReturnUnlistener( parent, event, callback ) {

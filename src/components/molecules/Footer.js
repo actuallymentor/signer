@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { A } from '../atoms/Text'
 
 const Footer = styled.nav`
-	position: fixed;
+	position: absolute;
 	bottom: 0;
 	left: 0;
 	width: 100%;
