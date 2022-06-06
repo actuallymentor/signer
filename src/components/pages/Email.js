@@ -8,7 +8,7 @@ import Input from '../molecules/Input'
 import Menu from '../molecules/Menu'
 import Footer from '../molecules/Footer'
 
-import { useAddress, useENS, sign_message } from '../../modules/web3'
+import { useAddress, useENS, sign_message, getAddress } from '../../modules/web3'
 import { useEffect, useState } from 'react'
 import { log, wait, dev } from '../../modules/helpers'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -61,6 +61,13 @@ export default function Sign() {
 		if( notice == 'verify_email' ) setLoading( `Please open your ${ email } inbox and click the verification link to activate your forwarder.` )
 
 	}, [ notice ] )
+
+	// Once account is selected, connect to metamask
+	useEffect( f => {
+
+		if( address ) getAddress(address)
+
+	}, [ address ] )
 
 
 	/* ///////////////////////////////
