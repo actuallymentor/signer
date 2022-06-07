@@ -2,7 +2,7 @@ const { decode_signature_object } = require( '../web3/cryptography' )
 const { get_address_of_ens } = require( '../web3/thegraph' )
 const { send_verification_email } = require( '../apis/ses' )
 const { register_with_improvmx } = require( '../apis/improv_mx' )
-const { log } = require( '../helpers' )
+const { log, throttle_and_retry } = require( '../helpers' )
 const { db, dataFromSnap } = require( '../firebase' )
 const { v4: uuidv4 } = require('uuid')
 
@@ -114,6 +114,48 @@ exports.verify_email_by_request = app.get( '/verify_email/:auth_token', async fu
 
 		log( `Error verifying email: `, e )
 		return res.send( `Error verifying your email: ${ e.message }` )
+
+	}
+
+} )
+
+/* ///////////////////////////////
+// Check if wallets have forwards
+// /////////////////////////////*/
+exports.check_single_wallet_email_availability = app.get( '/check_availability/:address', async function( req, res ) {
+
+	try {
+
+		// Check if wallet has registered forward
+		const { address } = req.params
+		const has_alias = await db.collection( 'verified_email_aliases' ).doc( address.toLowerCase() ).get().then( ( { exists } ) => exists )
+		return res.json( { email_available: !!has_alias } )
+
+
+	} catch( e ) {
+
+		log( `Error getting wallet email status: `, e )
+		return res.json( { error: e.message } )
+
+	}
+
+} )
+exports.check_multiple_wallets_email_availability = app.post( '/check_availability/', async function( req, res ) {
+
+	try {
+
+		// Check if wallet has registered forward
+		const { addresses } = req.body
+		const list_to_check = addresses.map( address => f => db.collection( 'verified_email_aliases' ).doc( address.toLowerCase() ).get().then( ( { exists } ) => ( { exists, address } ) ) )
+		const checked_for_alias = await throttle_and_retry( list_to_check, 100, `check addresses`, 2, 10 )
+		const has_alias_list = checked_for_alias.filter( ( { exists } ) => exists ).map( ( { address } ) => address )
+		return res.json( { emails_available: has_alias_list } )
+
+
+	} catch( e ) {
+
+		log( `Error getting wallets email status: `, e )
+		return res.json( { error: e.message } )
 
 	}
 
