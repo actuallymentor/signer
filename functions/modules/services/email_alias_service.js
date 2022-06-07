@@ -148,7 +148,7 @@ exports.check_multiple_wallets_email_availability = app.post( '/check_availabili
 		const { addresses } = req.body
 		const list_to_check = addresses.map( address => f => db.collection( 'verified_email_aliases' ).doc( address.toLowerCase() ).get().then( ( { exists } ) => ( { exists, address } ) ) )
 		const checked_for_alias = await throttle_and_retry( list_to_check, 100, `check addresses`, 2, 10 )
-		const has_alias_list = checked_for_alias.filter( ( { exists } ) => exists ).map( ( { address } ) => address )
+		const has_alias_list = checked_for_alias.filter( ( { exists } ) => exists ).map( ( { address } ) => address.toLowerCase() )
 		return res.json( { emails_available: has_alias_list } )
 
 
