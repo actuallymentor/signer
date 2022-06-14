@@ -27,18 +27,53 @@ exports.get_address_of_ens = async function( ENS ) {
 		log( `Querying the graph with `, ens_query )
 		const { data: ens_data } = await Promise.race( [
 			timeout_with_data( 3000 ),
-			client.query( ens_query ).toPromise().catch( e => ( { data: undefined } ) )
+			client.query( ens_query ).toPromise().catch( e => ( { data: {} } ) )
 		] )
 
 		log( `The graph returned: `, ens_data )
 
 		// Destructure the graph data
-		const resolved_address = ens_data.domains[0].resolvedAddress?.id
+		const resolved_address = ens_data?.domains[0]?.resolvedAddress?.id
 		log( `${ ENS } resolved to ${ resolved_address }` )
 
 		if( !resolved_address ) throw new Error( `Unable to determine resolved address for ${ ENS }` )
 
 		return resolved_address
+
+	} catch( e ) {
+		log( `Graph error: `, e )
+		throw new Error( `Thegraph errored, this is not your fault. Please contact the Signer.is team.` )
+	}
+
+}
+
+exports.get_ensses_of_address = async function( address ) {
+
+	try {
+
+		const ens_query = `
+			query {
+				domains(where: { resolvedAddress: "${ address }" }) {
+					resolvedAddress {
+						id
+					}
+				}
+			}
+		`
+
+		log( `Querying the graph with `, ens_query )
+		const { data: ens_data } = await Promise.race( [
+			timeout_with_data( 3000 ),
+			client.query( ens_query ).toPromise().catch( e => ( { data: {} } ) )
+		] )
+
+		log( `The graph returned: `, ens_data )
+
+		// Destructure the graph data
+		const enssses = ens_data?.domains.map( ( { name } ) => name )
+		log( `${ address } resolved to ${ enssses.join( ', ' ) }` )
+
+		return enssses
 
 	} catch( e ) {
 		log( `Graph error: `, e )

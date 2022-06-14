@@ -8,6 +8,11 @@ const log = ( ...comments ) => {
 	if( dev || environment?.verbose ) console.log( `[ ${ now.toLocaleTimeString() }:${ now.getMilliseconds() } ]`, ...comments )
 }
 
+// Production errorer
+exports.error = ( ...comments ) => {
+	console.error( ...comments )
+}
+
 // Object properties checker
 const require_properties = ( obj={}, required_properties=[] ) => {
 

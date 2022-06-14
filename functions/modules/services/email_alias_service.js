@@ -2,7 +2,7 @@ const { decode_signature_object } = require( '../web3/cryptography' )
 const { get_address_of_ens } = require( '../web3/thegraph' )
 const { send_verification_email } = require( '../apis/ses' )
 const { register_with_improvmx } = require( '../apis/improv_mx' )
-const { log, throttle_and_retry } = require( '../helpers' )
+const { log, throttle_and_retry, error } = require( '../helpers' )
 const { db, dataFromSnap } = require( '../firebase' )
 const { v4: uuidv4 } = require('uuid')
 
@@ -58,7 +58,7 @@ exports.register_alias_with_backend = async function( data, context ) {
 
 	} catch( e ) {
 
-		log( `register_alias_with_backend error: `, e )
+		error( `register_alias_with_backend error: `, e )
 		return { error: e.message }
 
 	}
