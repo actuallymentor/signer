@@ -20,7 +20,7 @@ export default function Login() {
 	// /////////////////////////////*/
 
 	return <Container align='flex-start' justify='flex-start' gutter={ false }>
-			
+
 			<Menu />
 
 			<Hero>
@@ -28,10 +28,10 @@ export default function Login() {
 				<H2>Free services that cost no gas</H2>
 			</Hero>
 
-			<Section direction='row' justify='space-around' padding='5rem 0rem'>
-				
+			<Section direction='row' justify='space-around' padding='5rem .5rem'>
+
 				<Section width='500px' align='flex-start'>
-				
+
 					<H2>✏️ Sign & share a message</H2>
 					<Text>Sign a message with your wallet, and share it easily. Completely off-chain.</Text>
 					<Button onClick={ f => navigate( '/sign' ) }>Sign & share a message</Button>
@@ -39,7 +39,7 @@ export default function Login() {
 				</Section>
 
 				<Section width='500px' align='flex-start'>
-				
+
 					<H2>✉️ Receive emails on your wallet</H2>
 					<Text>Forward emails from your_wallet@signer.is to your@email.com</Text>
 					<Button onClick={ f => navigate( '/email' ) }>Set email forward</Button>

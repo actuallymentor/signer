@@ -7,6 +7,7 @@ const theme = {
 		primary: 'black',
 		primary_invert: 'white',
 		text: 'rgb( 0, 0, 0, .8 )',
+		text_backdrop: 'rgb( 255, 255, 255, .8 )',
 		accent: 'orange',
 		hint: 'rgba( 0, 0, 0, .4 )',
 		backdrop: 'rgba( 0, 0, 0, .01 )'
@@ -16,8 +17,9 @@ const theme = {
 const dark_theme = {
 	colors: {
 		primary: 'white',
-		primary_invert: 'white',
+		primary_invert: 'black',
 		text: 'rgb( 255, 255, 255, 1 )',
+		text_backdrop: 'rgb( 0, 0, 0, .8 )',
 		accent: 'orange',
 		hint: 'rgba( 255, 255, 255, .4 )',
 		backdrop: 'rgba( 0, 0, 0, .8 )'
@@ -44,7 +46,7 @@ export default props => {
 		// Enable a listener
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener( 'change', event => {
 			log( 'Darkmode setting changed to ', event.matches )
-		    setDark( event.matches == 'dark' )
+			setDark( event.matches == 'dark' )
 		})
 
 	}, [] )

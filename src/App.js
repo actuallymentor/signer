@@ -11,7 +11,7 @@ function App() {
 
 	return <Theme>
 		<HashRouter>
-		
+
 			<Router />
 
 		</HashRouter>

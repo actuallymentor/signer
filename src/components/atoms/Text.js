@@ -10,7 +10,7 @@ export const Text = styled.p`
 	box-shadow: ${ ( { banner } ) => banner ? '0 0 20px 2px rgb(0 0 0 / 70%)' : '' };
 	text-align: ${ ( { align } ) => align || 'left' };
 	max-width: 90%;
-  	overflow-wrap: anywhere;
+	overflow-wrap: anywhere;
 `
 
 export const A = styled.a`
@@ -24,7 +24,7 @@ export const A = styled.a`
 	box-shadow: ${ ( { banner } ) => banner ? '0 0 20px 2px rgb(0 0 0 / 70%)' : '' };
 	text-align: ${ ( { align } ) => align || 'left' };
 	max-width: 90%;
-  	overflow-wrap: anywhere;
+	overflow-wrap: anywhere;
 `
 
 export const H1 = styled.h1`
