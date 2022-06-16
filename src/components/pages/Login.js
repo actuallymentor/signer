@@ -7,13 +7,13 @@ import Hero from '../molecules/Hero'
 import Footer from '../molecules/Footer'
 
 import { useNavigate } from 'react-router-dom'
+import useTypewriter from '../../modules/hooks/useTypewriter'
 
 
 export default function Login() {
 
 	const navigate = useNavigate()
-
-
+	const text = useTypewriter( [ 'Share a signature', 'Receive emails'  ]  )
 
 	/* ///////////////////////////////
 	// Render component
@@ -24,8 +24,8 @@ export default function Login() {
 			<Menu />
 
 			<Hero>
-				<H1>Off-chain tools for your wallet</H1>
-				<H2>Free services that cost no gas</H2>
+				<H1>{ text } with your crypto wallet</H1>
+				<H2>Free, off-chain, no gas fees</H2>
 			</Hero>
 
 			<Section direction='row' justify='space-around' padding='5rem .5rem'>
