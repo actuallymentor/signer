@@ -1,6 +1,6 @@
 import Container from '../atoms/Container'
 import Loading from '../molecules/Loading'
-import { Br, Text, H1, H2 } from '../atoms/Text'
+import { Br, Text, H1, Sidenote } from '../atoms/Text'
 import Button from '../atoms/Button'
 import MetamaskButton from '../molecules/MetamaskButton'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
@@ -84,10 +84,10 @@ export default function Sign() {
 			<H1>Email forwarding for your wallet</H1>
 
 			{ address && <>
-				
+
 				<Text>Forward { ENS ? ` ${ ENS }@signer.is and ${ address }@signer.is` : `${ address }@signer.is` } to:</Text>
 
-				<Input label="Your email address" onChange={ ( { target } ) => setEmail( target.value ) } value={ email } placeholder='vitalik@gmail.com' autoFocus />
+				<Input type="email" autocomplete="email" label="Your email address" onChange={ ( { target } ) => setEmail( target.value ) } value={ email } placeholder='vitalik@gmail.com' autoFocus />
 
 				<Br />
 
@@ -95,6 +95,8 @@ export default function Sign() {
 			<MetamaskButton icon={ Fox } onClick={ sign_and_register_forwarder }>
 				<Text>Sign message to set email forwarder</Text>
 			</MetamaskButton>
+
+			<Sidenote align="left">*The email service is off-chain, there is no in-chain link between your wallet and email address.</Sidenote>
 
 			<Footer />
 

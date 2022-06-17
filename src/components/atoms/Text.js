@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Text = styled.p`
 	font-size: 1rem;
-	margin: .2rem 0;
+	margin:  ${ ( { margin='.2rem 0' } ) => margin };
 	line-height: 1.5rem;
 	color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
 	// background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
@@ -55,7 +55,7 @@ export const Sidenote = styled.p`
 	color: ${ ( { theme } ) => theme.colors.hint };
 	font-style: italic;
 	margin-top:  1rem;
-	text-align: center;
+	text-align:  ${ ( { align='center' } ) => align };
 `
 
 export const Br = styled.span`

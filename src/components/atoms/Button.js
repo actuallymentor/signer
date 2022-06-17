@@ -4,22 +4,31 @@ import styled from 'styled-components'
 const DynamicButton = ( { to='', onClick, ...props } ) => to && !to.includes( 'http' ) ? <Link { ...props } to={ to } /> : <button onClick={ onClick || ( () => window.open( to, '_blank' ).focus() ) } { ...props } />
 
 
+const shadow_transition_speed = '.2s'
+const shadow_transition_delay = '0s'
 const PrettyButton = styled( DynamicButton )`
 
 	display: flex;
 	flex-direction: ${ ( { direction='row' } ) => direction };
 	align-items: center;
 	justify-content: center;
-	border: 1px solid ${ ( { theme } ) => theme.colors.text };
+	border: 0px solid ${ ( { theme } ) => theme.colors.text };
+	transition-duration: ${ shadow_transition_speed  };
+	transition-delay: ${ shadow_transition_delay };
+	box-shadow: 0px 0px 5px 0px ${ ( { theme } ) => theme?.colors?.shadow  };
 	background: none;
 	color: ${ ( { theme } ) => theme.colors.text };
 	text-decoration: none;
-	font-size: 1.5rem;
-	padding: .5rem 1.1rem .5rem 1rem;
-	margin:  1rem 0;
+	font-size: 1.2rem;
+	padding: .8rem 1.2rem;
+	margin:  ${ ( { margin='1rem 0' } ) => margin };
+	background-color: ${ ( { theme } ) => theme?.colors?.text_backdrop  };
+	background-image: url( "/hero-texture.png" );
 
 	&:hover {
-		opacity: .5;
+		transition-duration: ${ shadow_transition_speed  };
+		transition-delay: ${ shadow_transition_delay };
+		box-shadow: 0px 0px 15px 0px ${ ( { theme } ) => theme?.colors?.shadow  };
 		cursor: pointer;
 	}
 

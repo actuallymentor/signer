@@ -6,8 +6,9 @@ const theme = {
 	colors: {
 		primary: 'black',
 		primary_invert: 'white',
-		text: 'rgb( 0, 0, 0, .8 )',
-		text_backdrop: 'rgb( 255, 255, 255, .8 )',
+		text: 'rgba( 0, 0, 0, .8 )',
+		text_backdrop: 'rgba( 255, 255, 255, .8 )',
+		shadow: 'rgba( 0, 0, 0, .2 )',
 		accent: 'orange',
 		hint: 'rgba( 0, 0, 0, .4 )',
 		backdrop: 'rgba( 0, 0, 0, .01 )'
@@ -18,8 +19,9 @@ const dark_theme = {
 	colors: {
 		primary: 'white',
 		primary_invert: 'black',
-		text: 'rgb( 255, 255, 255, 1 )',
-		text_backdrop: 'rgb( 0, 0, 0, .8 )',
+		text: 'rgba( 255, 255, 255, 1 )',
+		text_backdrop: 'rgba( 0, 0, 0, .8 )',
+		shadow: 'rgba( 255, 255, 255, .2 )',
 		accent: 'orange',
 		hint: 'rgba( 255, 255, 255, .4 )',
 		backdrop: 'rgba( 0, 0, 0, .8 )'

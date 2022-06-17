@@ -24,7 +24,7 @@ export default function Login() {
 			<Menu />
 
 			<Hero>
-				<H1>{ text } with your crypto wallet</H1>
+				<H1>{ text } <br />with your crypto wallet</H1>
 				<H2>Free, off-chain, no gas fees</H2>
 			</Hero>
 
@@ -33,16 +33,16 @@ export default function Login() {
 				<Section width='500px' align='flex-start'>
 
 					<H2>✏️ Sign & share a message</H2>
-					<Text>Sign a message with your wallet, and share it easily. Completely off-chain.</Text>
-					<Button onClick={ f => navigate( '/sign' ) }>Sign & share a message</Button>
+					<Text margin="2rem 0 1rem 0">Sign a message with your wallet, and share it easily. Completely off-chain.</Text>
+					<Button margin="2rem 0" onClick={ f => navigate( '/sign' ) }>Sign & share a message</Button>
 
 				</Section>
 
 				<Section width='500px' align='flex-start'>
 
 					<H2>✉️ Receive emails on your wallet</H2>
-					<Text>Forward emails from your_wallet@signer.is to your@email.com</Text>
-					<Button onClick={ f => navigate( '/email' ) }>Set email forward</Button>
+					<Text margin="2rem 0 1rem 0">Forward emails from your_wallet@signer.is to your@email.com.</Text>
+					<Button margin="2rem 0" onClick={ f => navigate( '/email' ) }>Set up email forwarding</Button>
 
 				</Section>
 
