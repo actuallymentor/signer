@@ -90,7 +90,7 @@ exports.send_welcome_email = async ( email, address, ENS ) => {
                                 .replace( '%%address%%', email_data.address )
                                 .replace( '%%email%%', email_data.email )
 
-    return send_email( email, `Email forward confirmed`, email_html, email_text )
+    return send_email( email, `Email forward confirmed for ${ ENS || address }`, email_html, email_text )
 
 
 }
@@ -101,7 +101,7 @@ exports.send_spam_check_email = async ( email, address, ENS ) => {
     const email_data = {
         email,
         address,
-        ENS: ENS || 'there'
+        ENS: ENS
     }
     const email_html = await compile_pug_to_email( `${ __dirname }/../templates/spamcheck.email.pug`, email_data )
 

@@ -3,7 +3,7 @@ html( lang='en' )
 	head
 		style= headStyles
 	body
-		p Hello #{ data.ENS || data.address  },
+		p Hello #{ data.ENS || 'there'  },
 		p This is a spam check email. If this email arrived in your inbox, you can safely ignore it.
 		p If this email is in your spam folder, please mark it as "not spam".
 		p If you want to be extra safe, you can add your email forward address (#{ data.address }@signer.is) to your contact book. Most email providers mark contacts as "never spam" by default.
