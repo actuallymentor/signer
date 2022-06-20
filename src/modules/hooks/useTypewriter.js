@@ -38,7 +38,6 @@ export default function useTypewriter( phrases=[], type_speed_ms=100, delay_betw
 
         }, [ typedText.length ] )
 
-    log( typedText.length, currentText.length )
     return typedText.length == currentText.length ? typedText : `${ typedText  }|`
 
 }

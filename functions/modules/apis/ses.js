@@ -44,7 +44,7 @@ async function send_email( recipient, subject, html, text ) {
         Message: {
             Body: {
                 Html: { Charset: 'UTF-8', Data: html },
-                Text: { Charset: 'UTF-8', Data: text }
+                ...( text && { Text: { Charset: 'UTF-8', Data: text } }  )
             },
             Subject: { Charset: 'UTF-8', Data: subject }
         }
@@ -73,6 +73,39 @@ exports.send_verification_email = async ( auth_token, email, address, ENS ) => {
                                 .replace( '%%verification_link%%', email_data.verification_link )
 
     return send_email( email, `Verify your email address`, email_html, email_text )
+
+
+}
+
+exports.send_welcome_email = async ( email, address, ENS ) => {
+
+
+    const email_data = {
+        email,
+        address,
+        ENS: ENS
+    }
+    const email_html = await compile_pug_to_email( `${ __dirname }/../templates/welcome.email.pug`, email_data )
+    const email_text = ( await fs.readFile( `${ __dirname }/../templates/welcome.email.txt`, 'utf8' ) )
+                                .replace( '%%address%%', email_data.address )
+                                .replace( '%%email%%', email_data.email )
+
+    return send_email( email, `Email forward confirmed`, email_html, email_text )
+
+
+}
+
+exports.send_spam_check_email = async ( email, address, ENS ) => {
+
+
+    const email_data = {
+        email,
+        address,
+        ENS: ENS || 'there'
+    }
+    const email_html = await compile_pug_to_email( `${ __dirname }/../templates/spamcheck.email.pug`, email_data )
+
+    return send_email( email, `Spam check for ${ ENS || address }@signer.is`, email_html )
 
 
 }

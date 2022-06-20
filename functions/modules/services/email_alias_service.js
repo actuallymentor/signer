@@ -1,6 +1,6 @@
 const { decode_signature_object } = require( '../web3/cryptography' )
 const { get_address_of_ens } = require( '../web3/thegraph' )
-const { send_verification_email } = require( '../apis/ses' )
+const { send_verification_email, send_welcome_email, send_spam_check_email } = require( '../apis/ses' )
 const { register_with_improvmx } = require( '../apis/improv_mx' )
 const { log, throttle_and_retry, error } = require( '../helpers' )
 const { db, dataFromSnap } = require( '../firebase' )
@@ -103,11 +103,16 @@ exports.verify_email_by_request = app.get( '/verify_email/:auth_token', async fu
 		const { address, ENS, email } = verification
 		await register_with_improvmx( address, ENS, email )
 
-		// Step 2, mark internally
+		// Step 2: send welcome and spam-ceck emails
+		log( `Sending emails with `, address, ENS, email )
+		await send_welcome_email( email, address, ENS )
+		await send_spam_check_email( `${ address }@signer.is`, address, ENS )
+
+		// Step 3, mark internally
 		await db.collection( 'verified_email_aliases' ).doc( address ).set( { address, email, ENS, created: Date.now(), updated: Date.now(), updated_human: new Date().toString() } )
 		await db.collection( 'unverified_email_aliases' ).doc( verification.uid ).delete()
 
-		return res.send( `Email verified, your alias is now operational!` )
+		return res.redirect( 307, `https://signer.is/#/email/email_verified` )
 
 
 	} catch( e ) {

@@ -7,6 +7,7 @@ import Fox from '../../assets/metamask-fox-cleaned.svg'
 import Input from '../molecules/Input'
 import Menu from '../molecules/Menu'
 import Footer from '../molecules/Footer'
+import Message from '../organisms/Message'
 
 import { useAddress, useENS, sign_message, getAddress } from '../../modules/web3'
 import { useEffect, useState } from 'react'
@@ -22,6 +23,7 @@ export default function Sign() {
 	// States
 	// ///////////////////////////////
 	const [ loading, setLoading ] = useState( )
+	const [ message, setMessage ] = useState(  )
 	const [ email, setEmail ] = useState( '' )
 	const address = useAddress()
 	const ENS = useENS()
@@ -40,8 +42,8 @@ export default function Sign() {
 			const signature = await sign_message( message, address )
 			setLoading( `Registering with Signer.is` )
 			const { data: result } = await register_alias_with_backend( signature )
-
-			if( !dev ) return navigate( `/email/verify_email` )
+			log( `Signer responded with: `, result )
+			return navigate( `/email/verify_email` )
 
 		} catch( e ) {
 			log( `Signing error: `, e )
@@ -58,7 +60,8 @@ export default function Sign() {
 	// /////////////////////////////*/
 	useEffect( f => {
 
-		if( notice == 'verify_email' ) setLoading( `Please open your ${ email } inbox and click the verification link to activate your forwarder.` )
+		if( notice === 'verify_email' ) setMessage( `Please open your ${ email } inbox and click the verification link to activate your forwarder.` )
+		if( notice === 'email_verified' ) setMessage( `Your email has been verified! People and apps can now email you at your wallet address!` )
 
 	}, [ notice ] )
 
@@ -73,9 +76,9 @@ export default function Sign() {
 	/* ///////////////////////////////
 	// Render component
 	// /////////////////////////////*/
-	log( address, ENS )
 
 	if( loading ) return <Loading message={ loading } />
+	if( message ) return <Message message={ message } />
 
 	return <Container align='flex-start'>
 
