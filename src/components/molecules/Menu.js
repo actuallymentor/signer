@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { A } from '../atoms/Text'
 
 const Menu = styled.nav`
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
