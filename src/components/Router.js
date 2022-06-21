@@ -1,4 +1,4 @@
-import Login from './pages/Login'
+import Home from './pages/Home'
 import Sign from './pages/Sign'
 import Verify from './pages/Verify'
 import Email from './pages/Email'
@@ -37,8 +37,8 @@ function Router() {
 			<Route exact path='/verify/:message/:share' element={ <Verify /> } />
 		</Route>
 
-		<Route exact path='/' element={ <Login /> } >
-			<Route exact path='/:signature_request' element={ <Login /> } />
+		<Route exact path='/' element={ <Home /> } >
+			<Route exact path='/:signature_request' element={ <Home /> } />
 		</Route>
 
 	</Routes>

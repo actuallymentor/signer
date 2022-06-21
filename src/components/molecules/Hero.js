@@ -7,7 +7,7 @@ export default styled( Section )`
 	align-items: flex-start;
 	padding: ${ ( { gutter=true } ) => gutter ? '3rem max( 1rem, calc( 15vw - 2rem ) )' : 'none' };
 	box-shadow: 0px 0 20px 2px ${ ( { theme } ) => theme?.colors?.shadow  };
-	margin: 0;
+	margin: ${ ( { margin='0' } ) => margin  };
 	background-color: ${ ( { theme } ) => theme?.colors?.text_backdrop  };
 	background-image: url( "/hero-texture.png" );
 	& h1 {
