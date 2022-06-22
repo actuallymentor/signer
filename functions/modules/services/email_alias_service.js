@@ -2,8 +2,8 @@ const { decode_signature_object } = require( '../web3/cryptography' )
 const { get_address_of_ens } = require( '../web3/thegraph' )
 const { send_verification_email, send_welcome_email, send_spam_check_email } = require( '../apis/ses' )
 const { register_with_improvmx } = require( '../apis/improv_mx' )
-const { log, throttle_and_retry, error } = require( '../helpers' )
-const { db, dataFromSnap } = require( '../firebase' )
+const { log, throttle_and_retry, error, dev } = require( '../helpers' )
+const { db, dataFromSnap, increment } = require( '../firebase' )
 const { v4: uuidv4 } = require('uuid')
 
 exports.register_alias_with_backend = async function( data, context ) {
@@ -165,3 +165,52 @@ exports.check_multiple_wallets_email_availability = app.post( '/check_availabili
 	}
 
 } )
+
+/* ///////////////////////////////
+// Statistics
+// /////////////////////////////*/
+exports.seed_email_metrics = async function( ) {
+
+	try {
+
+		if( !dev ) return log( `Dev only action` )
+
+		// Get all node data
+		const email = await db.collection( 'verified_email_aliases' ).get().then( dataFromSnap )
+
+		// Seed metadata
+		await db.collection( 'metrics' ).doc( 'email' ).set( {
+			verified_email_aliases: email.length,
+			updated: Date.now(),
+			updated_human: new Date().toString(),
+		}, { merge: true } )
+
+	} catch( e ) {
+		error( 'seed_email_metrics error: ', e )
+	}
+
+}
+
+exports.increment_email_metrics_on_write = async function( change, context ) {
+
+	try {
+
+		// If this was a creation, increment
+		if( change.before.exists ) await db.collection( 'metrics' ).doc( 'email' ).set( {
+			verified_email_aliases: increment( 1 ),
+			updated: Date.now(),
+			updated_human: new Date().toString(),
+		}, { merge: true } )
+
+		// If this was a deletion, decrement
+		if( !change.after.exists ) await db.collection( 'metrics' ).doc( 'email' ).set( {
+			verified_email_aliases: increment( -1 ),
+			updated: Date.now(),
+			updated_human: new Date().toString()
+		}, { merge: true } )
+
+	} catch( e ) {
+		error( 'increment_email_metrics_on_write error: ', e )
+	}
+
+}
