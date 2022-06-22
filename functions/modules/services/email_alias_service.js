@@ -215,7 +215,7 @@ exports.increment_email_metrics_on_write = async function( change, context ) {
 
 }
 
-exports.public_metrics = app.get( '/stats/', async function( req, res ) {
+exports.public_metrics = app.get( '/metrics/', async function( req, res ) {
 
 	try {
 
