@@ -124,6 +124,62 @@ exports.verify_email_by_request = app.get( '/verify_email/:auth_token', async fu
 
 } )
 
+exports.confirm_email_forwarder = async ( auth_token, context ) => {
+
+	try {
+
+		// Check for pending verifications while
+		const [ verification ] = await db.collection( 'unverified_email_aliases' ).where( 'auth_token', '==', auth_token ).limit( 1 ).get().then( dataFromSnap )
+
+		/* ///////////////////////////////
+		// Failure mode 1: Not found */
+		if( !verification ) throw new Error( `This link was already used or invalid` )
+
+		/* ///////////////////////////////
+		// Failure more 2: link expired */
+		if( verification.expires < Date.now() ) {
+			await db.collection( 'unverified_email_aliases' ).doc( verification.uid ).delete()
+			throw new Error( `This verification link has expired` )
+		}
+
+		/* ///////////////////////////////
+		// Failure mode 3: ENS no longer yours */
+		if( verification.ENS ) {
+
+			const ens_address = await get_address_of_ens( verification.ENS )
+			if( ens_address.toLowerCase() !== verification.address.toLowerCase() ) throw new Error( `The ENS ${ ens_address } no longer resolves to ${ verification.address }` )
+
+		}
+
+		/* ///////////////////////////////
+		// Success: register forward
+		// /////////////////////////////*/
+
+		// Step 1, register with improvMX
+		const { address, ENS, email } = verification
+		await register_with_improvmx( address, ENS, email )
+
+		// Step 2: send welcome and spam-ceck emails
+		log( `Sending emails with `, address, ENS, email )
+		// await send_welcome_email( email, address, ENS )
+		await send_spam_check_email( `${ address }@signer.is`, address, ENS )
+
+		// Step 3, mark internally
+		await db.collection( 'verified_email_aliases' ).doc( address ).set( { address, email, ENS, created: Date.now(), updated: Date.now(), updated_human: new Date().toString() } )
+		await db.collection( 'unverified_email_aliases' ).doc( verification.uid ).delete()
+
+		return { success: true }
+
+
+	} catch( e ) {
+
+		log( `Error verifying email: `, e )
+		return { error: e.message }
+
+	}
+
+}
+
 /* ///////////////////////////////
 // Check if wallets have forwards
 // /////////////////////////////*/

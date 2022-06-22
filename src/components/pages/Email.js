@@ -28,6 +28,7 @@ export default function Sign() {
 	const address = useAddress()
 	const ENS = useENS()
 	const { notice } = useParams()
+	log('Notice: ', notice)
 
 	/* ///////////////////////////////
 	// Functions

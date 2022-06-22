@@ -23,6 +23,7 @@ const functions = getFunctions( app )
 
 // Remote functions
 export const register_alias_with_backend = httpsCallable( functions, 'register_alias_with_backend' )
+export const confirm_email_forwarder = httpsCallable( functions, 'confirm_email_forwarder' )
 
 // Offline functions emulator
 // Connect to functions emulator
