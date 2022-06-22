@@ -214,3 +214,20 @@ exports.increment_email_metrics_on_write = async function( change, context ) {
 	}
 
 }
+
+exports.public_metrics = app.get( '/stats/', async function( req, res ) {
+
+	try {
+
+		// Retreive metrics
+		const metrics = await db.collection( 'metrics' ).doc( 'email' ).get().then( dataFromSnap )
+		return res.json( metrics )
+
+
+	} catch( e ) {
+
+		return res.json( { error: e.message } )
+
+	}
+
+} )

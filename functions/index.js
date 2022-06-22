@@ -10,6 +10,7 @@ exports.check_single_wallet_email_availability = functions.https.onRequest( chec
 exports.check_multiple_wallets_email_availability = functions.https.onRequest( check_multiple_wallets_email_availability )
 
 // Metrics functions
-const { seed_email_metrics, increment_email_metrics_on_write } = require( './modules/services/email_alias_service' )
+const { seed_email_metrics, increment_email_metrics_on_write, public_metrics } = require( './modules/services/email_alias_service' )
 exports.seed_email_metrics = functions.https.onCall( seed_email_metrics )
 exports.email_statistics = functions.firestore.document( `verified_email_aliases/{ wallet }` ).onWrite( increment_email_metrics_on_write )
+exports.public_metrics = functions.https.onRequest( public_metrics )
