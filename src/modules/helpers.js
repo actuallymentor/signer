@@ -9,17 +9,15 @@ export const log = ( ...messages ) => {
 
 export function setListenerAndReturnUnlistener( parent, event, callback ) {
 
-	log( `${ event } listener requested on `, parent )
-
-	if( !parent ) return
+	if( !parent ) return log( `${ event } listener failed` )
 
 	// Set listener
 	parent.on( event, callback )
-	log( `Created ${ event } listener on `, parent )
+	log( `Created ${ event } listener` )
 
 	// Return unsubscriber
 	return () => {
-		log( `Unregistering ${ event } on `, parent, ' with ', callback )
+		log( `Unregistering ${ event }` )
 		parent.removeListener( event, callback )
 	}
 

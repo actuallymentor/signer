@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 
 // Ethers and web3 sdk
 import { ethers } from "ethers"
+import { wait } from '@testing-library/user-event/dist/utils'
 const { providers: { Web3Provider }, Contract, utils } = ethers
 
 /* ///////////////////////////////
@@ -100,26 +101,86 @@ export function useAddress() {
 
 	const [ address, setAddress ] = useState( window.ethereum?.selectedAddress )
 	const isConnected = useIsConnected()
+	const [ isListening, setIsListening ] = useState( false )
 
 	// Set initial value if known
 	useEffect( f => {
-		log( 'useAddress setting: ', window.ethereum && window.ethereum.selectedAddress, ` based on `, window.ethereum )
-		if( window.ethereum && window.ethereum.selectedAddress ) {
-			setAddress( window.ethereum.selectedAddress )
-		}
-	}, [] )
+
+		setAddress( window.ethereum.selectedAddress )
+
+	}, [ isConnected, isListening ] )
+
+	/* ///////////////////////////////
+	// Address listeners do not trigger
+	// on mount, need backups
+	// /////////////////////////////*/
+	useEffect( (  ) => {
+
+		let cancelled = false;
+	
+		( async () => {
+	
+			try {
+	
+				// No connection, do nothing
+				if( !isConnected || !window?.ethereum?.selectedAddress ) return log( `Not connected, no address to set` )
+
+				// Connected, but no listener (yet)
+				if( isConnected && !isListening && !address ) {
+					log( `Connected but no listener, getting address manually` )
+					if( cancelled ) return
+					const known_address = await getAddress()
+					if( cancelled ) return
+					if( known_address !== address ) setAddress( known_address )
+				}
+
+				// Connected, listening, but no address
+				if( isConnected && isListening && !address ) {
+					log( `Connected & listening, waiting for a sec and then getting manually` )
+					await wait( 1000 )
+					if( cancelled || address ) return
+					const known_address = await getAddress()
+					if( cancelled ) return
+					if( known_address !== address ) setAddress( known_address )
+				}
+	
+			} catch( e ) {
+	
+			} finally {
+	
+			}
+	
+		} )( )
+	
+		return () => cancelled = true
+	
+	}, [ isConnected, isListening ] )
 
 	// Create listener to accounts change
-	useEffect( f => setListenerAndReturnUnlistener( window.ethereum, 'accountsChanged', addresses => {
+	useEffect( f => {
 
-			log( 'Addresses changed to ', addresses )
-			const [ newAddress ] = addresses
+		// If not connected, do not listen
+		if( !isConnected ) return
 
-			// New address? Set it to state and stop interval
-			setAddress( newAddress )
-			
-	} ), [ isConnected ] )
+		setIsListening( true )
+		const unsubscribe = setListenerAndReturnUnlistener( window.ethereum, 'accountsChanged', addresses => {
 
+				// Get address through listener
+				log( '♻️ Addresses changed to ', addresses )
+				const [ newAddress ] = addresses
+
+				// New address? Set it to state and stop interval
+				if( address !== newAddress ) setAddress( newAddress )
+				
+		} )
+
+		return () => {
+			log( `Stop address listener...` )
+			unsubscribe()
+			setIsListening( false )
+		}
+
+	}, [ isConnected ] )
 
 	return address
 

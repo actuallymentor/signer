@@ -28,7 +28,6 @@ export default function Sign() {
 	const address = useAddress()
 	const ENS = useENS()
 	const { notice } = useParams()
-	log('Notice: ', notice)
 
 	/* ///////////////////////////////
 	// Functions
@@ -91,7 +90,7 @@ export default function Sign() {
 
 				<Text>Forward { ENS ? ` ${ ENS }@signer.is and ${ address }@signer.is` : `${ address }@signer.is` } to:</Text>
 
-				<Input type="email" autocomplete="email" label="Your email address" onChange={ ( { target } ) => setEmail( target.value ) } value={ email } placeholder='vitalik@gmail.com' autoFocus />
+				<Input type="email" autoComplete="email" label="Your email address" onChange={ ( { target } ) => setEmail( target.value ) } value={ email } placeholder='vitalik@gmail.com' autoFocus />
 
 				<Br />
 
