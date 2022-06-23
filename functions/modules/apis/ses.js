@@ -61,7 +61,7 @@ exports.send_verification_email = async ( auth_token, email, address, ENS ) => {
 
 
     const email_data = {
-        verification_link: `https://signer.is/verify_email/${ auth_token }`,
+        verification_link: `https://signer.is/#/email/confirm/${ auth_token }`,
         email,
         address,
         ENS: ENS || 'no'
