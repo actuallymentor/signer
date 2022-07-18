@@ -234,6 +234,9 @@ exports.seed_email_metrics = async function( ) {
 		// Get all node data
 		const email = await db.collection( 'verified_email_aliases' ).get().then( dataFromSnap )
 
+		// Manual export for POAP usage
+		return email.map( ( { uid } ) => uid ).concat( '\n' )
+
 		// Seed metadata
 		await db.collection( 'metrics' ).doc( 'email' ).set( {
 			verified_email_aliases: email.length,
