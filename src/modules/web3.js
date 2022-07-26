@@ -1,9 +1,9 @@
-import { log, setListenerAndReturnUnlistener } from './helpers'
-import { useState, useEffect } from "react"
+import { log, setListenerAndReturnUnlistener, wait } from './helpers'
+import { useState, useEffect, useRef } from "react"
+import useInterval from 'use-interval'
 
 // Ethers and web3 sdk
 import { ethers } from "ethers"
-import { wait } from '@testing-library/user-event/dist/utils'
 const { providers: { Web3Provider }, Contract, utils } = ethers
 
 /* ///////////////////////////////
@@ -69,13 +69,29 @@ export async function verify_message( claimed_message, signed_message, claimed_s
 export function useIsConnected() {
 
 	// Check for initial status
-	const [ isConnected, setIsConnected ] = useState( window.ethereum?.isConnected() )
+	const [ isConnected, setIsConnected ] = useState( false )
+	const ID = useRef( `${ Math.random() }`.slice( 2, 8 ) ).current
+
+	const update_connected = f => {
+		const connected = window.ethereum?.isConnected()
+		setIsConnected( connected )
+		if( connected ) return log( `${ ID } 💡 Wallet connected` )
+		log( `${ ID } 🔌 Wallet disconnected` )
+	}
 
 	// Listen to disconnects
-	useEffect( f => setListenerAndReturnUnlistener( window.ethereum, 'disconnect', f => setIsConnected( false ) ), [] )
+	useEffect( f => setListenerAndReturnUnlistener( window.ethereum, 'disconnect', update_connected ), [] )
+	useEffect( f => setListenerAndReturnUnlistener( window.ethereum, 'connect', update_connected ), [] )
 
-	// Listen to connects
-	useEffect( f => setListenerAndReturnUnlistener( window.ethereum, 'connect', f => setIsConnected( true ) ), [] )
+
+	// Since the connect event doesn't get triggered when metamask actually connects, we are going to do a SUPER inelegant looped listener
+	useInterval( () => {
+		const connected = window.ethereum?.isConnected()
+		if( connected != isConnected ) {
+			log( `💡 Wallet connection status changed from ${ isConnected } to ${ connected }` )
+			setIsConnected( connected )
+		}
+	}, isConnected ? null : 1000, true )
 
 	return isConnected
 
@@ -101,72 +117,26 @@ export function useAddress() {
 
 	const [ address, setAddress ] = useState( window.ethereum?.selectedAddress )
 	const isConnected = useIsConnected()
-	const [ isListening, setIsListening ] = useState( false )
+	const ID = useRef( `${ Math.random() }`.slice( 2, 8 ) ).current
 
-	// Set initial value if known
+	// Keep synced with provider
 	useEffect( f => {
 
+		log( `💳 Setting selected address to useAddress state: `, window.ethereum.selectedAddress )
 		setAddress( window.ethereum.selectedAddress )
 
-	}, [ isConnected, isListening ] )
+	}, [ isConnected ] )
 
-	/* ///////////////////////////////
-	// Address listeners do not trigger
-	// on mount, need backups
-	// /////////////////////////////*/
-	useEffect( (  ) => {
-
-		let cancelled = false;
-	
-		( async () => {
-	
-			try {
-	
-				// No connection, do nothing
-				if( !isConnected || !window?.ethereum?.selectedAddress ) return log( `Not connected, no address to set` )
-
-				// Connected, but no listener (yet)
-				if( isConnected && !isListening && !address ) {
-					log( `Connected but no listener, getting address manually` )
-					if( cancelled ) return
-					const known_address = await getAddress()
-					if( cancelled ) return
-					if( known_address !== address ) setAddress( known_address )
-				}
-
-				// Connected, listening, but no address
-				if( isConnected && isListening && !address ) {
-					log( `Connected & listening, waiting for a sec and then getting manually` )
-					await wait( 1000 )
-					if( cancelled || address ) return
-					const known_address = await getAddress()
-					if( cancelled ) return
-					if( known_address !== address ) setAddress( known_address )
-				}
-	
-			} catch( e ) {
-	
-			} finally {
-	
-			}
-	
-		} )( )
-	
-		return () => cancelled = true
-	
-	}, [ isConnected, isListening ] )
-
-	// Create listener to accounts change
+	// Listen to accountschanged
 	useEffect( f => {
 
 		// If not connected, do not listen
 		if( !isConnected ) return
 
-		setIsListening( true )
 		const unsubscribe = setListenerAndReturnUnlistener( window.ethereum, 'accountsChanged', addresses => {
 
 				// Get address through listener
-				log( '♻️ Addresses changed to ', addresses )
+				log( `${ ID } ♻️ Selected address ${ window.ethereum.selectedAddress }, all addresses changed to `, addresses )
 				const [ newAddress ] = addresses
 
 				// New address? Set it to state and stop interval
@@ -175,13 +145,21 @@ export function useAddress() {
 		} )
 
 		return () => {
-			log( `Stop address listener...` )
+			log( `${ ID } Stop address listener...` )
 			unsubscribe()
-			setIsListening( false )
 		}
 
 	}, [ isConnected ] )
+	
+	// Since metamask does not trigger reliable connect events, add a listener
+	useInterval( () => {
 
+		if( address !== window.ethereum?.selectedAddress ) setAddress( window.ethereum.selectedAddress )
+
+	}, address ? null : 1000, true )
+
+
+	log( `${ ID } useAddress: `, address )
 	return address
 
 }
@@ -196,12 +174,14 @@ export function useENS(  ) {
 
 	useEffect( (  ) => {
 
+		let cancelled = false;
 
 		( async () => {
 
 			try {
 
 				const ens = await ens_from_address( address )
+				if( cancelled ) return
 				log( `ENS changed to `, ens )
 				setENS( ens )
 
@@ -210,6 +190,8 @@ export function useENS(  ) {
 			}
 
 		} )( )
+
+		return () => cancelled = true
 
 
 	}, [ address ] )

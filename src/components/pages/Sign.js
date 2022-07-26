@@ -71,6 +71,7 @@ export default function Sign() {
 		try {
 
 			if( !message ) throw new Error( `No message input` )
+			if( !address ) throw new Error( `No wallet appears to be connected. If you are sure you connected your wallet, please refresh the page.` )
 
 			setLoading( 'Signing message...' )
 			const signature = await sign_message( message, address )
@@ -101,7 +102,7 @@ export default function Sign() {
 	/* ///////////////////////////////
 	// Render component
 	// /////////////////////////////*/
-	log( address, ENS )
+	log( `Rendering with address ${ address } and ENS ${ ENS }` )
 
 	if( loading ) return <Loading message={ loading } />
 
