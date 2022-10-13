@@ -4,7 +4,6 @@ import { log } from '../../modules/helpers'
 import Button from '../atoms/Button'
 
 import Fox from '../../assets/metamask-fox-cleaned.svg'
-import { wait } from '@testing-library/user-event/dist/utils'
 
 export default ( { children, onClick, ...props } ) => {
 

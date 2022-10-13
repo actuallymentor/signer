@@ -122,8 +122,8 @@ export function useAddress() {
 	// Keep synced with provider
 	useEffect( f => {
 
-		log( `💳 Setting selected address to useAddress state: `, window.ethereum.selectedAddress )
-		setAddress( window.ethereum.selectedAddress )
+		log( `💳 Setting selected address to useAddress state: `, window.ethereum?.selectedAddress )
+		setAddress( window.ethereum?.selectedAddress )
 
 	}, [ isConnected ] )
 
@@ -136,7 +136,7 @@ export function useAddress() {
 		const unsubscribe = setListenerAndReturnUnlistener( window.ethereum, 'accountsChanged', addresses => {
 
 				// Get address through listener
-				log( `${ ID } ♻️ Selected address ${ window.ethereum.selectedAddress }, all addresses changed to `, addresses )
+				log( `${ ID } ♻️ Selected address ${ window.ethereum?.selectedAddress }, all addresses changed to `, addresses )
 				const [ newAddress ] = addresses
 
 				// New address? Set it to state and stop interval
@@ -154,7 +154,7 @@ export function useAddress() {
 	// Since metamask does not trigger reliable connect events, add a listener
 	useInterval( () => {
 
-		if( address !== window.ethereum?.selectedAddress ) setAddress( window.ethereum.selectedAddress )
+		if( address !== window.ethereum?.selectedAddress ) setAddress( window.ethereum?.selectedAddress )
 
 	}, address ? null : 1000, true )
 
