@@ -4,7 +4,7 @@ import Loading from "../molecules/Loading"
 import { useNavigate, useParams } from "react-router-dom"
 import { Text } from "../atoms/Text"
 import { useEffect, useState } from "react"
-import { confirm_email_forwarder } from "../../modules/firebase"
+import { confirm_email_forwarder, log_event } from "../../modules/firebase"
 import { dev, log } from "../../modules/helpers"
 
 export default function ConfirmEmail(  ) {
@@ -22,15 +22,20 @@ export default function ConfirmEmail(  ) {
             try {
     
                 const { data: status } = await confirm_email_forwarder( verification_uid )
-                if( status.success ) return setLoading( false )
+                if( status.success ) {
+                    log_event( `email_forward_confirm_success` )
+                    return setLoading( false )
+                }
 
                 throw new Error( `Error registering with backend: ${ status.error }` )
+
     
             } catch( e ) {
                 alert( e.message )
                 if( !dev ) navigate( '/' )
                 else log( `Not forwarding in dev` )
                 setLoading( false )
+                log_event( `email_forward_confirm_failed` )
             }
     
         } )( )

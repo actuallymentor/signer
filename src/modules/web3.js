@@ -2,7 +2,7 @@ import { log, setListenerAndReturnUnlistener, wait } from './helpers'
 
 // Ethers and web3 sdk
 import { ethers } from "ethers"
-import { useAccount, useEnsName } from 'wagmi'
+import { useAccount, useDisconnect, useEnsName } from 'wagmi'
 import { useEffect, useState } from 'react'
 const { providers: { Web3Provider }, Contract, utils } = ethers
 
@@ -59,6 +59,30 @@ export async function verify_message( claimed_message, signed_message, claimed_s
 		return false
 
 	}
+
+}
+
+export function useDisconnectWallets( reload_page=true, clear_cache=true ) {
+
+	const { disconnect } = useDisconnect()
+
+	return function() {
+
+		// Defautl wagmi disconnect
+		disconnect()
+
+		// Clear localstorage of caches
+		if( !window.localStorage ) return
+		if( clear_cache ) {
+			window.localStorage.removeItem( 'walletconnect' )
+			window.localStorage.removeItem( 'wagmi.store' )
+			window.localStorage.removeItem( 'wagmi.cache' )
+			window.localStorage.removeItem( 'wagmi.wallet' )
+		}
+		if( reload_page ) window?.location?.reload()
+
+	}
+
 
 }
 

@@ -52,7 +52,7 @@ export default function Verify() {
 
 
 			} catch( e ) {
-
+				log_event( 'verify)_signature_failed' )
 				log( `Decoding error: `, e )
 				alert( e.message )
 
@@ -68,32 +68,16 @@ export default function Verify() {
 
 	}, [ message ] )
 
-	useEffect( (  ) => {
+	useEffect( () => {
 
-		let cancelled = false;
+		if( !signature ) return
 
-		( async () => {
-
-			try {
-
-				if( !signature ) return
-
-				// Attempt to get ENS
-				const { claimed_signatory } = signature
-				setSignatory( claimed_signatory )
-				
-
-			} catch( e ) {
-
-				log( 'Error getting ENS ', e )
-
-			}
-
-		} )( )
-
-		return () => cancelled = true
+		// Set signatory so ENS hook can use it
+		const { claimed_signatory } = signature
+		setSignatory( claimed_signatory )
 
 	}, [ signature ] )
+
 
 	/* ///////////////////////////////
 	// Functions

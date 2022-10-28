@@ -6,6 +6,9 @@ import Web3Provider from './modules/web3_provider'
 
 function App() {
 
+	// CRA changed the handling of node dependencies resulting in Buffer not being defined on the window object. This is required for wagmi
+	window.Buffer = window.Buffer || require("buffer").Buffer
+
 	// ///////////////////////////////
 	// Rendering
 	// ///////////////////////////////

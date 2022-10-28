@@ -51,7 +51,7 @@ export default function Sign() {
 			if( !requested_message ) return
 
 			// If this request was not meant for the current address
-			if( requested_signatory && ( requested_signatory != address ) ) return alert( `This link was requests a signature from ${ requested_signatory }.\n\nYou are currently connected as ${ address }.\n\nYou can still sign, but the requester might not accept your signature as valid.` )
+			if( requested_signatory && ( requested_signatory != address ) ) return alert( `This link requests a signature from ${ requested_signatory }.\n\nYou are currently connected as ${ address }.\n\nYou can still sign, but the requester might not accept your signature as valid.` )
 			
 			// Set the requested message to the interface
 			if( requested_message ) setMessage( requested_message )
