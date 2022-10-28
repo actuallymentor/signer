@@ -1,6 +1,7 @@
 import { HashRouter} from 'react-router-dom'
 import Router from './components/Router'
 import Theme from './components/Theme'
+import Web3Provider from './modules/web3_provider'
 
 
 function App() {
@@ -10,11 +11,13 @@ function App() {
 	// ///////////////////////////////
 
 	return <Theme>
-		<HashRouter>
+		<Web3Provider>
+			<HashRouter>
 
-			<Router />
+				<Router />
 
-		</HashRouter>
+			</HashRouter>
+		</Web3Provider>
 	</Theme>
 
 }

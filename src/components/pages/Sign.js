@@ -6,12 +6,13 @@ import ResizingTextarea from '../molecules/ResizingTextarea'
 import Menu from '../molecules/Menu'
 import Footer from '../molecules/Footer'
 
-import { useAddress, getAddress, useENS, sign_message, verify_message } from '../../modules/web3'
+import { sign_message, useENS, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
 import { log, dev, wait } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { log_event } from '../../modules/firebase'
+import { useAccount } from 'wagmi'
 
 export default function Sign() {
 
@@ -23,8 +24,8 @@ export default function Sign() {
 	const [ loading, setLoading ] = useState( )
 	const [ message, setMessage ] = useState(  )
 	const { signature_request } = useParams()
-	const address = useAddress()
-	const ENS = useENS()
+	const { address } = useAccount()
+	const ENS = useENS( address )
 
 	/* ///////////////////////////////
 	// Lifecycle
@@ -102,8 +103,6 @@ export default function Sign() {
 	/* ///////////////////////////////
 	// Render component
 	// /////////////////////////////*/
-	log( `Rendering with address ${ address } and ENS ${ ENS }` )
-
 	if( loading ) return <Loading message={ loading } />
 
 	return <Container justify='center' align='flex-start'>

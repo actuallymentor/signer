@@ -1,9 +1,9 @@
 import { log, setListenerAndReturnUnlistener, wait } from './helpers'
-import { useState, useEffect, useRef } from "react"
-import useInterval from 'use-interval'
 
 // Ethers and web3 sdk
 import { ethers } from "ethers"
+import { useAccount, useEnsName } from 'wagmi'
+import { useEffect, useState } from 'react'
 const { providers: { Web3Provider }, Contract, utils } = ethers
 
 /* ///////////////////////////////
@@ -45,7 +45,7 @@ export async function verify_message( claimed_message, signed_message, claimed_s
 		const confirmed_signatory = utils.verifyMessage( claimed_message, signed_message ).toLowerCase()
 
 		// Verify that the claimed signatory is the one that signed the message
-		const message_valid = confirmed_signatory === claimed_signatory
+		const message_valid = confirmed_signatory.toLowerCase() === claimed_signatory.toLowerCase()
 
 		log( `Message was signed by ${ confirmed_signatory }, valid: `, message_valid )
 
@@ -62,141 +62,55 @@ export async function verify_message( claimed_message, signed_message, claimed_s
 
 }
 
-// ///////////////////////////////
-// Wallet interactors
-// ///////////////////////////////
 
-export function useIsConnected() {
+export function useENS( address ) {
 
-	// Check for initial status
-	const [ isConnected, setIsConnected ] = useState( false )
-	const ID = useRef( `${ Math.random() }`.slice( 2, 8 ) ).current
+	const [ internal_ENS, set_internal_ENS ] = useState( '' )
+	const { data: wagmi_ENS } = useEnsName( { address: address?.toLowerCase() } )
 
-	const update_connected = f => {
-		const connected = window.ethereum?.isConnected()
-		setIsConnected( connected )
-		if( connected ) return log( `${ ID } 💡 Wallet connected` )
-		log( `${ ID } 🔌 Wallet disconnected` )
-	}
-
-	// Listen to disconnects
-	useEffect( f => setListenerAndReturnUnlistener( window.ethereum, 'disconnect', update_connected ), [] )
-	useEffect( f => setListenerAndReturnUnlistener( window.ethereum, 'connect', update_connected ), [] )
-
-
-	// Since the connect event doesn't get triggered when metamask actually connects, we are going to do a SUPER inelegant looped listener
-	useInterval( () => {
-		const connected = window.ethereum?.isConnected()
-		if( connected != isConnected ) {
-			log( `💡 Wallet connection status changed from ${ isConnected } to ${ connected }` )
-			setIsConnected( connected )
+	// Set ENS based on wagmi
+	useEffect( () => {
+		if( wagmi_ENS ) {
+			log( `Setting ENS ${ wagmi_ENS } based on wagmi hook` )
+			return set_internal_ENS( wagmi_ENS )
 		}
-	}, isConnected ? null : 1000, true )
+	}, [ wagmi_ENS ] )
 
-	return isConnected
-
-}
-
-// Get address through metamask
-export async function getAddress() {
-
-	// Check if web3 is exposed
-	if( !window.ethereum ) throw new Error( 'No web3 provider detected, please install metamask' )
-
-	// Get the first address ( which is the selected address )
-	const [ address ] = await window.ethereum.request( { method: 'eth_requestAccounts' } )
-
-	if( !window.ethereum.isConnected() ) throw new Error( 'Please connect an account' )
-
-	return address
-
-}
-
-// Address hook
-export function useAddress() {
-
-	const [ address, setAddress ] = useState( window.ethereum?.selectedAddress )
-	const isConnected = useIsConnected()
-	const ID = useRef( `${ Math.random() }`.slice( 2, 8 ) ).current
-
-	// Keep synced with provider
-	useEffect( f => {
-
-		log( `💳 Setting selected address to useAddress state: `, window.ethereum?.selectedAddress )
-		setAddress( window.ethereum?.selectedAddress )
-
-	}, [ isConnected ] )
-
-	// Listen to accountschanged
-	useEffect( f => {
-
-		// If not connected, do not listen
-		if( !isConnected ) return
-
-		const unsubscribe = setListenerAndReturnUnlistener( window.ethereum, 'accountsChanged', addresses => {
-
-				// Get address through listener
-				log( `${ ID } ♻️ Selected address ${ window.ethereum?.selectedAddress }, all addresses changed to `, addresses )
-				const [ newAddress ] = addresses
-
-				// New address? Set it to state and stop interval
-				if( address !== newAddress ) setAddress( newAddress )
-				
-		} )
-
-		return () => {
-			log( `${ ID } Stop address listener...` )
-			unsubscribe()
-		}
-
-	}, [ isConnected ] )
-	
-	// Since metamask does not trigger reliable connect events, add a listener
-	useInterval( () => {
-
-		if( address !== window.ethereum?.selectedAddress ) setAddress( window.ethereum?.selectedAddress )
-
-	}, address ? null : 1000, true )
-
-
-	log( `${ ID } useAddress: `, address )
-	return address
-
-}
-
-/* ///////////////////////////////
-// ENS
-// /////////////////////////////*/
-export function useENS(  ) {
-
-	const address = useAddress()
-	const [ ENS, setENS ] = useState(  )
-
+	// If no wagmi ENS, try to get it manually
 	useEffect( (  ) => {
 
+		// No need to continue if Wagmi got the ENS
+		if( wagmi_ENS || !address ) return
 		let cancelled = false;
-
+	
 		( async () => {
-
+	
 			try {
+	
+				// Wait for a second to give wagmi time to resolve the ENS
+				await wait( 2000 )
 
-				const ens = await ens_from_address( address )
+				// Manually attempt to get the ENS
+				log( `Manually getting ENS` )
+				const ENS = await ens_from_address( address )
 				if( cancelled ) return
-				log( `ENS changed to `, ens )
-				setENS( ens )
-
+				if( wagmi_ENS ) return
+				if( ENS ) {
+					log( `Setting ENS ${ ENS } based on manual resolution` )
+					return set_internal_ENS( ENS.toLowerCase() )
+				}
+	
 			} catch( e ) {
-				log( `Error in useENS: `, e )
+				log( `Error getting ENS: `, e )
 			}
-
+	
 		} )( )
-
+	
 		return () => cancelled = true
+	
+	}, [ wagmi_ENS, address ] )
 
-
-	}, [ address ] )
-
-	return ENS
+	return internal_ENS
 
 }
 

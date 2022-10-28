@@ -1,7 +1,6 @@
 import Container from '../atoms/Container'
 import Loading from '../molecules/Loading'
 import { Br, Text, H1, Sidenote } from '../atoms/Text'
-import Button from '../atoms/Button'
 import MetamaskButton from '../molecules/MetamaskButton'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
 import Input from '../molecules/Input'
@@ -9,11 +8,12 @@ import Menu from '../molecules/Menu'
 import Footer from '../molecules/Footer'
 import Message from '../organisms/Message'
 
-import { useAddress, useENS, sign_message, getAddress } from '../../modules/web3'
+import { sign_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
-import { log, wait, dev } from '../../modules/helpers'
+import { log } from '../../modules/helpers'
 import { useNavigate, useParams } from 'react-router-dom'
-import { log_event, register_alias_with_backend } from '../../modules/firebase'
+import { register_alias_with_backend } from '../../modules/firebase'
+import { useAccount, useEnsName } from 'wagmi'
 
 export default function Sign() {
 
@@ -25,8 +25,8 @@ export default function Sign() {
 	const [ loading, setLoading ] = useState( )
 	const [ message, setMessage ] = useState(  )
 	const [ email, setEmail ] = useState( '' )
-	const address = useAddress()
-	const ENS = useENS()
+	const { address } = useAccount()
+	const { data: ENS } = useEnsName( { address } )
 	const { notice } = useParams()
 
 	/* ///////////////////////////////
@@ -64,13 +64,6 @@ export default function Sign() {
 		if( notice === 'email_verified' ) setMessage( `Your email has been verified! People and apps can now email you at your wallet address!` )
 
 	}, [ notice ] )
-
-	// Once account is selected, connect to metamask
-	useEffect( f => {
-
-		if( address ) getAddress(address)
-
-	}, [ address ] )
 
 
 	/* ///////////////////////////////

@@ -2,15 +2,14 @@ import Container from '../atoms/Container'
 import Loading from '../molecules/Loading'
 import { H1, H2, Sidenote, Text, Br } from '../atoms/Text'
 import Button from '../atoms/Button'
-import Fox from '../../assets/metamask-fox-cleaned.svg'
 import ResizingTextarea from '../molecules/ResizingTextarea'
 import Input from '../molecules/Input'
 import Menu from '../molecules/Menu'
 import Footer from '../molecules/Footer'
 
-import { ens_from_address, verify_message } from '../../modules/web3'
+import { useENS, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
-import { log, dev } from '../../modules/helpers'
+import { log } from '../../modules/helpers'
 import { useParams } from 'react-router-dom'
 import { log_event } from '../../modules/firebase'
 
@@ -19,8 +18,9 @@ export default function Verify() {
 	const [ loading, setLoading ] = useState( 'Verifying' )
 	const [ signature, setSignature ] = useState( { } )
 	const [ authenticated, setAuthenticated ] = useState( false )
+	const [ signatory, setSignatory ] = useState(  )
+	const ENS = useENS( signatory )
 	const [ showSource, setShowSource ] = useState( false )
-	const [ ENS, setENS ] = useState(  )
 	const { message, share } = useParams()
 
 	// ///////////////////////////////
@@ -80,9 +80,7 @@ export default function Verify() {
 
 				// Attempt to get ENS
 				const { claimed_signatory } = signature
-				const ens = await ens_from_address( claimed_signatory )
-				if( cancelled ) return
-				setENS( ens )
+				setSignatory( claimed_signatory )
 				
 
 			} catch( e ) {
