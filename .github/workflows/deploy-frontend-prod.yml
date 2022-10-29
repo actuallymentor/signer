@@ -53,6 +53,32 @@ jobs:
         run: |
           echo -e "${{ secrets.DOTENV_PRODUCTION }}" > .env
 
+      # Automated testing
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v15
+
+      - name: Wait for a few minutes in case functions are deploying
+        run: |
+          if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "functions/"; then
+            echo "Functions files changed, waiting for 4 minutes"
+            sleep 240
+          else
+            echo "No functions changes, not waiting"  
+          fi
+    
+      # Run cypress tests with a retry (in case a functions deploy clash caused the fail)
+      - name: Run e2e frontend tests
+        run: npm run test:ci
+    
+      # If CI failed, upload the videos for debugging
+      - name: Testing failed
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-videos
+          path: cypress/videos # or path/to/artifact
+
       - name: Build website files
         env:
           NODE_ENV: production

@@ -52,9 +52,9 @@ export default function Verify() {
 
 
 			} catch( e ) {
-				log_event( 'verify)_signature_failed' )
+				log_event( 'verify_signature_failed' )
 				log( `Decoding error: `, e )
-				alert( e.message )
+				alert( `Invalid signature link.\n\nDeveloper details: ${ e.message }` )
 
 			} finally {
 
@@ -132,7 +132,7 @@ export default function Verify() {
 				<Text>Anyone with this link can see the source message and signature that { ENS || claimed_signatory } left here.</Text>
 				<Text>This link is not saved. If you lose it you will have to generate a new link.</Text>
 				<Br />
-				<Input expand={ true } label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
+				<Input id='verify-share-input' expand={ true } label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
 				<Button onClick={ f => clipboard( window.location.href.replace( '/share', '' ) ) }>Copy link</Button>
 
 			</> }
