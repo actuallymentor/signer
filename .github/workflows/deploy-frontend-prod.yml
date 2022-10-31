@@ -28,7 +28,7 @@ on:
 jobs:
   # Build the frontend giles
   build:
-    name: Compile frontend
+    name: Test, compile & deploy fontend
 
     runs-on: ubuntu-latest
 

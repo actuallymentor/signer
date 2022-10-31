@@ -21,7 +21,7 @@ const dark_theme = {
 		primary_invert: 'black',
 		text: 'rgba( 255, 255, 255, 1 )',
 		text_backdrop: 'rgba( 0, 0, 0, .8 )',
-		shadow: 'rgba( 255, 255, 255, .2 )',
+		shadow: 'rgba( 255, 255, 255, .4 )',
 		accent: 'orange',
 		hint: 'rgb( 200, 200, 200 )',
 		backdrop: 'rgb( 5, 5, 5 )'
@@ -47,8 +47,9 @@ export default props => {
 
 		// Enable a listener
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener( 'change', event => {
-			log( 'Darkmode setting changed to ', event.matches )
-			setDark( event.matches == 'dark' )
+			const prefer_dark = event.matches
+			log( 'Darkmode setting changed to ', prefer_dark )
+			setDark( prefer_dark )
 		})
 
 	}, [] )

@@ -15,7 +15,7 @@ const PrettyButton = styled( DynamicButton )`
 	border: 0px solid ${ ( { theme } ) => theme.colors.text };
 	transition-duration: ${ shadow_transition_speed  };
 	transition-delay: ${ shadow_transition_delay };
-	box-shadow: 0px 0px 5px 0px ${ ( { theme } ) => theme?.colors?.shadow  };
+	box-shadow: 0px 0px 10px 1px ${ ( { theme } ) => theme?.colors?.shadow  };
 	background: none;
 	color: ${ ( { theme } ) => theme.colors.text };
 	text-decoration: none;
@@ -28,7 +28,7 @@ const PrettyButton = styled( DynamicButton )`
 	&:hover {
 		transition-duration: ${ shadow_transition_speed  };
 		transition-delay: ${ shadow_transition_delay };
-		box-shadow: 0px 0px 15px 0px ${ ( { theme } ) => theme?.colors?.shadow  };
+		box-shadow: 0px 0px 15px 5px ${ ( { theme } ) => theme?.colors?.shadow  };
 		cursor: pointer;
 	}
 

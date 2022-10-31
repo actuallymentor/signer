@@ -32,6 +32,23 @@ export default function Login() {
 
 			<Section direction='row' justify='space-around' align='center' padding='5rem .5rem'>
 
+				<Section width='650px' align='flex-start'>
+						
+					<H2>✏️ Sign & share a message</H2>
+					<Text margin="2rem 0 1rem 0">Sign a message with your wallet, and share it easily. Completely off-chain.</Text>
+					<Text>Vitalik.eth could for example share a verifyable message saying "my real twitter is @VitalikButerin".</Text>
+					<Button margin="2rem 0" onClick={ f => navigate( '/sign' ) }>Sign & share a message</Button>
+
+				</Section>
+
+				<Section width='400px'>
+					<Share />
+				</Section>
+
+			</Section>
+
+			<Section direction='row' justify='space-around' align='center' padding='5rem .5rem'>
+
 				<Section width="400px">
 					<Mailbox />
 				</Section>
@@ -48,22 +65,7 @@ export default function Login() {
 
 			</Section>
 
-			<Section direction='row' justify='space-around' align='center' padding='5rem .5rem'>
-
-				<Section width='650px' align='flex-start'>
-						
-					<H2>✏️ Sign & share a message</H2>
-					<Text margin="2rem 0 1rem 0">Sign a message with your wallet, and share it easily. Completely off-chain.</Text>
-					<Text>Vitalik.eth could for example share a verifyable message saying "my real twitter is @VitalikButerin".</Text>
-					<Button margin="2rem 0" onClick={ f => navigate( '/sign' ) }>Sign & share a message</Button>
-
-				</Section>
-
-				<Section width='400px'>
-					<Share />
-				</Section>
-
-			</Section>
+			
 
 			<Footer />
 

@@ -23,6 +23,7 @@ export default function ConfirmEmail(  ) {
     
                 const { data: status } = await confirm_email_forwarder( verification_uid )
                 if( status.success ) {
+                    if( cancelled ) return
                     log_event( `email_forward_confirm_success` )
                     return setLoading( false )
                 }

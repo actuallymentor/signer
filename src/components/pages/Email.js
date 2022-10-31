@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import { log } from '../../modules/helpers'
 import { useNavigate, useParams } from 'react-router-dom'
 import { log_event, register_alias_with_backend } from '../../modules/firebase'
-import { useAccount, useEnsName } from 'wagmi'
+import { useAccount, useEnsName, useSigner } from 'wagmi'
 
 export default function Sign() {
 
@@ -28,6 +28,7 @@ export default function Sign() {
 	const { address } = useAccount()
 	const { data: ENS } = useEnsName( { address } )
 	const { notice } = useParams()
+	const { data: signer } = useSigner()
 
 	/* ///////////////////////////////
 	// Functions
@@ -40,12 +41,12 @@ export default function Sign() {
 			log( `Starting signature` )
 			log_event( `email_forward_register` )
 			const message = JSON.stringify( { ENS, address, email } )
-			const signature = await sign_message( message, address )
+			const signature = await sign_message( message, address, signer )
 			setLoading( `Registering with Signer.is` )
 			const { data: result } = await register_alias_with_backend( signature )
 			log( `Signer responded with: `, result )
-			return navigate( `/email/verify_email` )
 			log_event( `email_forward_success` )
+			return navigate( `/email/verify_email` )
 
 		} catch( e ) {
 			log_event( `email_forward_fail` )

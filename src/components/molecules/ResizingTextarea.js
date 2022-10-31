@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import Textarea from '../atoms/Textarea'
 import { useState, useEffect, useRef } from 'react'
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default ( { minRows=3,value='', ...props } ) => {
 
 	const ref = useRef()

@@ -12,7 +12,7 @@ import { log, dev, wait } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { log_event } from '../../modules/firebase'
-import { useAccount } from 'wagmi'
+import { useAccount, useSigner } from 'wagmi'
 
 export default function Sign() {
 
@@ -26,6 +26,8 @@ export default function Sign() {
 	const { signature_request } = useParams()
 	const { address } = useAccount()
 	const ENS = useENS( address )
+	const { data: signer } = useSigner()
+	
 
 	/* ///////////////////////////////
 	// Lifecycle
@@ -75,7 +77,7 @@ export default function Sign() {
 			if( !address ) throw new Error( `No wallet appears to be connected. If you are sure you connected your wallet, please refresh the page.` )
 
 			setLoading( 'Signing message...' )
-			const signature = await sign_message( message, address )
+			const signature = await sign_message( message, address, signer )
 			log( `Signed message: `, signature )
 
 			// Verify signing
