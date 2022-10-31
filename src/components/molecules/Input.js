@@ -9,6 +9,7 @@ const Input = styled.div`
 	margin: 1rem 0;
 	justify-content: center;
 	width: 350px;
+	max-width: 100%;
 	
 	& input {
 		background: ${ ( { theme } ) => theme.colors.backdrop };
