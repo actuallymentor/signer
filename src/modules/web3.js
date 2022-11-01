@@ -92,7 +92,7 @@ export function useDisconnectWallets( reload_page=true, clear_cache=true ) {
 export function useENS( address ) {
 
 	const [ internal_ENS, set_internal_ENS ] = useState( '' )
-	const { data: wagmi_ENS } = useEnsName( { address: address?.toLowerCase() } )
+	const { data: wagmi_ENS } = useEnsName( { address: address?.toLowerCase(), chainId: 1 } )
 
 	// Set ENS based on wagmi
 	useEffect( () => {
