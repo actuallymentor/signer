@@ -13,7 +13,7 @@ exports.register_potential_airdrop_usage = async ( data, context ) => {
         if( !address || !airdrop_tag ) throw new Error( `Faulty tracking request` )
 
         // Save data
-        await db.collection( `usage_tracking` ).doc( `${ address }` ).set( {
+        await db.collection( `usage_tracking` ).doc( `${ address }`.toLowerCase() ).set( {
             [airdrop_tag]: increment( 1 ),
             updated: Date.now(),
             updated_human: new Date().toString()

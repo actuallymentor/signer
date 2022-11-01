@@ -45,22 +45,32 @@ export default ( { id, children, onClick, airdrop_tag=false, ...props } ) => {
 		alert( `There might be an airdrop related to this project in the future.\n\nIf you want to qualify, check this box.\n\nChecking this box means we will keep track of the address you are connected to, and what you did on the site. This will allow a potential airdrop to be fairly distributed to actual users.` )
 	}
 
+	async function register_for_airdrop() {
+		// If the user opted in, save the address & action
+		if( !airdrop_tag || !wants_airdrop ) return
+		log( `Registering airdrop aligibility with tag ${ airdrop_tag }` )
+		const { error } = await register_potential_airdrop_usage( { address, airdrop_tag } ).catch( e => ( { error: e.message } ) )
+		if( error ) {
+			log( `Airdrop registration issue:`, error )
+			alert( `There was an issue registering you for the potential airdrop: ${ error }.\n\nYou can still use signer.is, aside from the airdrop issue everything should still work.` )
+		} else {
+			log( `Airdrop registration success` )
+		}
+
+	}
+
 	async function onclick_with_tracking( e ) {
 
-		// Activate the built-in onclick
-		onClick( e )
+		// Make the default onclick async
+		const asynced_onclick = async ( ...f ) => onClick( ...f )
+		
+		// Run onclick and airdrop registration in parallel
+		await Promise.all( [
+			asynced_onclick( e ),
+			register_for_airdrop()
+		] )
 
-		// If the user opted in, save the address & action
-		if( airdrop_tag && wants_airdrop ) {
-			log( `Registering airdrop aligibility with tag ${ airdrop_tag }` )
-			const { error } = await register_potential_airdrop_usage( { address, airdrop_tag } ).catch( e => ( { error: e.message } ) )
-			if( error ) {
-				log( `Airdrop registration issue:`, error )
-				alert( `There was an issue registering you for the potential airdrop: ${ error }.\n\nYou can still use signer.is, aside from the airdrop issue everything should still work.` )
-			} else {
-				log( `Airdrop registration success` )
-			}
-		}
+		
 	}
 
 	return <>
