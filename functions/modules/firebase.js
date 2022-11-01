@@ -18,8 +18,6 @@ const dataFromSnap = ( snapOfDocOrDocs, withDocId=true ) => {
 
 const throw_if_invalid_context = context => {
 
-	return log( `APP CHECK DISABLED` )
-
 	if( dev ) return log( '⚠️ DEV detected, skipping app context check' )
 
 	// Appcheck validation

@@ -11,6 +11,6 @@ body {
 }
 
 textarea, select, input, button {
-    -webkit-appearance: none;
+    /* -webkit-appearance: none; */
     outline: none!important;
   }

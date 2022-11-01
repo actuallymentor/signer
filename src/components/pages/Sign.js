@@ -116,7 +116,7 @@ export default function Sign() {
 			<ResizingTextarea minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
 
 			<Br />
-			<MetamaskButton onClick={ signMessage }>
+			<MetamaskButton onClick={ signMessage } airdrop_tag="sign_message">
 				<Text>Sign message & get sharable link</Text>
 			</MetamaskButton>
 

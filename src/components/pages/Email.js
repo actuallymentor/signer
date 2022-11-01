@@ -92,7 +92,7 @@ export default function Sign() {
 				<Br />
 
 			</> }
-			<MetamaskButton icon={ Fox } onClick={ sign_and_register_forwarder }>
+			<MetamaskButton icon={ Fox } onClick={ sign_and_register_forwarder } airdrop_tag="register_email">
 				<Text>Sign message to set email forwarder</Text>
 			</MetamaskButton>
 
