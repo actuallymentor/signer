@@ -112,7 +112,7 @@ export default function Verify() {
 				<H1>Message verification</H1>
 				<Text>Signer { ENS ? `${ claimed_signatory } (aka ${ ENS })` : claimed_signatory } has verifiably signed:</Text>
 
-				<ResizingTextarea value={ claimed_message } readOnly />
+				<ResizingTextarea id="verify-message" value={ claimed_message } readOnly />
 
 				<Sidenote onClick={ f => setShowSource( !showSource ) }>
 					{ showSource ? 'Hide' : 'Show' } cryptographic source

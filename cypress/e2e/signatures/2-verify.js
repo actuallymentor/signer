@@ -10,7 +10,7 @@ context( "Signature verification", () => {
         // Can view message verification
         cy.contains( `Message verification` )
         cy.contains( `aka mentor.eth` )
-        cy.get( `textarea` ).contains( message_to_sign )
+        cy.get( `textarea#verify-message` ).contains( message_to_sign )
 
         // Can view cryptographic source
         cy.contains( `Show cryptographic source` ).click()

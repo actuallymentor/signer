@@ -53,7 +53,7 @@ context( "Signature tests", () => {
         cy.contains( `Connect to Wallet` ).click()
         cy.contains( `MetaMask` ).click()
 
-        cy.get( `textarea` ).type( message_to_sign )
+        cy.get( `textarea#sign-message-input` ).type( message_to_sign )
         cy.contains( `Sign message` ).click()
 
         cy.contains( `Share this message` )

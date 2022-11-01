@@ -113,7 +113,7 @@ export default function Sign() {
 
 			<Text>I { ENS ? `${ ENS } (aka ${ address?.slice( 0, 9 ) })` : address } hereby sign,</Text>
 
-			<ResizingTextarea minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
+			<ResizingTextarea id="sign-message-input" minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
 
 			<Br />
 			<MetamaskButton onClick={ signMessage } airdrop_tag="sign_message">
