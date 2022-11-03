@@ -88,7 +88,7 @@ export default ( { ...props } ) => {
     </Container>
 
     // If request was not loaded yet
-    if( !request ) return
+    if( !request ) return <Container />
 
     // If this is a sharing request, display it
     if ( share ) return <Container>
@@ -106,7 +106,7 @@ export default ( { ...props } ) => {
     </Container>
 
     // Display payment info
-    return <Container>
+    return <Container align="center" justify="center">
 
         <ENSAvatar address={ pay_recipient } />
         <Text align="center"><Address>{ pay_recipient }</Address> has requested { pay_amount } { pay_token.symbol }.</Text>
