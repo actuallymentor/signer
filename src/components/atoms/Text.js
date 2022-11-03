@@ -41,7 +41,7 @@ export const H1 = styled.h1`
 
 export const H2 = styled.h2`
 	font-size: 1.5rem;
-	margin: .5rem 0;
+	margin:  ${ ( { margin='.5rem 0' } ) => margin };
 	line-height: 1.2;
 	font-weight: 400;
 	text-align: ${ ( { align } ) => align || 'left' };

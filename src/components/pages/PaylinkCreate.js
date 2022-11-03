@@ -27,7 +27,7 @@ export default ( { ...props } ) => {
 
     // Handle wallet changes
     useEffect( () => {
-        if( !recipient ) set_recipient( address )
+        if( !recipient && address ) set_recipient( address )
     }, [ address ] )
 
     // Create payment link

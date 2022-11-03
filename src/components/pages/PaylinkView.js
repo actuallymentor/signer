@@ -92,16 +92,16 @@ export default ( { ...props } ) => {
 
     // If this is a sharing request, display it
     if ( share ) return <Container>
-
-        <Menu />
         
-        <H2>Share this payment link</H2>
-        <Text>Anyone with this link can pay you in 1 click.</Text>
-        <Text>This link is not saved. If you lose it you will have to generate a new link.</Text>
+        <H2 margin="2rem 0">Share this payment link</H2>
+        <Text align="center">Anyone with this link can pay you in 1 click.</Text>
+        <Text align="center">This link is not saved. If you lose it you will have to generate a new link.</Text>
         <QR value={ window.location.href.replace( '/share', '' ) } />
         <Br />
         <Input id='pay-share-link' expand={ true } label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
         <Button onClick={ f => clipboard( window.location.href.replace( '/share', '' ) ) }>Copy link</Button>
+
+        <Footer />
 
     </Container>
 
