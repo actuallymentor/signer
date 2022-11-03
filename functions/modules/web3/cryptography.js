@@ -1,4 +1,5 @@
 const Web3 = require( 'web3' )
+const { log } = require('../helpers')
 const web3 = new Web3()
 
 exports.decode_signature_object = function( { claimed_message, signed_message, claimed_signatory } ) {
@@ -7,6 +8,7 @@ exports.decode_signature_object = function( { claimed_message, signed_message, c
 	const confirmed_signatory = web3.eth.accounts.recover( claimed_message, signed_message )
 
 	// If the signature does not belongs to the claimed signatory, reject
+	log( `Comparing claimed signatory ${ claimed_signatory } to confirmed signatory ${ confirmed_signatory }` )
 	if( claimed_signatory.toLowerCase() !== confirmed_signatory.toLowerCase() ) throw new Error( `Signature did not belong to claimed signatory` )
 
 	// Validate message

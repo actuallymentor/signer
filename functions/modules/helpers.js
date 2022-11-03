@@ -9,7 +9,7 @@ const log = ( ...comments ) => {
 }
 
 // Production errorer
-exports.error = ( ...comments ) => {
+const error = ( ...comments ) => {
 	console.error( ...comments )
 }
 
@@ -116,5 +116,6 @@ module.exports = {
 	log,
 	require_properties,
 	allow_only_these_properties,
-	wait
+	wait,
+	error
 }

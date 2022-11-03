@@ -12,14 +12,13 @@ context( "Signature tests", () => {
 
         // Connection works
         cy.contains( `hereby sign` )
-        cy.contains( `Connect to Wallet` ).click()
-        cy.contains( `MetaMask` ).click()
+        cy.connect_metamask()
         cy.contains( `I ${ user_ens }` )
         cy.contains( `Sign message` )
 
         // Disconnection workd
         cy.contains( `Disconnect` ).click()
-        cy.contains( `Connect to Wallet` )
+        cy.connect_metamask()
 
 	} )
 
@@ -34,8 +33,7 @@ context( "Signature tests", () => {
 
         // Connect 
         cy.visit( `/sign` )
-        cy.contains( `Connect to Wallet` ).click()
-        cy.contains( `MetaMask` ).click()
+        cy.connect_metamask()
         cy.contains( `Sign message` ).click()
 
     } )
@@ -50,8 +48,7 @@ context( "Signature tests", () => {
         } )
 
         cy.visit( `/sign` )
-        cy.contains( `Connect to Wallet` ).click()
-        cy.contains( `MetaMask` ).click()
+        cy.connect_metamask()
 
         cy.get( `textarea#sign-message-input` ).type( message_to_sign )
         cy.contains( `Sign message` ).click()

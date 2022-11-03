@@ -2,7 +2,7 @@ const { decode_signature_object } = require( '../web3/cryptography' )
 const { get_address_of_ens } = require( '../web3/thegraph' )
 const { send_verification_email, send_welcome_email, send_spam_check_email } = require( '../apis/ses' )
 const { register_with_improvmx } = require( '../apis/improv_mx' )
-const { log, throttle_and_retry, error, dev } = require( '../helpers' )
+const { log, throttle_and_retry, error, dev, wait } = require( '../helpers' )
 const { db, dataFromSnap, increment } = require( '../firebase' )
 const { v4: uuidv4 } = require('uuid')
 
@@ -12,6 +12,7 @@ exports.register_alias_with_backend = async function( data, context ) {
 
 		const day_in_ms = 1000 * 60 * 60 * 24
 		log( `Starting registration with data: `, data )
+		await wait( 2000 )
 
 		// Destructure signature input
 		const { claimed_message, signed_message, claimed_signatory } = data
@@ -20,10 +21,12 @@ exports.register_alias_with_backend = async function( data, context ) {
 		const decoded_and_verified_signature = decode_signature_object( data )
 		const { ENS, address, email } = decoded_and_verified_signature
 		log( `Decoded data: `, decoded_and_verified_signature )
+		await wait( 2000 )
 
 		// Verify that the signatory is the owner of the requested address
 		if( claimed_signatory.toLowerCase() !== address.toLowerCase() ) {
 			log( `Mismatch between ${ claimed_signatory.toLowerCase() } and ${ address.toLowerCase() }` )
+			await wait( 2000 )
 			throw new Error( `Signer is not the owner of requested address` )
 		}
 
@@ -201,7 +204,7 @@ exports.check_single_wallet_email_availability = app.get( '/check_availability/:
 	}
 
 } )
-exports.check_multiple_wallets_email_availability = app.post( '/check_availability/', async function( req, res ) {
+exports.check_multiple_wallets_email_availability = app.post( '/check_availability/', async ( req, res ) => {
 
 	try {
 
@@ -238,11 +241,11 @@ exports.seed_email_metrics = async function( ) {
 		return email.map( ( { uid } ) => uid ).concat( '\n' )
 
 		// Seed metadata
-		await db.collection( 'metrics' ).doc( 'email' ).set( {
-			verified_email_aliases: email.length,
-			updated: Date.now(),
-			updated_human: new Date().toString(),
-		}, { merge: true } )
+		// await db.collection( 'metrics' ).doc( 'email' ).set( {
+		// 	verified_email_aliases: email.length,
+		// 	updated: Date.now(),
+		// 	updated_human: new Date().toString(),
+		// }, { merge: true } )
 
 	} catch( e ) {
 		error( 'seed_email_metrics error: ', e )

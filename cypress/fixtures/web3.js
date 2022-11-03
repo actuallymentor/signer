@@ -4,6 +4,8 @@ import { utils } from 'ethers'
 // Address of connector. Can be any.
 export const user_address = "0x7dbf6820d32cfbd5d656bf9bff0def229b37cf0e"
 export const user_ens = 'mentor.eth'
+export const invalid_user_address = '0x123'
+export const invalid_ens = 'foo.bar'
 
 
 // Mock the user signing a hardcoded signature
@@ -24,6 +26,54 @@ export const mock_user_signature = ( blockchain='ethereum' ) => {
             signature: {
                 params: [ user_address, `0x${ message_hex }`],
                 return: message_signature
+            }
+        } )
+
+    } )
+
+}
+
+// Mock transaction
+export const payment_amount = 0.001
+export const mock_user_transaction_to_address = ( blockchain='ethereum' ) => {
+
+    cy.on( 'window:before:load', ( window ) => {
+        
+        mock( {
+            blockchain,
+            window,
+            wallet: 'metamask',
+            accounts: { return: [ user_address ] },
+            transaction: {
+                to: user_address,
+                from: user_address
+            }
+        } )
+
+    } )
+
+}
+
+// Mock the user signing a hardcoded signature
+export const email_user_address = `0xE3Ae145545f096e9b6EeA9d13c24405aFcfddf82`
+export const email_user_ens = `rocketeers.eth`
+export const email_user_email = `info@rocketeer.fans`
+export const email_message_to_sign = `{"ENS":"${ email_user_ens }","address":"${ email_user_address }","email":"${ email_user_email }"}`
+const email_message_utf8 = utils.toUtf8Bytes( email_message_to_sign )
+const email_message_hex = utils.hexlify( email_message_utf8 ).substring(2)
+export const email_message_signature = "0x70555388bdf95f6196a8f0decaa732f9c586b7c8e6c836a3cef5e40c1e5b6ac954af90dd2471bfbdcab3aeb8d69d4f2f9d7759cd9a027aec168be6b76bb8fe381b"
+export const mock_user_signature_for_email_forward = ( blockchain='ethereum' ) => {
+
+    cy.on( 'window:before:load', ( window ) => {
+        
+        mock( {
+            blockchain,
+            window,
+            wallet: 'metamask',
+            accounts: { return: [ email_user_address ] },
+            signature: {
+                params: [ email_user_address, `0x${ email_message_hex }`],
+                return: email_message_signature
             }
         } )
 

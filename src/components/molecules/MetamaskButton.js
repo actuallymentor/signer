@@ -32,7 +32,7 @@ const PrettyCheckbox = styled.div`
 
 `
 
-export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Connect to Wallet', airdrop_tag=false, ...props } ) => {
+export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Connect to wallet', airdrop_tag=false, ...props } ) => {
 
 	// State variables
 	const [ wants_airdrop, set_wants_airdrop ] = useState( false )

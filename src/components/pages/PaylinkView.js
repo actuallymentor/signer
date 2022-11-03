@@ -96,7 +96,7 @@ export default ( { ...props } ) => {
         <H2 margin="2rem 0">Share this payment link</H2>
         <Text align="center">Anyone with this link can pay you in 1 click.</Text>
         <Text align="center">This link is not saved. If you lose it you will have to generate a new link.</Text>
-        <QR value={ window.location.href.replace( '/share', '' ) } />
+        <QR id="pay-view-qr" value={ window.location.href.replace( '/share', '' ) } />
         <Br />
         <Input id='pay-share-link' expand={ true } label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
         <Button onClick={ f => clipboard( window.location.href.replace( '/share', '' ) ) }>Copy link</Button>

@@ -14,6 +14,7 @@ import { log } from '../../modules/helpers'
 import { useNavigate, useParams } from 'react-router-dom'
 import { log_event, register_alias_with_backend } from '../../modules/firebase'
 import { useAccount, useEnsName, useSigner } from 'wagmi'
+import { email_regex } from '../../modules/web3/validations'
 
 export default function Sign() {
 
@@ -37,14 +38,20 @@ export default function Sign() {
 
 		try {
 
+			if( !email.match( email_regex ) ) throw new Error( `Please enter a valid email address` )
+
 			setLoading( `Requesting signature` )
 			log( `Starting signature` )
 			log_event( `email_forward_register` )
 			const message = JSON.stringify( { ENS, address, email } )
 			const signature = await sign_message( message, address, signer )
 			setLoading( `Registering with Signer.is` )
+			log( `Message signed: `, message )
+			log( `Resulting signature: `, signature )
 			const { data: result } = await register_alias_with_backend( signature )
 			log( `Signer responded with: `, result )
+			const { error } = result
+			if( error ) throw new Error( `Error creating email forward: ${ error }` )
 			log_event( `email_forward_success` )
 			return navigate( `/email/verify_email` )
 
@@ -87,7 +94,7 @@ export default function Sign() {
 
 				<Text>Forward { ENS ? ` ${ ENS }@signer.is and ${ address }@signer.is` : `${ address }@signer.is` } to:</Text>
 
-				<Input type="email" autoComplete="email" label="Your email address" onChange={ ( { target } ) => setEmail( target.value ) } value={ email } placeholder='vitalik@gmail.com' autoFocus />
+				<Input id="forward-input-email" type="email" autoComplete="email" label="Your email address" onChange={ ( { target } ) => setEmail( target.value ) } value={ email } placeholder='vitalik@gmail.com' autoFocus />
 
 				<Br />
 

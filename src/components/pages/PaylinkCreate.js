@@ -60,7 +60,7 @@ export default ( { ...props } ) => {
                 amount: pay_amount
             } )
 
-            return navigate( `/pay/${ base64_payment_string }` )
+            return navigate( `/pay/${ base64_payment_string }/share` )
 
         } catch( e ) {
             log( `Payment link generation error: `, e )
@@ -100,6 +100,7 @@ export default ( { ...props } ) => {
 
                 { /* How much do you want to receive? */ }
                 <Input
+                    id="pay-create-amount"
                     type="number"
                     step="0.001"
                     label="How much do you want to receive?"
@@ -119,7 +120,7 @@ export default ( { ...props } ) => {
                     value={ enable_l2 }
                 />
 
-                <Button onClick={ generate_payment_link }>Generate payment link</Button>
+                <Button id="pay-generate-link" onClick={ generate_payment_link }>Generate payment link</Button>
 
 			<Footer />
 
