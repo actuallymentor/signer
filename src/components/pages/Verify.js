@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import { clipboard, json_from_url_safe_base64, log } from '../../modules/helpers'
 import { useParams } from 'react-router-dom'
 import { log_event } from '../../modules/firebase'
+import Address from '../molecules/Address'
 
 export default function Verify() {
 
@@ -19,7 +20,6 @@ export default function Verify() {
 	const [ signature, setSignature ] = useState( { } )
 	const [ authenticated, setAuthenticated ] = useState( false )
 	const [ signatory, setSignatory ] = useState(  )
-	const ENS = useENS( signatory )
 	const [ showSource, setShowSource ] = useState( false )
 	const { message, share } = useParams()
 
@@ -99,7 +99,7 @@ export default function Verify() {
 				<Menu />
 				
 				<H1>Message verification</H1>
-				<Text>Signer { ENS ? `${ claimed_signatory } (aka ${ ENS })` : claimed_signatory } has verifiably signed:</Text>
+				<Text>Signer <Address>{ claimed_signatory }</Address> has verifiably signed:</Text>
 
 				<ResizingTextarea id="verify-message" value={ claimed_message } readOnly />
 
@@ -118,7 +118,7 @@ export default function Verify() {
 				<Menu />
 				
 				<H2>Share this message</H2>
-				<Text>Anyone with this link can see the source message and signature that { ENS || claimed_signatory } left here.</Text>
+				<Text>Anyone with this link can see the source message and signature that <Address>{ claimed_signatory }</Address> left here.</Text>
 				<Text>This link is not saved. If you lose it you will have to generate a new link.</Text>
 				<Br />
 				<Input id='verify-share-input' expand={ true } label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />

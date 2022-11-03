@@ -15,7 +15,7 @@ import useTypewriter from '../../modules/hooks/useTypewriter'
 export default function Login() {
 
 	const navigate = useNavigate()
-	const text = useTypewriter( [ 'Share a signature', 'Receive emails'  ]  )
+	const text = useTypewriter( [ 'Share a signature', 'Receive payments', 'Receive emails'  ]  )
 
 	/* ///////////////////////////////
 	// Render component

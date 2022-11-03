@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useNetwork } from "wagmi"
+import { log_event } from "../../modules/firebase"
 import { clipboard, json_from_url_safe_base64, log } from "../../modules/helpers"
 import { useMakeTransaction } from "../../modules/hooks/transactions"
 import { chain_id_to_chain_name } from "../../modules/web3/chains"
@@ -24,6 +25,8 @@ export default ( { ...props } ) => {
     const [ error, set_error ] = useState(  )
     const { pay_recipient, pay_token, pay_amount, pay_enable_l2 } = request || {}
     const [ loading, set_loading ] = useState(  )
+    const { chain } = useNetwork()
+    const navigate = useNavigate()
 
     // Decode url string
     useEffect( () => {
@@ -57,6 +60,14 @@ export default ( { ...props } ) => {
 
             set_loading( `Waiting for wallet confirmation` )
             await make_transaction()
+            log_event( `payment_link_paid`, {
+                token: pay_token.symbol,
+                l2: pay_enable_l2,
+                chain_id: chain?.id,
+                amount: pay_amount
+            } )
+
+            return navigate( `/pay/success` )
 
         } catch( e ) {
             log( `Transaction error: `, e )
@@ -97,11 +108,11 @@ export default ( { ...props } ) => {
     // Display payment info
     return <Container>
 
-        <ENSAvatar />
+        <ENSAvatar address={ pay_recipient } />
         <Text align="center"><Address>{ pay_recipient }</Address> has requested { pay_amount } { pay_token.symbol }.</Text>
         <Sidenote margin="2rem 0">Accepted networks: { pay_token?.chain_ids?.map( chain_id_to_chain_name ).join( ', ' ) }</Sidenote>
-        { !on_right_chain && <Text align="center">You are connected to an unsupported network.</Text> }
-        { on_right_chain && <MetamaskButton onClick={ transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
+        { chain && !on_right_chain && <Text align="center">You are connected to an unsupported network.</Text> }
+        { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
 
         <Footer />
 

@@ -29,7 +29,7 @@ const enabled_providers = [
 
 ]
 
-log( `Set up provider with ${ enabled_chains.length } chains and ${ enabled_providers.length } providers` )
+log( `Set up provider with ${ enabled_chains.length } chains and ${ enabled_providers.length } providers: `, enabled_chains, enabled_providers )
 const { chains, provider } = configureChains( enabled_chains, enabled_providers )
 
 /* ///////////////////////////////
@@ -44,7 +44,7 @@ const { connectors } = getDefaultWallets( {
 // Wagmi client
 // /////////////////////////////*/
 const wagmiClient = createClient( {
-    autoConnect: true,
+    autoConnect: false,
     provider,
     connectors
 } )

@@ -45,11 +45,13 @@ const appcheck = initializeAppCheck( app, {
 	isTokenAutoRefreshEnabled: true
 } )
 
-export const log_event = event => {
-  try {
-    log( `Analytics event: `, event )
-    logEvent( analytics, event )
-  } catch( e ) {
-    log( 'analytics error: ', e )
-  }
+
+export function log_event( name, details ) {
+	if( !name ) return log( `🐛 Log called without name` )
+	if( process.env.NODE_ENV == 'development' ) return log( '🤡 Mock analytics event: ', name, details )
+	try {
+		logEvent( analytics, name, details )
+	} catch( e ) {
+		log( `Error logging event: `, e )
+	}
 }

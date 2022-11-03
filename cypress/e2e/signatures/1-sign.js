@@ -11,7 +11,7 @@ context( "Signature tests", () => {
 		cy.visit( `/sign` )
 
         // Connection works
-        cy.contains( `I hereby sign` )
+        cy.contains( `hereby sign` )
         cy.contains( `Connect to Wallet` ).click()
         cy.contains( `MetaMask` ).click()
         cy.contains( `I ${ user_ens }` )

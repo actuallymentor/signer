@@ -13,6 +13,7 @@ import { chain_id_to_chain_name } from "../../modules/web3/chains"
 import { eth_or_ens_address_regex, sanitize_common } from "../../modules/web3/validations"
 import Button from "../atoms/Button"
 import { useNavigate } from "react-router-dom"
+import { log_event } from "../../modules/firebase"
 
 export default ( { ...props } ) => {
 
@@ -51,6 +52,12 @@ export default ( { ...props } ) => {
                 pay_token,
                 pay_amount,
                 pay_enable_l2
+            } )
+
+            log_event( `payment_link_create`, {
+                token: token.symbol,
+                l2: pay_enable_l2,
+                amount: pay_amount
             } )
 
             return navigate( `/pay/${ base64_payment_string }` )

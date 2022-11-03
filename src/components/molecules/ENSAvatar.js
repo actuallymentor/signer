@@ -9,12 +9,12 @@ const AvatarBadge = styled.img`
     margin: 2rem;
 `
 
-export default ( { ...props } ) => {
+export default ( { address, ...props } ) => {
 
-    const { address } = useAccount()
     const { data: avatar } = useEnsAvatar( { addressOrName: address, chainId: 1 } )
     log( `ENS avatar `,  avatar )
 
+    if( !avatar ) return
     return <AvatarBadge src={ avatar } />
 
 }

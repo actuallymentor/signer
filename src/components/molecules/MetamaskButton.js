@@ -6,14 +6,15 @@ import { useDisconnectWallets, useENS } from '../../modules/web3'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
 import { useAccount } from 'wagmi'
 import styled from 'styled-components'
-import { useRef, useState } from 'react'
-import { register_potential_airdrop_usage } from '../../modules/firebase'
+import { useEffect, useRef, useState } from 'react'
+import { log_event, register_potential_airdrop_usage } from '../../modules/firebase'
 import { log } from '../../modules/helpers'
 
 const PrettyCheckbox = styled.div`
 
 	display: flex;
     flex-direction: row;
+	margin: .5rem 0;
 
 	& label {
 		color: ${ ( { theme } ) => theme.colors.text };
@@ -35,11 +36,19 @@ export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Conn
 
 	// State variables
 	const [ wants_airdrop, set_wants_airdrop ] = useState( false )
-	const { address, isConnected, isConnecting } = useAccount()
+	const { address, isConnected, isConnecting, connector } = useAccount()
 	const ENS = useENS( address )
 	const disconnect = useDisconnectWallets()
 	const { openConnectModal } = useConnectModal()
 	const { current: internal_id } = useRef( id || `input-${ Math.random() }` )
+
+	// Log connector so we know what wallets to be extra nice to
+	useEffect( () => {
+		if( !connector ) return log( `Not connected` )
+		log_event( `wallet_connected`, {
+			wallet_name: connector?.name
+		} )
+	}, [ connector ] )
 
 	function airdrop_info() {
 		alert( `There might be an airdrop related to this project in the future.\n\nIf you want to qualify, check this box.\n\nChecking this box means we will keep track of the address you are connected to, and what you did on the site. This will allow a potential airdrop to be fairly distributed to actual users.` )
