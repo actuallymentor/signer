@@ -70,7 +70,7 @@ export default ( { ...props } ) => {
     }
 
     log( recipient, token )
-    return <Container justify='center' align='flex-start'>
+    return <Container gutter={ true } justify='center' align='center'>
 
 			<Menu />
 

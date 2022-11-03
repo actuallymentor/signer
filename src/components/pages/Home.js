@@ -10,6 +10,7 @@ import Share from '../../assets/share.svg.js'
 
 import { useNavigate } from 'react-router-dom'
 import useTypewriter from '../../modules/hooks/useTypewriter'
+import Piggybank from '../../assets/piggybank'
 
 
 export default function Login() {
@@ -29,6 +30,24 @@ export default function Login() {
 				<H1>{ text } <br />with your crypto wallet</H1>
 				<H2>Free, off-chain, no gas fees</H2>
 			</Hero>
+
+			<Section direction='row' justify='space-around' align='center' padding='5rem .5rem'>
+
+				<Section width="400px">
+					<Piggybank />
+				</Section>
+			
+				<Section width='650px' align='flex-start' justify='center'>
+
+					<H2>💰 1-click payment links</H2>
+					<Text margin="2rem 0 1rem 0">Generate payment links you can share with others.</Text>
+					<Text>Payments are direct, signer.is charges 0%.</Text>
+					<Button margin="2rem 0 0" onClick={ f => navigate( '/pay/create' ) }>Generate a payment link</Button>
+
+				</Section>
+
+
+			</Section>
 
 			<Section direction='row' justify='space-around' align='center' padding='5rem .5rem'>
 
