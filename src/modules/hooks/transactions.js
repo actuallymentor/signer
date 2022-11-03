@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
-import { useNetwork, usePrepareSendTransaction, useSendTransaction } from "wagmi"
+import { useAccount, useNetwork, usePrepareSendTransaction, useSendTransaction } from "wagmi"
 import { log } from "../helpers"
 import { eth_to_gwei } from "../web3/conversions"
 
 const useTransactETH = ( recipient, amount, enabled=true ) => {
 
-    const [ error, set_error ] = useState(  )
+    const [ error, set_error ] = useState()
     const { chain } = useNetwork()
+
 
     // Keep a prepared transaction
     const prepared_transaction = {
@@ -19,16 +20,24 @@ const useTransactETH = ( recipient, amount, enabled=true ) => {
     }
     const { config: transaction_config, error: transaction_error } = usePrepareSendTransaction( prepared_transaction )
 
-    if( transaction_error && !error ) {
-        log( `Transaction error: `, transaction_error )
-        set_error( transaction_error )
-    }
-
     // Prepare transaction function
     const { sendTransactionAsync, ...rest_of_transaction_meta } = useSendTransaction( {
         ...transaction_config,
-        onError: err => log( `🛑  useSendTransaction`, err )
     } )
+
+    // Reset error if there is one set
+    if( !transaction_error && error ) {
+        log( `No transaction error, resetting error state` )
+        set_error( undefined )
+    }
+
+    // If an error was found, set it's message to state
+    if( !error && transaction_error ) {
+        log( `Old error state: `, error )
+        log( `Error ocurred, setting to state: `, transaction_error )
+        const { data, error: error_data, message } = transaction_error
+        set_error( data?.message || error_data?.message || message )
+    }
 
     async function validateAndSend() {
 
@@ -38,7 +47,8 @@ const useTransactETH = ( recipient, amount, enabled=true ) => {
 
         if( error ) {
             log( `Cannot transact error: `, error )
-            throw new Error( `${ error.code }` )
+            set_error( undefined )
+            throw new Error( `${ error }` )
         }
 
         // Execute transaction
@@ -47,7 +57,7 @@ const useTransactETH = ( recipient, amount, enabled=true ) => {
 
     }
 
-    return validateAndSend
+    return [ validateAndSend, error ]
 
 }
 
@@ -76,8 +86,8 @@ export const useMakeTransaction = ( recipient, token, amount, l2_enabled ) => {
 
     }, [ chain, token ] )
 
-    const make_transaction = useTransactETH( recipient, amount, on_right_chain )
+    const [ make_transaction, error ] = useTransactETH( recipient, amount, on_right_chain )
 
-    return { on_right_chain, make_transaction }
+    return { on_right_chain, make_transaction, error }
 
 }

@@ -37,7 +37,7 @@ export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Conn
 	// State variables
 	const [ wants_airdrop, set_wants_airdrop ] = useState( false )
 	const { address, isConnected, isConnecting, connector } = useAccount()
-	const ENS = useENS( address )
+	const ENS = useENS( address, { chainId: 1 } )
 	const disconnect = useDisconnectWallets()
 	const { openConnectModal } = useConnectModal()
 	const { current: internal_id } = useRef( id || `input-${ Math.random() }` )

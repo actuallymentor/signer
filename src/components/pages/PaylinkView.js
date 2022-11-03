@@ -83,7 +83,7 @@ export default ( { ...props } ) => {
 
     // Render errors
     if( error ) return <Container>
-        <Text>{ error }</Text>
+        <Text align="center">{ error }</Text>
         <Button onClick={ () => set_error( undefined ) }>Try again</Button>
     </Container>
 
