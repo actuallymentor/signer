@@ -9,7 +9,7 @@ import Footer from '../molecules/Footer'
 
 import { useENS, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
-import { log } from '../../modules/helpers'
+import { clipboard, json_from_url_safe_base64, log } from '../../modules/helpers'
 import { useParams } from 'react-router-dom'
 import { log_event } from '../../modules/firebase'
 
@@ -35,7 +35,7 @@ export default function Verify() {
 			try {
 
 				// Decode url parameter
-				const signature = JSON.parse( decodeURIComponent( atob( message ) ) )
+				const signature = json_from_url_safe_base64( message )
 				log( message, ` decodes to `, signature )
 				const { claimed_message, signed_message, claimed_signatory } = signature
 				if( cancelled ) return
@@ -77,17 +77,6 @@ export default function Verify() {
 		setSignatory( claimed_signatory )
 
 	}, [ signature ] )
-
-
-	/* ///////////////////////////////
-	// Functions
-	// /////////////////////////////*/
-	const clipboard = async text => {
-		if( !navigator.clipboard ) return alert( `Your browser doesn't support auto-copying text, please manually copy the link.` )
-		await navigator.clipboard?.writeText( text )
-		log_event( 'verify_copied_to_clipboard' )
-		alert( 'Copied to clipboard!' )
-	}
 
 
 	/* ///////////////////////////////

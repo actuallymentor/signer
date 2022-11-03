@@ -8,11 +8,12 @@ import Footer from '../molecules/Footer'
 
 import { sign_message, useENS, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
-import { log, dev, wait } from '../../modules/helpers'
+import { log, dev, to_url_safe_base64 } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { log_event } from '../../modules/firebase'
 import { useAccount, useSigner } from 'wagmi'
+import Address from '../molecules/Address'
 
 export default function Sign() {
 
@@ -25,7 +26,6 @@ export default function Sign() {
 	const [ message, setMessage ] = useState(  )
 	const { signature_request } = useParams()
 	const { address } = useAccount()
-	const ENS = useENS( address )
 	const { data: signer } = useSigner()
 	
 
@@ -89,7 +89,7 @@ export default function Sign() {
 			}
 
 			// Forward to reading URL
-			const url_safe_base64 = btoa( encodeURIComponent( JSON.stringify( signature ) ) )
+			const url_safe_base64 = to_url_safe_base64( signature )
 			log_event( 'sign_message_signed' )
 			return navigate( `/verify/${ url_safe_base64 }/share` )
 
@@ -111,7 +111,7 @@ export default function Sign() {
 
 			<Menu />
 
-			<Text>I { ENS ? `${ ENS } (aka ${ address?.slice( 0, 9 ) })` : address } hereby sign,</Text>
+			<Text>I <Address>{ address }</Address> hereby sign,</Text>
 
 			<ResizingTextarea id="sign-message-input" minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
 

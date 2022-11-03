@@ -8,17 +8,17 @@ const Input = styled.div`
 	flex-direction: ${ ( { type } ) => type == 'radio' ? 'row' : 'column' };
 	margin: 1rem 0;
 	justify-content: center;
-	width: 350px;
+	width: ${ ( { width='450px' } ) => width };
 	max-width: 100%;
 	
-	& input {
+	& input, & select {
 		background: ${ ( { theme } ) => theme.colors.backdrop };
 		border: none;
 		border-left: 2px solid ${ ( { theme } ) => theme.colors.primary };
 		color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
 	}
 
-	& input {
+	& input, & select {
 		padding: 1rem 2rem 1rem 1rem;
 		width: ${ ( { type } ) => type == 'radio' ? 'auto' : '100%' };
 	}
@@ -47,10 +47,11 @@ const Input = styled.div`
 
 `
 
-export default ( { expand, onChange, type, label, info, id, ...props } ) => {
+export default ( { expand, onChange, type, label, info, id, options=[], ...props } ) => {
 
 	const { current: internalId } = useRef( id || `input-${ Math.random() }` )
 	const [ expanded, setExpanded ] = useState( false )
+	const is_dropdown = type == 'dropdown'
 
 	const handleFocus = f => {
 
@@ -65,8 +66,12 @@ export default ( { expand, onChange, type, label, info, id, ...props } ) => {
 	return <Input type={ type }>
 
 		{ label && <label htmlFor={ internalId }>{ label } { info && <span onClick={ f => alert( info ) }>?</span> }</label> }
-		{ !expanded && <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } /> }
-		{ expanded && <ResizingTextArea { ...props } data-testid={ internalId } id={ internalId } onChange={ onChange } /> }
+		{ !is_dropdown && !expanded && <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } /> }
+		{ !is_dropdown && expanded && <ResizingTextArea { ...props } data-testid={ internalId } id={ internalId } onChange={ onChange } /> }
+
+		{ is_dropdown && <select id={ internalId } onChange={ onChange } { ...props }>
+			{ options.map( ( option, index ) => <option key={ index } value={ option.value }>{ option.label || option.value }</option> ) }
+		</select> }
 
 	</Input>
 

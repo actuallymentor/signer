@@ -31,7 +31,7 @@ const PrettyCheckbox = styled.div`
 
 `
 
-export default ( { id, children, onClick, airdrop_tag=false, ...props } ) => {
+export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Connect to Wallet', airdrop_tag=false, ...props } ) => {
 
 	// State variables
 	const [ wants_airdrop, set_wants_airdrop ] = useState( false )
@@ -74,10 +74,10 @@ export default ( { id, children, onClick, airdrop_tag=false, ...props } ) => {
 	}
 
 	return <>
-		<Button icon={ Fox } onClick={ address ? onclick_with_tracking : openConnectModal } { ...props }>
+		<Button icon={ wallet_icon ? Fox : undefined } onClick={ address ? onclick_with_tracking : openConnectModal } { ...props }>
 			{ isConnecting && 'Connecting to wallet...' }
 			{ address && ( children || 'Submit' ) }
-			{ !isConnected && !address && 'Connect to Wallet' }
+			{ !isConnected && !address && connect_prompt }
 		</Button>
 		{ airdrop_tag && address && <PrettyCheckbox onClick={ e => set_wants_airdrop( !wants_airdrop ) } id={ internal_id }>
 			<input name='wants_airdrop' id={ internal_id } type='checkbox' checked={ wants_airdrop } onChange={ e => set_wants_airdrop( !wants_airdrop ) } />

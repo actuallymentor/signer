@@ -16,7 +16,7 @@ const { name } = require( '../../package.json' )
 const { REACT_APP_alchemy_api_key } = process.env
 
 // Select chains 
-const enabled_chains = [ chain.mainnet, chain.goerli ]
+const enabled_chains = [ chain.mainnet, chain.goerli, chain.arbitrum ]
 
 // Cnfigure connectors 
 const enabled_providers = [
@@ -44,7 +44,7 @@ const { connectors } = getDefaultWallets( {
 // Wagmi client
 // /////////////////////////////*/
 const wagmiClient = createClient( {
-    autoConnect: false,
+    autoConnect: true,
     provider,
     connectors
 } )

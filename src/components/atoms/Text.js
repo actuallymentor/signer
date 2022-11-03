@@ -53,6 +53,7 @@ export const H2 = styled.h2`
 
 export const Sidenote = styled.p`
 	color: ${ ( { theme } ) => theme.colors.hint };
+	margin:  ${ ( { margin='.2rem 0' } ) => margin };
 	font-style: italic;
 	margin-top:  1rem;
 	text-align:  ${ ( { align='center' } ) => align };

@@ -28,3 +28,12 @@ export const wait = ( durationInMs=0 ) => new Promise( resolve => {
 	setTimeout( resolve, durationInMs )
 
 } )
+
+export const to_url_safe_base64 = input => btoa( encodeURIComponent( JSON.stringify( input ) ) )
+export const json_from_url_safe_base64 = input => JSON.parse( decodeURIComponent( atob( input ) ) )
+
+export const clipboard = async text => {
+	if( !navigator.clipboard ) return alert( `Your browser doesn't support auto-copying text, please manually copy the link.` )
+	await navigator.clipboard?.writeText( text )
+	alert( 'Copied to clipboard!' )
+}
