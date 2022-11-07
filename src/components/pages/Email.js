@@ -103,7 +103,7 @@ export default function Sign() {
 				<Text>Sign message to set email forwarder</Text>
 			</MetamaskButton>
 
-			<Sidenote align="left">*The email service is off-chain, there is no in-chain link between your wallet and email address.</Sidenote>
+			<Sidenote align="left">*The email service is off-chain, there is no on-chain link between your wallet and email address.</Sidenote>
 
 			<Footer />
 
