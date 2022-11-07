@@ -38,7 +38,7 @@ export default ( { ...props } ) => {
             // Validations
             if( !recipient.match( eth_or_ens_address_regex ) ) throw new Error( `Invalid ETH address, please check for typos or better yet: connect your wallet so you don't have to type yourself.` )
             if( !token ) throw new Error( `No token selected, please select a token.` )
-            if( !amount ) throw new Error( `Amount to receive missing, please input how much you want to receive.` )
+            if( !amount ) throw new Error( `Amount to receive is missing, please input how much you want to receive.` )
 
             // Sanitation
             const pay_recipient = sanitize_common( recipient )
@@ -92,7 +92,7 @@ export default ( { ...props } ) => {
                 { /* Token to receive */ }
                 <Input
                     type="dropdown"
-                    label="What token to you want to receive?"
+                    label="What token do you want to receive?"
                     options={ tokens.map( ( { symbol } ) => ( { value: symbol } ) ) }
                     onChange={ ( { target } ) => set_token( tokens.find( ( { symbol } ) => symbol == target.value ) ) }
                     value={ token?.symbol }
