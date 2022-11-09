@@ -6,7 +6,7 @@ import { Sidenote } from '../atoms/Text'
 const translate = ( string, chain_name, account_or_ens ) => {
 
     // Translate technical messages to user-friendly messages
-    if( string.includes( 'insufficient funds' ) ) return `The balance of ${ account_or_ens } is too low on ${ chain_name }.`
+    if( string.includes( 'insufficient funds' ) || string.includes( 'exceeds balance' ) ) return `The balance of ${ account_or_ens } is too low on ${ chain_name }.`
 
     // Default: return original string
     return string
