@@ -39,7 +39,14 @@ const PrettyButton = styled( DynamicButton )`
 	}
 `
 
-export default ( { icon, ...props } ) => !icon ? <PrettyButton { ...props } /> : <PrettyButton { ...props }>
-	<img alt="Button icon" src={ icon } />
-	{ props.children }
-</PrettyButton>
+export default ( { icon, href, onClick, ...props } ) => {
+
+	function open_tab() {
+		if( href ) window.open( href, '_blank') .focus()
+	}
+
+	return !icon ? <PrettyButton onClick={onClick || open_tab } { ...props } /> : <PrettyButton onClick={onClick || open_tab } { ...props }>
+		<img alt="Button icon" src={ icon } />
+		{ props.children }
+	</PrettyButton>
+}

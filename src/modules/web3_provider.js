@@ -13,10 +13,10 @@ const { name } = require( '../../package.json' )
 /* ///////////////////////////////
 // Chain configuration
 // /////////////////////////////*/
-const { REACT_APP_alchemy_eth_mainnet_api_key, REACT_APP_alchemy_arbitrum_mainnet_api_key } = process.env
+const { REACT_APP_alchemy_eth_mainnet_api_key, REACT_APP_alchemy_arbitrum_mainnet_api_key, REACT_APP_alchemy_polygon_mainnet_api_key } = process.env
 
 // Select chains 
-const enabled_chains = [ chain.mainnet, chain.goerli, chain.arbitrum ]
+const enabled_chains = [ chain.mainnet, chain.goerli, chain.arbitrum, chain.polygon ]
 
 // Cnfigure connectors 
 const enabled_providers = [
@@ -24,6 +24,7 @@ const enabled_providers = [
     // Backup provider to the built-in one
     ...( REACT_APP_alchemy_eth_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_eth_mainnet_api_key } ) ] : [] ),
     ...( REACT_APP_alchemy_arbitrum_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_arbitrum_mainnet_api_key } ) ] : [] ),
+    ...( REACT_APP_alchemy_polygon_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_polygon_mainnet_api_key } ) ] : [] ),
 
     // The provider already exposed in this user's browser
     publicProvider()

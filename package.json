@@ -9,10 +9,10 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-code": "^2.0.8",
-    "react-router-dom": "^6.4.2",
+    "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
-    "wagmi": "^0.7.9"
+    "wagmi": "^0.7.15"
   },
   "scripts": {
     "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
@@ -46,8 +46,8 @@
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
     "@depay/web3-mock": "^13.22.11",
-    "cypress": "^10.11.0",
-    "eslint": "^8.26.0",
+    "cypress": "^11.0.0",
+    "eslint": "^8.27.0",
     "start-server-and-test": "^1.14.0"
   }
 }

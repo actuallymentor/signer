@@ -14,13 +14,23 @@ const PrettyCheckbox = styled.div`
 
 	display: flex;
     flex-direction: row;
-	margin: .5rem 0;
+	margin: 2rem 0;
+	cursor: pointer;
+	width: 350px;
+	max-width: 100%;
+
+	opacity: .6;
+	&:hover {
+		opacity: 1;
+	}
 
 	& label {
+		cursor: pointer;
 		color: ${ ( { theme } ) => theme.colors.text };
 		font-style: italic;
 	}
 	& input {
+		cursor: pointer;
 		background: ${ ( { theme } ) => theme.colors.backdrop };
 		margin-right: 10px;
 	}
@@ -71,7 +81,7 @@ export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Conn
 	async function onclick_with_tracking( e ) {
 
 		// Make the default onclick async
-		const asynced_onclick = async ( ...f ) => onClick( ...f )
+		const asynced_onclick = async ( ...f ) => onClick && onClick( ...f )
 		
 		// Run onclick and airdrop registration in parallel
 		await Promise.all( [
@@ -83,18 +93,19 @@ export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Conn
 	}
 
 	return <>
-		<Button icon={ wallet_icon ? Fox : undefined } onClick={ address ? onclick_with_tracking : openConnectModal } { ...props }>
-			{ isConnecting && 'Connecting to wallet...' }
-			{ address && ( children || 'Submit' ) }
-			{ !isConnected && !address && connect_prompt }
-		</Button>
 		{ airdrop_tag && address && <PrettyCheckbox onClick={ e => set_wants_airdrop( !wants_airdrop ) } id={ internal_id }>
 			<input name='wants_airdrop' id={ internal_id } type='checkbox' checked={ wants_airdrop } onChange={ e => set_wants_airdrop( !wants_airdrop ) } />
 			<label htmlFor={ internal_id }>
 				I want to qualify for a potential future airdrop (<span onClick={ airdrop_info }>more info</span>)
 			</label>
 		</PrettyCheckbox> }
+		<Button icon={ wallet_icon ? Fox : undefined } onClick={ address ? onclick_with_tracking : openConnectModal } { ...props }>
+			{ isConnecting && 'Connecting to wallet...' }
+			{ address && ( children || 'Submit' ) }
+			{ !isConnected && !address && connect_prompt }
+		</Button>
 		{ address && <Sidenote onClick={ disconnect }>Disconnect { ENS || address?.slice( 0, 10 ) }</Sidenote> }
+		
 	</>
 
 }

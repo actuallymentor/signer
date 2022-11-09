@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { useNetwork } from "wagmi"
+import { useAccount, useNetwork } from "wagmi"
 import { log_event } from "../../modules/firebase"
 import { clipboard, json_from_url_safe_base64, log } from "../../modules/helpers"
 import { useMakeTransaction } from "../../modules/hooks/transactions"
-import { chain_id_to_chain_name } from "../../modules/web3/chains"
 import { eth_or_ens_address_regex } from "../../modules/web3/validations"
 import Button from "../atoms/Button"
 import Container from "../atoms/Container"
 import QR from "../atoms/QR"
+import Section from "../atoms/Section"
 import { Br, H2, Sidenote, Text } from "../atoms/Text"
 import Address from "../molecules/Address"
+import ChainBadge from "../molecules/ChainBadge"
 import ENSAvatar from "../molecules/ENSAvatar"
 import Footer from "../molecules/Footer"
 import Input from "../molecules/Input"
 import Loading from "../molecules/Loading"
 import Menu from "../molecules/Menu"
 import MetamaskButton from "../molecules/MetamaskButton"
+import WalletError from "../molecules/WalletError"
 
 export default ( { ...props } ) => {
 
@@ -39,7 +41,7 @@ export default ( { ...props } ) => {
             // Validate URl content
             const { pay_recipient, pay_token, pay_amount, pay_enable_l2 } = decoded_request
             if( !pay_recipient.match( eth_or_ens_address_regex ) ) throw new Error( `Invalid ETH address, please check for typos or better yet: connect your wallet so you don't have to type yourself.` )
-            if( !pay_token.symbol || !pay_token.chain_ids || !pay_token.address ) throw new Error( `Invalid token data.` )
+            if( !pay_token.symbol || !pay_token.chain_ids ) throw new Error( `Invalid token data.` )
             if( !pay_amount ) throw new Error( `Missing payment amount` )
             if( !pay_enable_l2 ) throw new Error( `L2 preferences missing` )
 
@@ -53,13 +55,14 @@ export default ( { ...props } ) => {
     }, [ payment_string ] )
 
     // Transaction handling
-    const { on_right_chain, make_transaction } = useMakeTransaction( pay_recipient, pay_token, pay_amount, pay_enable_l2 )
+    const { on_right_chain, make_transaction, error: transaction_error } = useMakeTransaction( pay_recipient, pay_token, pay_amount, pay_enable_l2 )
     async function transact_with_feedback() {
 
         try {
 
             set_loading( `Waiting for wallet confirmation` )
-            await make_transaction()
+            const { hash: tx_hash } = await make_transaction()
+            log( `Transaction hash: `, tx_hash )
             log_event( `payment_link_paid`, {
                 token: pay_token.symbol,
                 l2: pay_enable_l2,
@@ -67,7 +70,7 @@ export default ( { ...props } ) => {
                 amount: pay_amount
             } )
 
-            return navigate( `/pay/success` )
+            return navigate( `/pay/success/${ chain?.id }/${ tx_hash }` )
 
         } catch( e ) {
             log( `Transaction error: `, e )
@@ -110,9 +113,13 @@ export default ( { ...props } ) => {
 
         <ENSAvatar address={ pay_recipient } />
         <Text align="center"><Address>{ pay_recipient }</Address> has requested { pay_amount } { pay_token.symbol }.</Text>
-        <Sidenote margin="2rem 0">Accepted networks: { pay_token?.chain_ids?.map( chain_id_to_chain_name ).join( ', ' ) }</Sidenote>
+        <Sidenote margin="2rem 0 0">Accepted networks:</Sidenote>
+        <Section margin="0" direction="row">
+            { pay_token?.chain_ids?.map( chain_id => <ChainBadge shortname key={ chain_id } chain_id={ chain_id } /> ) }
+        </Section>
         { chain && !on_right_chain && <Text align="center">You are connected to an unsupported network.</Text> }
-        { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
+        <WalletError error={ transaction_error } />
+        { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
 
         <Footer />
 

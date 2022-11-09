@@ -6,7 +6,7 @@ const { utils: { parseEther, parseUnits } } = require( 'ethers' )
 export const string_to_hex = string => `${ string }`.split().map( char => char.toString( 16 ) ).join( '' )
 export const num_to_hex = num => num.toString( 16 )
 export const chain_num_to_hex = chain_number => `0x${ num_to_hex( chain_number ) }`
-export const num_to_bignumber = ( number, decimals=18 ) => parseUnits( number.toString(), decimals )
+export const num_to_bignumber = ( number, decimals=18 ) => number && parseUnits( number.toString(), decimals )
 
 export function eth_to_gwei( eth_decimal, format_as_hex=false ) {
 

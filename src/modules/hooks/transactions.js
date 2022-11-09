@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
-import { useAccount, useNetwork, usePrepareSendTransaction, useSendTransaction } from "wagmi"
+import { erc20ABI, useAccount, useContractWrite, useNetwork, usePrepareContractWrite, usePrepareSendTransaction, useSendTransaction } from "wagmi"
 import { log } from "../helpers"
-import { eth_to_gwei } from "../web3/conversions"
+import { eth_to_gwei, num_to_bignumber } from "../web3/conversions"
 
+/* ///////////////////////////////
+// ETH transaction
+// /////////////////////////////*/
 const useTransactETH = ( recipient, amount, enabled=true ) => {
 
-    const [ error, set_error ] = useState()
     const { chain } = useNetwork()
-
 
     // Keep a prepared transaction
     const prepared_transaction = {
@@ -18,53 +19,90 @@ const useTransactETH = ( recipient, amount, enabled=true ) => {
         },
         enabled
     }
+    log( `${ enabled ? '' : 'NOT ' }Preparing ETH transaction to ${ recipient } for ${ amount } on ${ chain?.id }: `, prepared_transaction )
     const { config: transaction_config, error: transaction_error } = usePrepareSendTransaction( prepared_transaction )
 
     // Prepare transaction function
-    const { sendTransactionAsync, ...rest_of_transaction_meta } = useSendTransaction( {
+    const { sendTransactionAsync, ...rest_of_tx_meta } = useSendTransaction( {
         ...transaction_config,
     } )
 
-    // Reset error if there is one set
-    if( !transaction_error && error ) {
-        log( `No transaction error, resetting error state` )
-        set_error( undefined )
-    }
-
-    // If an error was found, set it's message to state
-    if( !error && transaction_error ) {
-        log( `Old error state: `, error )
-        log( `Error ocurred, setting to state: `, transaction_error )
-        const { data, error: error_data, message } = transaction_error
-        set_error( data?.message || error_data?.message || message )
-    }
-
-    async function validateAndSend() {
-
-        log( `Prepared transaction: `, prepared_transaction )
-        log( `Transaction config: `, transaction_config )
-        log( `useSendTransaction meta: `, rest_of_transaction_meta )
-
-        if( error ) {
-            log( `Cannot transact error: `, error )
-            set_error( undefined )
-            throw new Error( `${ error }` )
-        }
-
-        // Execute transaction
-        const { hash: tx_hash } = await sendTransactionAsync()
-        return { tx_hash }
-
-    }
-
-    return [ validateAndSend, error ]
+    log( `useTransactETH Errors: `, transaction_error, ` resulting write meta: `, rest_of_tx_meta )
+    return [ sendTransactionAsync, transaction_error ]
 
 }
 
+/* ///////////////////////////////
+// ERC20 approval
+// /////////////////////////////*/
+const useApproveERC20 = ( recipient, amount, token, enabled=true ) => {
+
+    const { chain } = useNetwork()
+
+    const prepared_contract_function = {
+        // Only specify address when connected to polygon
+        address: token?.address?.[ chain?.id || 1 ],
+        abi: erc20ABI,
+        functionName: 'balanceOf',
+        args: [ recipient ],
+        chainId: chain?.id,
+        enabled
+    }
+    log( `${ enabled ? '' : 'NOT ' }Preparing ERC20 approval to ${ recipient } for ${ amount } on ${ chain?.id }: `, prepared_contract_function )
+
+    // Polygon-specific interfaces
+    const { config: weth_contract_config, error: contract_error } = usePrepareContractWrite( prepared_contract_function )
+
+    // Prepare the writing function
+    const { writeAsync, ...rest_of_contract_meta } = useContractWrite( {
+        ...weth_contract_config,
+        onError: err => log( `🛑  useContractWrite`, err )
+    } )
+
+    log( `Errors: `, contract_error, ` resulting write meta: `, rest_of_contract_meta )
+    return [ writeAsync, contract_error ]
+}
+
+/* ///////////////////////////////
+// ERC20 transaction
+// /////////////////////////////*/
+const useTransactERC20 = ( recipient, amount, token, enabled=true ) => {
+
+    const { chain } = useNetwork()
+
+    const prepared_contract_function = {
+        // Only specify address when connected to polygon
+        address: token?.address?.[ chain?.id || 1 ],
+        abi: erc20ABI,
+        functionName: 'transfer',
+        args: [ recipient, num_to_bignumber( amount, token?.decimals ) ],
+        chainId: chain?.id,
+        enabled
+    }
+    log( `${ enabled ? '' : 'NOT ' }Preparing ERDC20 transaction to ${ recipient } for ${ amount } on ${ chain?.id }: `, prepared_contract_function )
+
+    // Polygon-specific interfaces
+    const { config: weth_contract_config, error: contract_error } = usePrepareContractWrite( prepared_contract_function )
+
+    // Prepare the writing function
+    const { writeAsync, ...rest_of_contract_meta } = useContractWrite( {
+        ...weth_contract_config,
+        onError: err => log( `🛑  useContractWrite`, err )
+    } )
+
+    log( `useTransactERC20 Errors: `, contract_error, ` resulting write meta: `, rest_of_contract_meta )
+    return [ writeAsync, contract_error ]
+}
+
+/* ///////////////////////////////
+// Generic transaction hook
+// /////////////////////////////*/
 export const useMakeTransaction = ( recipient, token, amount, l2_enabled ) => {
 
     const { chain } = useNetwork()
     const [ on_right_chain, set_on_right_chain ] = useState( false )
+    const is_native_eth_transfer = !token?.address
+    log( `useMakeTransaction to ${ recipient } for ${ amount } of `, token )
 
     // Check for chain validity
     useEffect( () => {
@@ -86,8 +124,13 @@ export const useMakeTransaction = ( recipient, token, amount, l2_enabled ) => {
 
     }, [ chain, token ] )
 
-    const [ make_transaction, error ] = useTransactETH( recipient, amount, on_right_chain )
+    const [ make_transaction, error ] = useTransactETH( recipient, amount, on_right_chain && is_native_eth_transfer )
+    const [ make_erc20_transfer, erc20_error ] = useTransactERC20( recipient, amount, token, on_right_chain && !is_native_eth_transfer )
 
-    return { on_right_chain, make_transaction, error }
+    return {
+        on_right_chain,
+        make_transaction: is_native_eth_transfer ? make_transaction : make_erc20_transfer,
+        error: is_native_eth_transfer ? error : erc20_error
+    }
 
 }

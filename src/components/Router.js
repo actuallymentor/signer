@@ -38,7 +38,8 @@ function Router() {
 		<Route exact path='/verify/:message/:share' element={ <Verify /> } />
 
 		<Route exact path='/pay/create' element={ <PaylinkCreate /> } />
-		<Route exact path='/pay/success' element={ <PaylinkSuccess /> } />
+		<Route exact path='/pay/success/' element={ <PaylinkSuccess /> } />
+		<Route exact path='/pay/success/:chain_id/:tx_hash' element={ <PaylinkSuccess /> } />
 		<Route exact path='/pay/:payment_string' element={ <PaylinkView /> } />
 		<Route exact path='/pay/:payment_string/:share' element={ <PaylinkView /> } />
 
