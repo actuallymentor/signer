@@ -1,5 +1,5 @@
 const functions = require( "firebase-functions" )
-const { register_potential_airdrop_usage } = require( "./modules/services/airdrop_score" )
+const { register_potential_airdrop_usage, export_airdrop_data } = require( "./modules/services/airdrop_score" )
 
 // Runtime config
 const generous_runtime = {
@@ -23,3 +23,4 @@ exports.seed_email_metrics = functions.https.onCall( seed_email_metrics )
 exports.email_statistics = functions.firestore.document( `verified_email_aliases/{wallet}` ).onWrite( increment_email_metrics_on_write )
 exports.public_metrics = functions.https.onRequest( public_metrics )
 exports.register_potential_airdrop_usage = functions.https.onCall( register_potential_airdrop_usage )
+exports.export_airdrop_data = functions.https.onCall( export_airdrop_data )

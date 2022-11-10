@@ -46,7 +46,7 @@
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
     "@depay/web3-mock": "^13.22.11",
-    "cypress": "^11.0.0",
+    "cypress": "^11.0.1",
     "eslint": "^8.27.0",
     "start-server-and-test": "^1.14.0"
   }

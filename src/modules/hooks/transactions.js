@@ -101,7 +101,7 @@ export const useMakeTransaction = ( recipient, token, amount, l2_enabled ) => {
 
     const { chain } = useNetwork()
     const [ on_right_chain, set_on_right_chain ] = useState( false )
-    const is_native_eth_transfer = !token?.address
+    const is_native_eth_transfer = !token?.address || token?.address == 'native'
     log( `useMakeTransaction to ${ recipient } for ${ amount } of `, token )
 
     // Check for chain validity

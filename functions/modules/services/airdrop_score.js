@@ -1,5 +1,5 @@
-const { db, increment, throw_if_invalid_context } = require("../firebase")
-const { log } = require("../helpers")
+const { db, increment, throw_if_invalid_context, dataFromSnap } = require("../firebase")
+const { log, dev } = require("../helpers")
 
 exports.register_potential_airdrop_usage = async ( data, context ) => {
 
@@ -26,6 +26,24 @@ exports.register_potential_airdrop_usage = async ( data, context ) => {
 
     } catch( e ) {
         log( `Error in register_potential_airdrop_usage: `, e )
+        return { error: e.message }
+    }
+
+}
+
+exports.export_airdrop_data = async ( data, context ) => {
+
+    try {
+
+        // Only allow exports in dev
+        if( !dev ) throw new Error( `Function can only be manually called in a privileged environment.` )
+
+        // Grab all accounts satisfying a condition
+        const addresses = await db.collection( `usage_tracking` ).where( 'payment_link_paid', '>=', 1 ).get().then( dataFromSnap )
+        log( `${ addresses.length } addresses satisfy condition` )
+
+    } catch( e ) {
+        log( `Error exporting airdrop data: `, e )
         return { error: e.message }
     }
 
