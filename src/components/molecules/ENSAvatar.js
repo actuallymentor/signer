@@ -11,7 +11,7 @@ const AvatarBadge = styled.img`
 
 export default ( { address, ...props } ) => {
 
-    const { data: avatar } = useEnsAvatar( { address, chainId: 1 } )
+    const { data: avatar } = useEnsAvatar( { addressOrName: address, chainId: 1 } )
     log( `ENS avatar `,  avatar )
 
     if( !avatar ) return
