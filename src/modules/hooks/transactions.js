@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
-import { erc20ABI, useAccount, useContractWrite, useNetwork, usePrepareContractWrite, usePrepareSendTransaction, useSendTransaction } from "wagmi"
+import { erc20ABI, useAccount, useContractWrite, useEnsAddress, useNetwork, usePrepareContractWrite, usePrepareSendTransaction, useSendTransaction } from "wagmi"
 import { log } from "../helpers"
 import { eth_to_gwei, num_to_bignumber } from "../web3/conversions"
+import { eth_address_regex } from "../web3/validations"
 
 /* ///////////////////////////////
 // ETH transaction
@@ -102,7 +103,15 @@ export const useMakeTransaction = ( recipient, token, amount, l2_enabled ) => {
     const { chain } = useNetwork()
     const [ on_right_chain, set_on_right_chain ] = useState( false )
     const is_native_eth_transfer = !token?.address || token?.address == 'native'
-    log( `useMakeTransaction to ${ recipient } for ${ amount } of `, token )
+    const { data: resolved_ens } = useEnsAddress( {
+        name: recipient,
+        chainId: 1,
+        enabled: !recipient?.match( eth_address_regex )
+    } )
+    log( `useMakeTransaction to ${ recipient } (${ resolved_ens }) for ${ amount } of `, token )
+
+    // If the address was a ENS, use the resolved address on Ethereum mainnet
+    const final_recipient = resolved_ens || recipient
 
     // Check for chain validity
     useEffect( () => {
@@ -124,8 +133,8 @@ export const useMakeTransaction = ( recipient, token, amount, l2_enabled ) => {
 
     }, [ chain, token ] )
 
-    const [ make_transaction, error ] = useTransactETH( recipient, amount, on_right_chain && is_native_eth_transfer )
-    const [ make_erc20_transfer, erc20_error ] = useTransactERC20( recipient, amount, token, on_right_chain && !is_native_eth_transfer )
+    const [ make_transaction, error ] = useTransactETH( final_recipient, amount, on_right_chain && is_native_eth_transfer )
+    const [ make_erc20_transfer, erc20_error ] = useTransactERC20( final_recipient, amount, token, on_right_chain && !is_native_eth_transfer )
 
     return {
         on_right_chain,
