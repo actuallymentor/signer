@@ -1,4 +1,4 @@
-const { db, increment, throw_if_invalid_context, dataFromSnap } = require("../firebase")
+const { db, increment, throw_if_invalid_context, dataFromSnap, ArrayUnion } = require("../firebase")
 const { log, dev } = require("../helpers")
 
 exports.register_potential_airdrop_usage = async ( data, context ) => {
@@ -19,7 +19,8 @@ exports.register_potential_airdrop_usage = async ( data, context ) => {
         await db.collection( `usage_tracking` ).doc( address ).set( {
             [airdrop_tag]: increment( 1 ),
             updated: Date.now(),
-            updated_human: new Date().toString()
+            updated_human: new Date().toString(),
+            time_trail: ArrayUnion( Date.now() )
         }, { merge: true } )
 
         return
@@ -40,7 +41,9 @@ exports.export_airdrop_data = async ( data, context ) => {
 
         // Grab all accounts satisfying a condition
         const addresses = await db.collection( `usage_tracking` ).where( 'payment_link_paid', '>=', 1 ).get().then( dataFromSnap )
-        log( `${ addresses.length } addresses satisfy condition` )
+        log( `${ addresses.length } addresses satisfy condition: ` )
+
+        log( addresses.map( ( { uid } ) => uid ).join( `\n` ) )
 
     } catch( e ) {
         log( `Error exporting airdrop data: `, e )

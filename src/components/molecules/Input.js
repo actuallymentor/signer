@@ -12,7 +12,7 @@ const Input = styled.div`
 	max-width: 100%;
 	
 	& input, & select {
-		background: ${ ( { theme } ) => theme.colors.backdrop };
+		background: ${ ( { theme } ) => theme.colors.primary_invert };
 		border: none;
 		border-left: 2px solid ${ ( { theme } ) => theme.colors.primary };
 		color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };

@@ -14,6 +14,7 @@ import { eth_or_ens_address_regex, sanitize_common } from "../../modules/web3/va
 import Button from "../atoms/Button"
 import { useNavigate } from "react-router-dom"
 import { log_event } from "../../modules/firebase"
+import AddressInput from "../molecules/AddressInput"
 
 export default ( { ...props } ) => {
 
@@ -78,7 +79,7 @@ export default ( { ...props } ) => {
                 <Text margin='.2rem 0 2rem'>Make it easy for others to pay you in 1 click.</Text>
 
                 { /* Address selection */ }
-                <Input 
+                <AddressInput 
                     id="pay-create-recipient" 
                     label="What address/ENS should receive the payment?"
                     info="This address will receive payments triggered from this payment link."
@@ -86,8 +87,6 @@ export default ( { ...props } ) => {
                     value={ recipient }
                     onChange={ ( { target } ) => set_recipient( target.value ) }
                 />
-
-                { !address && <MetamaskButton connect_prompt="Connect to wallet (optional)" wallet_icon={ false } /> }
 
                 { /* Token to receive */ }
                 <Input

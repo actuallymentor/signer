@@ -9,7 +9,6 @@ const theme = {
 		text: 'rgba( 0, 0, 0, .8 )',
 		text_backdrop: 'rgba( 255, 255, 255, .8 )',
 		shadow: 'rgba( 0, 0, 0, .2 )',
-		accent: 'orange',
 		hint: 'rgb( 170, 170, 170 )',
 		backdrop: 'rgba( 250, 250, 250, 1 )'
 	}
@@ -22,7 +21,6 @@ const dark_theme = {
 		text: 'rgba( 255, 255, 255, 1 )',
 		text_backdrop: 'rgba( 0, 0, 0, .8 )',
 		shadow: 'rgba( 255, 255, 255, .4 )',
-		accent: 'orange',
 		hint: 'rgb( 200, 200, 200 )',
 		backdrop: 'rgb( 5, 5, 5 )'
 	}

@@ -32,5 +32,6 @@ module.exports = {
 	db,
 	dataFromSnap,
 	throw_if_invalid_context,
-	increment: FieldValue.increment
+	increment: FieldValue.increment,
+	ArrayUnion: FieldValue.ArrayUnion
 }

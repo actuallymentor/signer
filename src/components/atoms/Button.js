@@ -9,6 +9,7 @@ const shadow_transition_delay = '0s'
 const PrettyButton = styled( DynamicButton )`
 
 	display: flex;
+	height: ${ ( { height='50px' } ) => height };
 	flex-direction: ${ ( { direction='row' } ) => direction };
 	align-items: center;
 	justify-content: center;
@@ -34,6 +35,7 @@ const PrettyButton = styled( DynamicButton )`
 
 	& img {
 		height: 50px;
+		max-height: 100%;
 		width: auto;
 		margin: ${ ( { direction='row' } ) => direction == 'row' ? '0 1rem 0 0' : '1rem' };
 	}
