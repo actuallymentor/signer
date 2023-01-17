@@ -4,10 +4,12 @@ import Input from "./Input"
 import MetamaskButton from "./MetamaskButton"
 
 const Wrapper = styled.div`
+
     position: relative;
 
     .nested {
         position: absolute;
+        z-index: 99;
         bottom: 15px;
         right: 8px;
         zoom: .7;
@@ -21,7 +23,7 @@ export default ( { ...props } ) => {
 
     return <Wrapper>
         <Input { ...props } />
-        { !address && <MetamaskButton className='nested' connect_prompt="Connect" wallet_icon={ true } /> }
+        { !address && <MetamaskButton id="address-input-connect" className='nested' connect_prompt="Connect" wallet_icon={ true } /> }
     </Wrapper>
 
 }

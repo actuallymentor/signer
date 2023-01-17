@@ -10,31 +10,35 @@ module.exports = defineConfig( {
 	watchForFileChanges: false,
 
 	e2e: {
-	setupNodeEvents(on, config) {
+
+		// Experimental flag that restores the old "run all" button, may have bugs
+		experimentalRunAllSpecs: true,
 		
-		// Load environment variables
-		let envFile = '.env'
+		setupNodeEvents(on, config) {
+			
+			// Load environment variables
+			let envFile = '.env'
 
-		// // If in offline dev, use development env
-		// if( process.env.NODE_ENV == 'development' ) envFile = '.env.development'
+			// // If in offline dev, use development env
+			// if( process.env.NODE_ENV == 'development' ) envFile = '.env.development'
 
-		// // If in CI use .env since the workflows write to that file on run
-		// if( process.env.CI ) envFile = '.env'
+			// // If in CI use .env since the workflows write to that file on run
+			// if( process.env.CI ) envFile = '.env'
 
-		const dotenvConfig = {
-			path: `${ __dirname }/${ envFile }`
-		}
-		console.log( `Runing cypress with ${ process.env.NODE_ENV } and ${ envFile }` )
+			const dotenvConfig = {
+				path: `${ __dirname }/${ envFile }`
+			}
+			console.log( `Runing cypress with ${ process.env.NODE_ENV } and ${ envFile }` )
 
-		require('dotenv').config( dotenvConfig )
+			require('dotenv').config( dotenvConfig )
 
-		config.env.REACT_APP_publicUrl = process.env.REACT_APP_publicUrl
-		return config
-	
+			config.env.REACT_APP_publicUrl = process.env.REACT_APP_publicUrl
+			return config
+		
 
-	},
-	specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
-	baseUrl: "http://localhost:3000/#",
+		},
+		specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
+		baseUrl: "http://localhost:3000/#",
 
 	}
 

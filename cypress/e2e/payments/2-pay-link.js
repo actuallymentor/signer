@@ -9,7 +9,7 @@ context( "Payment link usage", () => {
 
 
         cy.visit( `/pay/create` )
-        cy.connect_metamask()
+        cy.connect_address_autofill()
         cy.get( '#pay-generate-link' ).click()
         cy.url().should( 'contain', '/share' )
         cy.get( `input#pay-share-link` ).invoke( 'val' ).then( url => {

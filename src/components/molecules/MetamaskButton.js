@@ -50,7 +50,7 @@ export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Conn
 	const ENS = useENS( address, { chainId: 1 } )
 	const disconnect = useDisconnectWallets()
 	const { openConnectModal } = useConnectModal()
-	const { current: internal_id } = useRef( id || `input-${ Math.random() }` )
+	const { current: internal_id } = useRef( `input-${ Math.random() }` )
 
 	// Log connector so we know what wallets to be extra nice to
 	useEffect( () => {
@@ -99,7 +99,7 @@ export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Conn
 				I want to qualify for a potential future airdrop (<span onClick={ airdrop_info }>more info</span>)
 			</label>
 		</PrettyCheckbox> }
-		<Button icon={ wallet_icon ? Fox : undefined } onClick={ address ? onclick_with_tracking : openConnectModal } { ...props }>
+		<Button id={ id } icon={ wallet_icon ? Fox : undefined } onClick={ address ? onclick_with_tracking : openConnectModal } { ...props }>
 			{ isConnecting && 'Connecting to wallet...' }
 			{ address && ( children || 'Submit' ) }
 			{ !isConnected && !address && connect_prompt }

@@ -30,7 +30,7 @@ context( "Payment link creation", () => {
     it( `Loads the address on wallet connection`, () => {
 
         cy.visit( `/pay/create` )
-        cy.connect_metamask()
+        cy.connect_address_autofill()
         cy.get( `input#pay-create-recipient` ).invoke( 'val' ).then( val => expect( val.toLowerCase() ).to.equal( user_address ) )
 
     } )

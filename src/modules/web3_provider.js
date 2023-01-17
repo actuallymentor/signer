@@ -3,7 +3,8 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 
 // WAGMI components
-import { WagmiConfig, createClient, chain, configureChains } from 'wagmi'
+import { WagmiConfig, createClient, configureChains } from 'wagmi'
+import { mainnet, goerli, arbitrum, polygon } from 'wagmi/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import { log } from './helpers'
@@ -16,7 +17,7 @@ const { name } = require( '../../package.json' )
 const { REACT_APP_alchemy_eth_mainnet_api_key, REACT_APP_alchemy_arbitrum_mainnet_api_key, REACT_APP_alchemy_polygon_mainnet_api_key } = process.env
 
 // Select chains 
-const enabled_chains = [ chain.mainnet, chain.goerli, chain.arbitrum, chain.polygon ]
+const enabled_chains = [ mainnet, goerli, arbitrum, polygon ]
 
 // Cnfigure connectors 
 const enabled_providers = [
