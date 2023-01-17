@@ -22,8 +22,8 @@ export default ( { address, ...props } ) => {
 
     const theme = useTheme()
     const { address: detected_address } = useAccount()
-    const { data: avatar } = useEnsAvatar( { addressOrName: address || detected_address, chainId: 1 } )
-    log( `ENS avatar `,  avatar )
+    const { data: avatar } = useEnsAvatar( { address: address || detected_address, chainId: 1 } )
+    log( `ENS avatar for ${ address || detected_address } `,  avatar )
 
     return <AvatarBadge>
         { avatar ? <img src={ avatar } /> : <Avatar name={ address || detected_address } variant='pixel' size='150px' colors={ Object.values( theme.colors ) } /> }
