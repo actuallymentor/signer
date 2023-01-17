@@ -6,7 +6,7 @@ import MetamaskButton from "./MetamaskButton"
 const Wrapper = styled.div`
 
     position: relative;
-
+    max-width: 100%;
     .nested {
         position: absolute;
         z-index: 99;
