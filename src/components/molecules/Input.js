@@ -14,13 +14,16 @@ const Input = styled.div`
 	& input, & select {
 		background: ${ ( { theme } ) => theme.colors.primary_invert };
 		border: none;
-		border-left: 2px solid ${ ( { theme } ) => theme.colors.primary };
+		&:focus {
+			border-left: 2px solid ${ ( { theme } ) => theme.colors.primary };
+		}
 		color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
 	}
 
 	& input, & select {
 		padding: 1rem 2rem 1rem 1rem;
 		width: ${ ( { type } ) => type == 'radio' ? 'auto' : '100%' };
+		box-shadow: 0px 0px 5px 1px ${ ( { theme } ) => theme?.colors?.shadow  };
 	}
 
 	& label {

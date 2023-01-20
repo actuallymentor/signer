@@ -13,6 +13,9 @@ const Wrapper = styled.div`
         bottom: 15px;
         right: 8px;
         zoom: .7;
+        border-radius: 10px;
+        box-shadow: 0px 0px 1px 1px ${ ( { theme } ) => theme?.colors?.shadow  };
+        /* border: 1px solid ${ ( { theme } ) => theme.colors.primary }; */
     }
 
 `

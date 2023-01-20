@@ -56,7 +56,7 @@ export const Sidenote = styled.p`
 	margin:  ${ ( { margin='.2rem 0' } ) => margin };
 	font-style: italic;
 	margin-top:  1rem;
-	text-align:  ${ ( { align='center' } ) => align };
+	text-align:  ${ ( { align='left' } ) => align };
 `
 
 export const Br = styled.span`

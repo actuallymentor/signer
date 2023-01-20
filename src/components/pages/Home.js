@@ -11,6 +11,7 @@ import Share from '../../assets/share.svg.js'
 import { useNavigate } from 'react-router-dom'
 import useTypewriter from '../../modules/hooks/useTypewriter'
 import Piggybank from '../../assets/piggybank'
+import Card from '../molecules/Card'
 
 
 export default function Login() {
@@ -22,7 +23,7 @@ export default function Login() {
 	// Render component
 	// /////////////////////////////*/
 
-	return <Container align='flex-start' justify='flex-start' gutter={ false }>
+	return <Container align='flex-start' justify='flex-start' padding="0 0 10rem"  gutter={ false }>
 
 			<Menu />
 
@@ -37,28 +38,28 @@ export default function Login() {
 					<Piggybank />
 				</Section>
 			
-				<Section width='650px' align='flex-start' justify='center'>
+				<Card width='650px' align='flex-start' justify='center'>
 
 					<H2>💰 1-click payment links</H2>
-					<Text margin="2rem 0 1rem 0">Generate payment links you can share with others.</Text>
-					<Text>Payments are direct, signer.is charges 0%.</Text>
+					<Text margin="2rem 0 1rem 0">Generate payment links for ETH and USDC you can share with others.</Text>
+					<Text>Payments are directly wallet-to-wallet, signer.is charges 0% and requests no access to your wallet.</Text>
 					<Button margin="2rem 0 0" onClick={ f => navigate( '/pay/create' ) }>Generate a payment link</Button>
 
-				</Section>
+				</Card>
 
 
 			</Section>
 
 			<Section direction='row' justify='space-around' align='center' padding='5rem .5rem'>
 
-				<Section width='650px' align='flex-start'>
+				<Card width='650px' align='flex-start'>
 						
 					<H2>✏️ Sign & share a message</H2>
 					<Text margin="2rem 0 1rem 0">Sign a message with your wallet, and share it easily. Completely off-chain.</Text>
 					<Text>Vitalik.eth could for example share a verifyable message saying "my real twitter is @VitalikButerin".</Text>
 					<Button margin="2rem 0" onClick={ f => navigate( '/sign' ) }>Sign & share a message</Button>
 
-				</Section>
+				</Card>
 
 				<Section width='400px'>
 					<Share />
@@ -72,19 +73,18 @@ export default function Login() {
 					<Mailbox />
 				</Section>
 			
-				<Section width='650px' align='flex-start' justify='center'>
+				<Card width='650px' align='flex-start' justify='center'>
 
 					<H2>✉️ Receive emails on your wallet</H2>
 					<Text margin="2rem 0 1rem 0">Forward emails from your_wallet@signer.is to your@email.com.</Text>
-					<Text>That way apps and people can contact you by emailing your wallet, without them having to know your email.</Text>
+					<Text>That way apps and people can email your wallet, without knowing your email.</Text>
 					<Button margin="2rem 0 0" onClick={ f => navigate( '/email' ) }>Set up email forwarding</Button>
 
-				</Section>
+				</Card>
 
 
 			</Section>
 
-			
 
 			<Footer />
 
