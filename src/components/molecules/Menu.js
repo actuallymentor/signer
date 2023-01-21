@@ -4,11 +4,15 @@ import { useWidth } from '../../modules/hooks/window'
 import { A } from '../atoms/Text'
 
 const Menu = styled.nav`
-	position: fixed;
+	position: ${ ( { mobile_open } ) => mobile_open ? 'fixed' : 'absolute' };
+	padding-left: inherit;
+    padding-right: inherit;
+
+	z-index: 99;
 	top: 0;
 	left: 0;
 	width: 100%;
-	padding: 3rem 0 3rem 1rem;
+	padding: ${ ( { mobile_open, theme } ) => mobile_open ? '3rem 0 3rem 1rem' : '.5rem' };
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -27,7 +31,7 @@ const Menu = styled.nav`
 		}
 		&:not(:first-child) {
 			width: ${ ( { mobile_open } ) => mobile_open ? '100%' : '' };
-			border-bottom: 1px solid ${ ( { theme } ) => theme.colors.primary };
+			border-bottom: 1px solid ${ ( { theme, mobile_open } ) => mobile_open ? theme.colors.primary : 'rgba( 0,0,0,0 )' };
 			margin: .5rem .5rem 0;
 			padding: 0 0 .5rem;
 		}
@@ -39,7 +43,9 @@ const Menu = styled.nav`
 `
 
 const Burger = styled.a`
-	position: fixed;
+	position: ${ ( { mobile_open } ) => mobile_open ? 'fixed' : 'absolute' };
+	padding-left: inherit;
+    padding-right: inherit;
 	top: 10px;
 	left: 0;
 	width: 50px;
