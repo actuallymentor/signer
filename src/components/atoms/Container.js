@@ -10,7 +10,7 @@ export default styled.div`
 	justify-content: ${ ( { justify='center' } ) => justify };
 	min-height: 100vh;
 	width: 100%;
-	padding: ${ ( { gutter=true, padding } ) => padding || ( gutter ? '3rem max( 1rem, calc( 15vw - 2rem ) ) 10rem' : 'none' ) };
+	padding: ${ ( { gutter=true, padding } ) => padding || ( gutter ? '3rem max( 1rem, calc( 15vw - 2rem ) )' : 'none' ) };
 	box-sizing: border-box;
 	& * {
 		box-sizing: border-box;

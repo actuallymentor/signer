@@ -4,26 +4,32 @@ import { useWidth } from '../../modules/hooks/window'
 import { A } from '../atoms/Text'
 
 const Menu = styled.nav`
-	position: ${ ( { mobile_open } ) => mobile_open ? 'relative' : 'absolute' };
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
-	padding: 1rem;
+	padding: 3rem 0 3rem 1rem;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	flex-wrap: wrap;
+	align-self: flex-start;
 
 	background: ${ ( { mobile_open, theme } ) => mobile_open ? theme.colors.primary_invert : '' };
 	box-shadow: ${ ( { mobile_open, theme } ) => mobile_open && `0px 0px 10px 1px ${ theme?.colors?.shadow }` };
 
 	& a {
 
+		display: inline-block;
+
 		&.menu_burger {
 			margin: 0 ${ ( { mobile_open } ) => mobile_open ? '100px' : '0' } 20px 0;
 		}
 		&:not(:first-child) {
 			width: ${ ( { mobile_open } ) => mobile_open ? '100%' : '' };
+			border-bottom: 1px solid ${ ( { theme } ) => theme.colors.primary };
+			margin: .5rem .5rem 0;
+			padding: 0 0 .5rem;
 		}
 		padding: 0 1rem;
 		margin: 0;
@@ -33,8 +39,8 @@ const Menu = styled.nav`
 `
 
 const Burger = styled.a`
-	position: ${ ( { position='absolute' } ) => position };
-	top: 0;
+	position: fixed;
+	top: 10px;
 	left: 0;
 	width: 50px;
 	height: 24px;
@@ -73,7 +79,7 @@ export default ( { ...props } ) => {
 
 	return <Menu mobile_open={ open }>
 	
-		{ use_burger && <Hamburger mobile_open={ open } position='relative' onClick={ f => set_open( !open ) } /> }
+		{ use_burger && <Hamburger mobile_open={ open } onClick={ f => set_open( !open ) } /> }
 		{ ( ( use_burger && open ) || !use_burger ) && <>
 			<A href='/'>Home</A>
 			<A href='/#/sign'>Sign</A>
