@@ -121,7 +121,7 @@ export default ( { ...props } ) => {
         <WalletError error={ transaction_error } />
 
         { /* Check we are on the right chain, or the chian is unknown, and the make_transaction hook is ready */ }
-        { ( on_right_chain || !chain ) && make_transaction && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
+        { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
 
         <Footer />
 
