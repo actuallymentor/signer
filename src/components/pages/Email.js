@@ -4,8 +4,6 @@ import { Br, Text, H1, Sidenote } from '../atoms/Text'
 import MetamaskButton from '../molecules/MetamaskButton'
 import Fox from '../../assets/metamask-fox-cleaned.svg'
 import Input from '../molecules/Input'
-import Menu from '../molecules/Menu'
-import Footer from '../molecules/Footer'
 import Message from '../organisms/Message'
 
 import { sign_message } from '../../modules/web3'
@@ -86,8 +84,6 @@ export default function Sign() {
 
 	return <Container align='flex-start'>
 
-			<Menu />
-
 			<H1>Email forwarding for your wallet</H1>
 
 			{ address && <>
@@ -104,8 +100,6 @@ export default function Sign() {
 			</MetamaskButton>
 
 			<Sidenote align="left">*The email service is off-chain, there is no on-chain link between your wallet and email address.</Sidenote>
-
-			<Footer />
 
 	</Container>
 

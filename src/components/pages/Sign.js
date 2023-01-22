@@ -3,10 +3,8 @@ import Loading from '../molecules/Loading'
 import { Br, Text } from '../atoms/Text'
 import MetamaskButton from '../molecules/MetamaskButton'
 import ResizingTextarea from '../molecules/ResizingTextarea'
-import Menu from '../molecules/Menu'
-import Footer from '../molecules/Footer'
 
-import { sign_message, useENS, verify_message } from '../../modules/web3'
+import { sign_message, verify_message } from '../../modules/web3'
 import { useEffect, useState } from 'react'
 import { log, dev, to_url_safe_base64 } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
@@ -109,8 +107,6 @@ export default function Sign() {
 
 	return <Container justify='center' align='flex-start'>
 
-			<Menu />
-
 			<Text>I <Address>{ address }</Address> hereby sign,</Text>
 
 			<ResizingTextarea id="sign-message-input" minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
@@ -120,7 +116,6 @@ export default function Sign() {
 				<Text>Sign message & get sharable link</Text>
 			</MetamaskButton>
 
-			<Footer />
 
 	</Container>
 

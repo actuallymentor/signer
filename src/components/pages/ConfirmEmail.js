@@ -47,7 +47,7 @@ export default function ConfirmEmail(  ) {
 
     if( loading ) return <Loading message={ loading } />
 
-    return <Container gutter={ false }>
+    return <Container gutter={ false } menu={ false }>
         <Message>
 
             <Text margin='2rem 0'>Email forwarder now active.</Text>

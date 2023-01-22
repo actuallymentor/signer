@@ -2,10 +2,7 @@ import { useEffect, useState } from "react"
 import { useAccount } from "wagmi"
 import Container from "../atoms/Container"
 import { H1, Text } from "../atoms/Text"
-import Footer from "../molecules/Footer"
 import Input from "../molecules/Input"
-import Menu from "../molecules/Menu"
-import MetamaskButton from "../molecules/MetamaskButton"
 
 import { tokens } from "../../modules/web3/accepted_tokens"
 import { log, to_url_safe_base64 } from "../../modules/helpers"
@@ -73,8 +70,6 @@ export default ( { ...props } ) => {
     log( recipient, token )
     return <Container gutter={ true } justify='center' align='center'>
 
-			<Menu />
-
                 <H1>Create a payment link</H1>
                 <Text margin='.2rem 0 2rem'>Make it easy for others to pay you in 1 click.</Text>
 
@@ -120,8 +115,6 @@ export default ( { ...props } ) => {
                 />
 
                 <Button id="pay-generate-link" onClick={ generate_payment_link }>Generate payment link</Button>
-
-			<Footer />
 
 	</Container>
 }

@@ -109,7 +109,7 @@ export default ( { ...props } ) => {
     </Container>
 
     // Display payment info
-    return <Container align="center" justify="center">
+    return <Container align="center" justify="center" menu={ false }>
 
         <ENSAvatar address={ pay_recipient } />
         <Text align="center"><Address>{ pay_recipient }</Address> has requested { pay_amount } { pay_token.symbol }.</Text>
@@ -122,8 +122,6 @@ export default ( { ...props } ) => {
 
         { /* Check we are on the right chain, or the chian is unknown, and the make_transaction hook is ready */ }
         { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
-
-        <Footer />
 
     </Container>
 }

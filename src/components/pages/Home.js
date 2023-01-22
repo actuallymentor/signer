@@ -2,9 +2,7 @@ import Container from '../atoms/Container'
 import Button from '../atoms/Button'
 import { H1, H2, Text, Br } from '../atoms/Text'
 import Section from '../atoms/Section'
-import Menu from '../molecules/Menu'
 import Hero from '../molecules/Hero'
-import Footer from '../molecules/Footer'
 import Mailbox from '../../assets/mailbox.svg.js'
 import Share from '../../assets/share.svg.js'
 
@@ -24,8 +22,6 @@ export default function Login() {
 	// /////////////////////////////*/
 
 	return <Container align='flex-start' justify='flex-start' padding="0 0 10rem"  gutter={ false }>
-
-			<Menu />
 
 			<Hero margin="0 0 4rem 0">
 				<H1>{ text } <br />with your crypto wallet</H1>
@@ -85,8 +81,6 @@ export default function Login() {
 
 			</Section>
 
-
-			<Footer />
 
 	</Container>
 

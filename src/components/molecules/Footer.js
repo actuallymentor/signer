@@ -2,13 +2,14 @@ import styled from 'styled-components'
 import { A } from '../atoms/Text'
 
 const Footer = styled.nav`
-	position: absolute;
-	bottom: 0;
-	left: 0;
+	flex-wrap: wrap;
+	flex: 0 1;
 	width: 100%;
-	padding: 1rem;
+	padding: 1rem 0;
 	text-align: center;
 	display: flex;
+	margin-top: auto;
+	
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;

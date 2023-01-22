@@ -14,14 +14,10 @@ export default ( { ...props } ) => {
 
     return <Container>
 
-        <Menu />
-
         <H1>Payment success!</H1>
         <Text margin="2rem 0">You can create your own free payment links any time at signer.is.</Text>
         <Button href={ tx_explorer_link( tx_hash, chain_id ) }>View transaction on block explorer</Button>
         <Button onClick={ () => navigate( `/pay/create` ) }>Create your own payment link</Button>
-
-        <Footer />
 
     </Container>
 }

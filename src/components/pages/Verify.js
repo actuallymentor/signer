@@ -95,8 +95,6 @@ export default function Verify() {
 	return <Container align='flex-start'>
 
 			{ !share && <>
-
-				<Menu />
 				
 				<H1>Message verification</H1>
 				<Text>Signer <Address>{ claimed_signatory }</Address> has verifiably signed:</Text>
@@ -114,8 +112,6 @@ export default function Verify() {
 			</> }
 
 			{ share && <>
-
-				<Menu />
 				
 				<H2>Share this message</H2>
 				<Text>Anyone with this link can see the source message and signature that <Address>{ claimed_signatory }</Address> left here.</Text>
@@ -126,8 +122,6 @@ export default function Verify() {
 
 			</> }
 			
-			<Footer />
-
 	</Container>
 
 }

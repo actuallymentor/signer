@@ -4,15 +4,21 @@ import { useWidth } from '../../modules/hooks/window'
 import { A } from '../atoms/Text'
 
 const Menu = styled.nav`
-	position: ${ ( { mobile_open } ) => mobile_open ? 'fixed' : 'absolute' };
+
+	position: ${ ( { mobile_open } ) => mobile_open ? 'fixed' : 'relative' };
 	padding-left: inherit;
     padding-right: inherit;
+
+	// Height for animation
+	max-height: ${ ( { mobile_open } ) => mobile_open ? '100%' : '0' };
+	overflow: ${ ( { mobile_open } ) => mobile_open ? 'hidden' : 'visible' };
+	transition: max-height 1s;
 
 	z-index: 99;
 	top: 0;
 	left: 0;
 	width: 100%;
-	padding: ${ ( { mobile_open, theme } ) => mobile_open ? '3rem 0 3rem 1rem' : '.5rem' };
+	padding: ${ ( { mobile_open, theme } ) => mobile_open ? '3rem 0 3rem 1rem' : '0' };
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -27,7 +33,7 @@ const Menu = styled.nav`
 		display: inline-block;
 
 		&.menu_burger {
-			margin: 0 ${ ( { mobile_open } ) => mobile_open ? '100px' : '0' } 20px 0;
+			margin: 0 ${ ( { mobile_open } ) => mobile_open ? '100px' : '0' } 0 0 20px;
 		}
 		&:not(:first-child) {
 			width: ${ ( { mobile_open } ) => mobile_open ? '100%' : '' };
@@ -35,7 +41,7 @@ const Menu = styled.nav`
 			margin: .5rem .5rem 0;
 			padding: 0 0 .5rem;
 		}
-		padding: 0 1rem;
+		padding: 1rem;
 		margin: 0;
 		color: ${ ( { mobile_open, theme } ) => mobile_open ? theme.colors.primary : '' };
 	}
@@ -46,12 +52,15 @@ const Burger = styled.a`
 	position: ${ ( { mobile_open } ) => mobile_open ? 'fixed' : 'absolute' };
 	padding-left: inherit;
     padding-right: inherit;
-	top: 10px;
-	left: 0;
+	top: 0;
+	right: 0;
 	width: 50px;
-	height: 24px;
+	height: 50px;
 	padding: 10px;
-
+	&:hover {
+		cursor: pointer;
+	opacity: .5;
+	}
 	display: inline-block;
 
 	span {
