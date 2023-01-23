@@ -11,6 +11,7 @@ import QR from "../atoms/QR"
 import Section from "../atoms/Section"
 import { Br, H2, Sidenote, Text } from "../atoms/Text"
 import Address from "../molecules/Address"
+import Card from "../molecules/Card"
 import ChainBadge from "../molecules/ChainBadge"
 import ENSAvatar from "../molecules/ENSAvatar"
 import Footer from "../molecules/Footer"
@@ -104,24 +105,33 @@ export default ( { ...props } ) => {
         <Input id='pay-share-link' expand={ true } label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
         <Button onClick={ f => clipboard( window.location.href.replace( '/share', '' ) ) }>Copy link</Button>
 
-        <Footer />
-
     </Container>
 
     // Display payment info
+    const { message } = request || {}
     return <Container align="center" justify="center" menu={ false }>
 
         <ENSAvatar address={ pay_recipient } />
-        <Text align="center"><Address>{ pay_recipient }</Address> has requested { pay_amount } { pay_token.symbol }.</Text>
-        <Sidenote margin="2rem 0 0">Accepted networks:</Sidenote>
-        <Section margin="0" direction="row">
-            { pay_token?.chain_ids?.map( chain_id => <ChainBadge shortname key={ chain_id } chain_id={ chain_id } /> ) }
-        </Section>
-        { chain && !on_right_chain && <Text align="center">You are connected to an unsupported network.</Text> }
-        <WalletError error={ transaction_error } />
+        { message && <Card invert>
+            <Text invert align="center">Message from <Address>{ pay_recipient }</Address>: { message }</Text>
+            <Sidenote align='center'>Signer Labs does not verify messages</Sidenote>
+        </Card> }
+        
+        <Card>
+            <Text align="center"><Address>{ pay_recipient }</Address> has requested { pay_amount } { pay_token.symbol }.</Text>
+            <Sidenote margin="2rem 0 0">Accepted networks:</Sidenote>
+            <Section margin="0" direction="row">
+                { pay_token?.chain_ids?.map( chain_id => <ChainBadge shortname key={ chain_id } chain_id={ chain_id } /> ) }
+            </Section>
+            { chain && !on_right_chain && <Text align="center">You are connected to an unsupported network.</Text> }
 
-        { /* Check we are on the right chain, or the chian is unknown, and the make_transaction hook is ready */ }
-        { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
+            <WalletError error={ transaction_error } />
+
+            { /* Check we are on the right chain, or the chian is unknown, and the make_transaction hook is ready */ }
+            { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
+            
+        </Card>
+
 
     </Container>
 }

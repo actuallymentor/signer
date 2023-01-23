@@ -29,7 +29,7 @@ const PrettyCheckbox = styled.div`
 		color: ${ ( { theme } ) => theme.colors.text };
 		font-style: italic;
 	}
-	& input {
+	& input[type=checkbox] {
 		cursor: pointer;
 		background: ${ ( { theme } ) => theme.colors.backdrop };
 		margin-right: 10px;

@@ -8,4 +8,5 @@ export default styled( Section )`
     width: ${ ( { width='500px' } ) => width };
     max-width: 100%;
     margin: 1rem;
+    background: ${ ( { invert, theme } ) => invert ? theme.colors.primary : theme.colors.background };
 `

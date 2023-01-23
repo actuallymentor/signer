@@ -9,7 +9,7 @@ import { log, to_url_safe_base64 } from "../../modules/helpers"
 import { chain_id_to_chain_name } from "../../modules/web3/chains"
 import { eth_or_ens_address_regex, sanitize_common } from "../../modules/web3/validations"
 import Button from "../atoms/Button"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { log_event } from "../../modules/firebase"
 import AddressInput from "../molecules/AddressInput"
 
@@ -20,8 +20,11 @@ export default ( { ...props } ) => {
     const [ recipient, set_recipient ] = useState( '' )
     const [ token, set_token ] = useState( tokens[ 0 ] )
     const [ amount, set_amount ] = useState( 0.001 )
+    const [ message, set_message ] = useState( '' )
+    const [ is_donation, set_is_donation ] = useState( false )
     const [ enable_l2, set_enable_l2 ] = useState( 'true' )
     const navigate = useNavigate()
+    log( is_donation )
 
     // Handle wallet changes
     useEffect( () => {
@@ -49,7 +52,8 @@ export default ( { ...props } ) => {
                 pay_recipient,
                 pay_token,
                 pay_amount,
-                pay_enable_l2
+                pay_enable_l2,
+                ...( message.length && { message } )
             } )
 
             log_event( `payment_link_create`, {
@@ -70,8 +74,8 @@ export default ( { ...props } ) => {
     log( recipient, token )
     return <Container gutter={ true } justify='center' align='center'>
 
-                <H1>Create a payment link</H1>
-                <Text margin='.2rem 0 2rem'>Make it easy for others to pay you in 1 click.</Text>
+                <H1>Create a { is_donation ? 'donation link and button' : 'payment link' }</H1>
+                <Text margin='.2rem 0 2rem'>Make it easy for others to { is_donation ? 'donate to' : 'pay' } you in 1 click.</Text>
 
                 { /* Address selection */ }
                 <AddressInput 
@@ -114,7 +118,17 @@ export default ( { ...props } ) => {
                     value={ enable_l2 }
                 />
 
-                <Button id="pay-generate-link" onClick={ generate_payment_link }>Generate payment link</Button>
+                { /* Include a message? */ }
+                <Input
+                    id="pay-create-message"
+                    type="text"
+                    label="Message to include (optional)"
+                    onChange={ ( { target } ) => set_message( target.value ) }
+                    placeholder="Please pay me <3"
+                    value={ message }
+                />
+
+                <Button id="pay-generate-link" onClick={ generate_payment_link }>Generate { is_donation ? 'donation link & button' : 'payment link' }</Button>
 
 	</Container>
 }

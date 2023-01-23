@@ -4,7 +4,7 @@ export const Text = styled.p`
 	font-size: 1rem;
 	margin:  ${ ( { margin='.2rem 0' } ) => margin };
 	line-height: 1.5rem;
-	color: ${ ( { banner, theme } ) => banner ? theme.colors.primary_invert : theme.colors.text };
+	color: ${ ( { banner, theme, invert } ) => ( banner || invert ) ? theme.colors.primary_invert : theme.colors.text };
 	// background: ${ ( { banner, theme } ) => banner ? theme.colors.primary : theme.colors.primary_invert };
 	padding: ${ ( { banner } ) => banner ? '.5rem 1rem' : 'initial' };
 	box-shadow: ${ ( { banner } ) => banner ? '0 0 20px 2px rgb(0 0 0 / 70%)' : '' };

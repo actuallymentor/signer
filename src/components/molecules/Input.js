@@ -5,7 +5,7 @@ import ResizingTextArea from './ResizingTextarea'
 const Input = styled.div`
 
 	display: flex;
-	flex-direction: ${ ( { type } ) => type == 'radio' ? 'row' : 'column' };
+	flex-direction: ${ ( { type } ) => [ 'radio', 'checkbox' ].includes( type ) ? 'row' : 'column' };
 	margin: 1rem 0;
 	justify-content: center;
 	width: ${ ( { width='450px' } ) => width };
@@ -22,14 +22,14 @@ const Input = styled.div`
 
 	& input, & select {
 		padding: 1rem 2rem 1rem 1rem;
-		width: ${ ( { type } ) => type == 'radio' ? 'auto' : '100%' };
-		box-shadow: 0px 0px 5px 1px ${ ( { theme } ) => theme?.colors?.shadow  };
+		width: ${ ( { type } ) => [ 'radio', 'checkbox' ].includes( type ) ? 'auto' : '100%' };
+		box-shadow: 0px 0px 5px 1px ${ ( { theme, type } ) => [ 'radio', 'checkbox' ].includes( type ) ? 'none' : theme?.colors?.shadow  };
 	}
 
 	& label {
 		opacity: .5;
 		font-style: italic;
-		margin-bottom: .5rem;
+		margin: ${ ( { type } ) => [ 'radio', 'checkbox' ].includes( type ) ? '0 0 0 .2rem' : '0 0 .5rem'  };;
 		display: flex;
 		width: ${ ( { type } ) => type == 'radio' ? 'auto' : '100%' };
 		color: ${ ( { theme } ) => theme.colors.text };
@@ -55,6 +55,7 @@ export default ( { expand, onChange, type, label, info, id, options=[], ...props
 	const { current: internalId } = useRef( id || `input-${ Math.random() }` )
 	const [ expanded, setExpanded ] = useState( false )
 	const is_dropdown = type == 'dropdown'
+	const is_checkbox = type == 'checkbox'
 
 	const handleFocus = f => {
 
@@ -66,10 +67,15 @@ export default ( { expand, onChange, type, label, info, id, options=[], ...props
 
 	}
 
+	const input = <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } />
+
 	return <Input type={ type }>
 
+		{ /* For checkboxes, show input first */ }
+		{ is_checkbox && input }
+
 		{ label && <label htmlFor={ internalId }>{ label } { info && <span onClick={ f => alert( info ) }>?</span> }</label> }
-		{ !is_dropdown && !expanded && <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } /> }
+		{ !is_dropdown && !expanded && !is_checkbox && input }
 		{ !is_dropdown && expanded && <ResizingTextArea { ...props } data-testid={ internalId } id={ internalId } onChange={ onChange } /> }
 
 		{ is_dropdown && <select id={ internalId } onChange={ onChange } { ...props }>
