@@ -38,13 +38,14 @@ export default ( { ...props } ) => {
             
             // Decode URL
             const decoded_request = json_from_url_safe_base64( payment_string )
+            log( `Decoded request: `, decoded_request )
 
             // Validate URl content
             const { pay_recipient, pay_token, pay_amount, pay_enable_l2 } = decoded_request
             if( !pay_recipient.match( eth_or_ens_address_regex ) ) throw new Error( `Invalid ETH address, please check for typos or better yet: connect your wallet so you don't have to type yourself.` )
             if( !pay_token.symbol || !pay_token.chain_ids ) throw new Error( `Invalid token data.` )
             if( !pay_amount ) throw new Error( `Missing payment amount` )
-            if( !pay_enable_l2 ) throw new Error( `L2 preferences missing` )
+            if( typeof pay_enable_l2 != 'boolean' ) throw new Error( `L2 preferences missing` )
 
             set_request( decoded_request )
 
