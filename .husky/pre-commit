@@ -19,3 +19,4 @@ if echo $lint_outcome | grep -q "warning"; then
 fi
 
 echo "✅ [ precommit hook ] lint encountered no blocking issues\n"undefined
+undefined
