@@ -47,6 +47,9 @@ export default ( { ...props } ) => {
             if( !pay_amount ) throw new Error( `Missing payment amount` )
             if( typeof pay_enable_l2 != 'boolean' ) throw new Error( `L2 preferences missing` )
 
+            // is L2 preference is off, set only chain ID 1 as allowed
+            if( !pay_enable_l2 ) decoded_request.pay_token.chain_ids = [ 1 ]
+
             set_request( decoded_request )
 
         } catch( e ) {
