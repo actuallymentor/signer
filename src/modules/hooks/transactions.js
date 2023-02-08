@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { erc20ABI, useAccount, useContractWrite, useEnsAddress, useNetwork, usePrepareContractWrite, usePrepareSendTransaction, useSendTransaction } from "wagmi"
+import { erc20ABI, useContractWrite, useEnsAddress, useNetwork, usePrepareContractWrite, usePrepareSendTransaction, useSendTransaction } from "wagmi"
 import { log } from "../helpers"
 import { eth_to_gwei, num_to_bignumber } from "../web3/conversions"
 import { eth_address_regex } from "../web3/validations"
@@ -36,33 +36,33 @@ const useTransactETH = ( recipient, amount, enabled=true ) => {
 /* ///////////////////////////////
 // ERC20 approval
 // /////////////////////////////*/
-const useApproveERC20 = ( recipient, amount, token, enabled=true ) => {
+// const useApproveERC20 = ( recipient, amount, token, enabled=true ) => {
 
-    const { chain } = useNetwork()
+//     const { chain } = useNetwork()
 
-    const prepared_contract_function = {
-        // Only specify address when connected to polygon
-        address: token?.address?.[ chain?.id || 1 ],
-        abi: erc20ABI,
-        functionName: 'balanceOf',
-        args: [ recipient ],
-        chainId: chain?.id,
-        enabled
-    }
-    log( `${ enabled ? '' : 'NOT ' }Preparing ERC20 approval to ${ recipient } for ${ amount } on ${ chain?.id }: `, prepared_contract_function )
+//     const prepared_contract_function = {
+//         // Only specify address when connected to polygon
+//         address: token?.address?.[ chain?.id || 1 ],
+//         abi: erc20ABI,
+//         functionName: 'balanceOf',
+//         args: [ recipient ],
+//         chainId: chain?.id,
+//         enabled
+//     }
+//     log( `${ enabled ? '' : 'NOT ' }Preparing ERC20 approval to ${ recipient } for ${ amount } on ${ chain?.id }: `, prepared_contract_function )
 
-    // Polygon-specific interfaces
-    const { config: weth_contract_config, error: contract_error } = usePrepareContractWrite( prepared_contract_function )
+//     // Polygon-specific interfaces
+//     const { config: weth_contract_config, error: contract_error } = usePrepareContractWrite( prepared_contract_function )
 
-    // Prepare the writing function
-    const { writeAsync, ...rest_of_contract_meta } = useContractWrite( {
-        ...weth_contract_config,
-        onError: err => log( `🛑  useContractWrite`, err )
-    } )
+//     // Prepare the writing function
+//     const { writeAsync, ...rest_of_contract_meta } = useContractWrite( {
+//         ...weth_contract_config,
+//         onError: err => log( `🛑  useContractWrite`, err )
+//     } )
 
-    log( `Errors: `, contract_error, ` resulting write meta: `, rest_of_contract_meta )
-    return [ writeAsync, contract_error ]
-}
+//     log( `Errors: `, contract_error, ` resulting write meta: `, rest_of_contract_meta )
+//     return [ writeAsync, contract_error ]
+// }
 
 /* ///////////////////////////////
 // ERC20 transaction

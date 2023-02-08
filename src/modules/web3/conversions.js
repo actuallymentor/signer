@@ -10,13 +10,13 @@ export const num_to_bignumber = ( number, decimals=18 ) => number && parseUnits(
 
 export function eth_to_gwei( eth_decimal, format_as_hex=false ) {
 
-	if( !eth_decimal ) return
+    if( !eth_decimal ) return
 
-	const eth_wei = parseEther( `${ eth_decimal }` )
-	if( !format_as_hex ) {
-		return eth_wei
-	}
-	const eth_wei_hex = eth_wei.toHexString()
-	return eth_wei_hex
+    const eth_wei = parseEther( `${ eth_decimal }` )
+    if( !format_as_hex ) {
+        return eth_wei
+    }
+    const eth_wei_hex = eth_wei.toHexString()
+    return eth_wei_hex
 
 }

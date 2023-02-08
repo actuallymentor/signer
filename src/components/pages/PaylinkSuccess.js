@@ -1,11 +1,8 @@
-import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { tx_explorer_link } from "../../modules/web3/chains"
 import Button from "../atoms/Button"
 import Container from "../atoms/Container"
 import { H1, Text } from "../atoms/Text"
-import Footer from "../molecules/Footer"
-import Menu from "../molecules/Menu"
 
 export default ( { ...props } ) => {
 

@@ -31,7 +31,7 @@ export default function ConfirmEmail(  ) {
                 throw new Error( `Error registering with backend: ${ status.error }` )
 
     
-            } catch( e ) {
+            } catch ( e ) {
                 alert( e.message )
                 if( !dev ) navigate( '/' )
                 else log( `Not forwarding in dev` )
@@ -51,8 +51,8 @@ export default function ConfirmEmail(  ) {
         <Message>
 
             <Text margin='2rem 0'>Email forwarder now active.</Text>
-            <Text margin='2rem 0'>🚨 IMPORTANT: we have sent an email with the subject "spam check" to your new email forwarder.</Text>
-            <Text margin='2rem 0'>If this email is not in your inbox, please go to your spam folder and mark it as "not spam". Otherwise you might miss important messages.</Text>
+            <Text margin='2rem 0'>🚨 IMPORTANT: we have sent an email with the subject &quot;spam check&quot; to your new email forwarder.</Text>
+            <Text margin='2rem 0'>If this email is not in your inbox, please go to your spam folder and mark it as &quot;not spam&quot;. Otherwise you might miss important messages.</Text>
 
         </Message>
     </Container>

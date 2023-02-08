@@ -31,16 +31,16 @@ const Wrapper = styled.div`
 
 export default ( { gutter, menu=true, footer=true, children, ...props } ) => {
 
-	return <Wrapper { ...props }>
+    return <Wrapper { ...props }>
 
-		{ menu && <Menu /> }
+        { menu && <Menu /> }
 
-		<main>
-			{ children }
-		</main>
+        <main>
+            { children }
+        </main>
 
-		{ footer && <Footer /> }
+        { footer && <Footer /> }
 
-	</Wrapper>
+    </Wrapper>
 
 }

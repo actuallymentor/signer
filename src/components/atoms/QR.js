@@ -18,6 +18,6 @@ export default styled( QRCode )`
 	opacity: 1;
 	box-shadow: 0px 0px 10px 1px ${ ( { theme } ) => theme?.colors?.shadow  };
 	&.glow {
-		animation: ${ ( { theme } ) => glow( theme.colors.primary  )} 1.5s ease-in-out 1;
+		animation: ${ ( { theme } ) => glow( theme.colors.primary  ) } 1.5s ease-in-out 1;
 	}
 `

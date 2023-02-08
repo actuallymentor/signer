@@ -76,34 +76,34 @@ const Burger = styled.a`
 `
 
 const Hamburger = ( { ...props } ) => <Burger className='menu_burger' { ...props }>
-	<span />
-	<span />
-	<span />
+    <span />
+    <span />
+    <span />
 </Burger>
 
 export default ( { ...props } ) => {
 
-	const [ open, set_open ] = useState( false )
-	const width = useWidth()
-	const menu_cutoff = 600
-	const use_burger = width < menu_cutoff
+    const [ open, set_open ] = useState( false )
+    const width = useWidth()
+    const menu_cutoff = 600
+    const use_burger = width < menu_cutoff
 
-	useEffect( () => {
-		if( !use_burger ) set_open( false )
-	}, [ width ] )
+    useEffect( () => {
+        if( !use_burger ) set_open( false )
+    }, [ width ] )
 
-	return <Menu mobile_open={ open }>
+    return <Menu mobile_open={ open }>
 	
-		{ use_burger && <Hamburger mobile_open={ open } onClick={ f => set_open( !open ) } /> }
-		{ ( ( use_burger && open ) || !use_burger ) && <>
-			<A href='/'>Home</A>
-			<A href='/#/sign'>Sign</A>
-			<A href='/#/manualverify'>Verify</A>
-			<A href='/#/pay/create'>Payments</A>
-			<A href='/#/email'>Email</A>
-			<A href='https://signer.docs.apiary.io/' target='_blank'>API</A>
-		</> }
+        { use_burger && <Hamburger mobile_open={ open } onClick={ f => set_open( !open ) } /> }
+        { (  use_burger && open  || !use_burger ) && <>
+            <A href='/'>Home</A>
+            <A href='/#/sign'>Sign</A>
+            <A href='/#/manualverify'>Verify</A>
+            <A href='/#/pay/create'>Payments</A>
+            <A href='/#/email'>Email</A>
+            <A href='https://signer.docs.apiary.io/' target='_blank'>API</A>
+        </> }
 
-	</Menu>
+    </Menu>
 
 }

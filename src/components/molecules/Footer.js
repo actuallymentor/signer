@@ -24,7 +24,7 @@ const Footer = styled.nav`
 
 export default ( { ...props } ) => <Footer>
 	
-	<A href='https://twitter.com/actuallymentor' target='_blank'>© mentor.eth</A>
-	<A href='https://github.com/actuallymentor/signer' target='_blank'>source on Github</A>
+    <A href='https://twitter.com/actuallymentor' target='_blank'>© mentor.eth</A>
+    <A href='https://github.com/actuallymentor/signer' target='_blank'>source on Github</A>
 
 </Footer>

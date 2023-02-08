@@ -1,5 +1,5 @@
-import { dev } from "../helpers";
-import { chain_ids } from "./chains";
+import { dev } from "../helpers"
+import { chain_ids } from "./chains"
 
 const ethereum_chain_ids = dev ? [ chain_ids.ethereum, chain_ids.goerli ] : [ chain_ids.ethereum ]
 

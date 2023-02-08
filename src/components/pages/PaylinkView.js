@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { useAccount, useNetwork } from "wagmi"
+import { useNetwork } from "wagmi"
 import { log_event } from "../../modules/firebase"
 import { clipboard, json_from_url_safe_base64, log } from "../../modules/helpers"
 import { useMakeTransaction } from "../../modules/hooks/transactions"
@@ -14,10 +14,8 @@ import Address from "../molecules/Address"
 import Card from "../molecules/Card"
 import ChainBadge from "../molecules/ChainBadge"
 import ENSAvatar from "../molecules/ENSAvatar"
-import Footer from "../molecules/Footer"
 import Input from "../molecules/Input"
 import Loading from "../molecules/Loading"
-import Menu from "../molecules/Menu"
 import MetamaskButton from "../molecules/MetamaskButton"
 import WalletError from "../molecules/WalletError"
 
@@ -53,7 +51,7 @@ export default ( { ...props } ) => {
 
             set_request( decoded_request )
 
-        } catch( e ) {
+        } catch ( e ) {
             log( `Error decoding payment data: `, e )
             set_error( `This link appears corrupted or tampered with.` )
         }
@@ -78,7 +76,7 @@ export default ( { ...props } ) => {
 
             return navigate( `/pay/success/${ chain?.id }/${ tx_hash }` )
 
-        } catch( e ) {
+        } catch ( e ) {
             log( `Transaction error: `, e )
             set_error( `Transaction error: ${ e.message }` )
         } finally {
@@ -100,7 +98,7 @@ export default ( { ...props } ) => {
     if( !request ) return <Container />
 
     // If this is a sharing request, display it
-    if ( action ) return <Container>
+    if( action ) return <Container>
         
         <H2 margin="2rem 0">Share this { action == 'share' ? 'payment' : 'donation' } link</H2>
         <Text align="center">Anyone with this link can { action == 'share' ? 'pay' : 'donate to' } you in 1 click.</Text>

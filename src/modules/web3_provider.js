@@ -23,9 +23,9 @@ const enabled_chains = [ mainnet, goerli, arbitrum, polygon ]
 const enabled_providers = [
 
     // Backup provider to the built-in one
-    ...( REACT_APP_alchemy_eth_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_eth_mainnet_api_key } ) ] : [] ),
-    ...( REACT_APP_alchemy_arbitrum_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_arbitrum_mainnet_api_key } ) ] : [] ),
-    ...( REACT_APP_alchemy_polygon_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_polygon_mainnet_api_key } ) ] : [] ),
+    ... REACT_APP_alchemy_eth_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_eth_mainnet_api_key } ) ] : [] ,
+    ... REACT_APP_alchemy_arbitrum_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_arbitrum_mainnet_api_key } ) ] : [] ,
+    ... REACT_APP_alchemy_polygon_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_polygon_mainnet_api_key } ) ] : [] ,
 
     // The provider already exposed in this user's browser
     publicProvider()
@@ -53,5 +53,5 @@ const wagmiClient = createClient( {
 } )
 
 export default props => <WagmiConfig client={ wagmiClient }>
-    <RainbowKitProvider coolMode chains={chains} { ...props } />
+    <RainbowKitProvider coolMode chains={ chains } { ...props } />
 </WagmiConfig>

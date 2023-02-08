@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { log, wait } from '../helpers'
+import { wait } from '../helpers'
 
 export default function useTypewriter( phrases=[], type_speed_ms=100, delay_between_phrases=4000 ) {
 
@@ -9,8 +9,6 @@ export default function useTypewriter( phrases=[], type_speed_ms=100, delay_betw
 
     // When a new letter is typed, wait and add the next one
     useEffect( (  ) => {
-
-        let cancelled = false;
 
         ( async () => {
 
@@ -34,9 +32,7 @@ export default function useTypewriter( phrases=[], type_speed_ms=100, delay_betw
 
         } )( )
 
-        return () => cancelled = true
-
-        }, [ typedText.length ] )
+    }, [ typedText.length ] )
 
     return typedText.length == currentText.length ? typedText : `${ typedText  }|`
 

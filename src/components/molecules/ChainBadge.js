@@ -3,7 +3,7 @@ import { ReactComponent as Ethereum } from '../../assets/logos/ethereum.svg'
 import { ReactComponent as Arbitrum } from '../../assets/logos/arbitrum.svg'
 import { ReactComponent as Polygon } from '../../assets/logos/polygon.svg'
 import { log } from '../../modules/helpers'
-import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
+import { useNetwork, useSwitchNetwork } from 'wagmi'
 import { chain_ids, chain_id_to_chain_name } from '../../modules/web3/chains'
 
 const IconWrap = styled.div`

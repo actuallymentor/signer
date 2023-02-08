@@ -59,36 +59,36 @@ const Input = styled.div`
 
 export default ( { expand, onChange, type, label, info, id, options=[], ...props } ) => {
 
-	const { current: internalId } = useRef( id || `input-${ Math.random() }` )
-	const [ expanded, setExpanded ] = useState( false )
-	const is_dropdown = type == 'dropdown'
-	const is_checkbox = type == 'checkbox'
+    const { current: internalId } = useRef( id || `input-${ Math.random() }` )
+    const [ expanded, setExpanded ] = useState( false )
+    const is_dropdown = type == 'dropdown'
+    const is_checkbox = type == 'checkbox'
 
-	const handleFocus = f => {
+    const handleFocus = f => {
 
-		// If not expandable, exit
-		if( !expand ) return
+        // If not expandable, exit
+        if( !expand ) return
 
-		// If exbandable, change state to match
-		setExpanded( true )
+        // If exbandable, change state to match
+        setExpanded( true )
 
-	}
+    }
 
-	const input = <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } />
+    const input = <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } />
 
-	return <Input type={ type } { ...props }>
+    return <Input type={ type } { ...props }>
 
-		{ /* For checkboxes, show input first */ }
-		{ is_checkbox && input }
+        { /* For checkboxes, show input first */ }
+        { is_checkbox && input }
 
-		{ label && <label htmlFor={ internalId }>{ label } { info && <span onClick={ f => alert( info ) }>?</span> }</label> }
-		{ !is_dropdown && !expanded && !is_checkbox && input }
-		{ !is_dropdown && expanded && <ResizingTextArea { ...props } data-testid={ internalId } id={ internalId } onChange={ onChange } /> }
+        { label && <label htmlFor={ internalId }>{ label } { info && <span onClick={ f => alert( info ) }>?</span> }</label> }
+        { !is_dropdown && !expanded && !is_checkbox && input }
+        { !is_dropdown && expanded && <ResizingTextArea { ...props } data-testid={ internalId } id={ internalId } onChange={ onChange } /> }
 
-		{ is_dropdown && <select id={ internalId } onChange={ onChange } { ...props }>
-			{ options.map( ( option, index ) => <option key={ index } value={ option.value }>{ option.label || option.value }</option> ) }
-		</select> }
+        { is_dropdown && <select id={ internalId } onChange={ onChange } { ...props }>
+            { options.map( ( option, index ) => <option key={ index } value={ option.value }>{ option.label || option.value }</option> ) }
+        </select> }
 
-	</Input>
+    </Input>
 
 }
