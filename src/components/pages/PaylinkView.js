@@ -23,10 +23,11 @@ import WalletError from "../molecules/WalletError"
 
 export default ( { ...props } ) => {
 
-    const { payment_string, share } = useParams()
+    const { payment_string, action } = useParams()
     const [ request, set_request ] = useState(  )
     const [ error, set_error ] = useState(  )
-    const { pay_recipient, pay_token, pay_amount, pay_enable_l2 } = request || {}
+    const [ custom_amount, set_custom_amount ] = useState(  )
+    const { pay_recipient, pay_token, pay_amount, pay_enable_l2, is_donation } = request || {}
     const [ loading, set_loading ] = useState(  )
     const { chain } = useNetwork()
     const navigate = useNavigate()
@@ -60,7 +61,7 @@ export default ( { ...props } ) => {
     }, [ payment_string ] )
 
     // Transaction handling
-    const { on_right_chain, make_transaction, error: transaction_error } = useMakeTransaction( pay_recipient, pay_token, pay_amount, pay_enable_l2 )
+    const { on_right_chain, make_transaction, error: transaction_error } = useMakeTransaction( pay_recipient, pay_token, custom_amount || pay_amount, pay_enable_l2 )
     async function transact_with_feedback() {
 
         try {
@@ -99,15 +100,15 @@ export default ( { ...props } ) => {
     if( !request ) return <Container />
 
     // If this is a sharing request, display it
-    if ( share ) return <Container>
+    if ( action ) return <Container>
         
-        <H2 margin="2rem 0">Share this payment link</H2>
-        <Text align="center">Anyone with this link can pay you in 1 click.</Text>
+        <H2 margin="2rem 0">Share this { action == 'share' ? 'payment' : 'donation' } link</H2>
+        <Text align="center">Anyone with this link can { action == 'share' ? 'pay' : 'donate to' } you in 1 click.</Text>
         <Text align="center">This link is not saved. If you lose it you will have to generate a new link.</Text>
         <QR id="pay-view-qr" value={ window.location.href.replace( '/share', '' ) } />
         <Br />
         <Input id='pay-share-link' expand={ true } label='Sharable link' value={ window.location.href.replace( '/share', '' ) } readOnly />
-        <Button onClick={ f => clipboard( window.location.href.replace( '/share', '' ) ) }>Copy link</Button>
+        <Button onClick={ f => clipboard( window.location.href.replace( new RegExp( "share|donate" ), '' ) ) }>Copy link</Button>
 
     </Container>
 
@@ -121,18 +122,45 @@ export default ( { ...props } ) => {
             <Sidenote align='center'>Signer Labs does not verify messages</Sidenote>
         </Card> }
         
-        <Card>
+        { is_donation && <Card>
+
+            <Text align="center">Donate { custom_amount || pay_amount } { pay_token.symbol } to <Address>{ pay_recipient }</Address>.</Text>
+            <Text align="center" margin="2rem 0 0 0">Set custom donation:</Text>
+
+            { chain && <Section width="200px" align="center" padding="0" margin="0">
+                <Input
+                    id="pay-create-amount"
+                    type="number"
+                    min="0"
+                    step={ pay_token?.symbol == 'ETH' ? '0.001' : '1' }
+                    defaultValue={ pay_amount }
+                    onChange={ ( { target } ) => set_custom_amount( target.value ) }
+                    value={ custom_amount }
+                    align="center"
+                />
+            </Section> }
+
+        </Card> }
+
+        { !is_donation && <Card>
             <Text align="center"><Address>{ pay_recipient }</Address> has requested { pay_amount } { pay_token.symbol }.</Text>
+        </Card> }
+
+        <Card>
+
+
             <Sidenote margin="2rem 0 0">Accepted networks:</Sidenote>
             <Section margin="0" direction="row">
                 { pay_token?.chain_ids?.map( chain_id => <ChainBadge shortname key={ chain_id } chain_id={ chain_id } /> ) }
             </Section>
             { chain && !on_right_chain && <Text align="center">You are connected to an unsupported network.</Text> }
 
+        </Card>
+        <Card>
             <WalletError error={ transaction_error } />
 
             { /* Check we are on the right chain, or the chian is unknown, and the make_transaction hook is ready */ }
-            { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>Transfer { pay_amount } { pay_token.symbol }</MetamaskButton> }
+            { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>{ is_donation ? 'Donate' : 'Transfer' } { pay_amount } { pay_token.symbol }</MetamaskButton> }
             
         </Card>
 

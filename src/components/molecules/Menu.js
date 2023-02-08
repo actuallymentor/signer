@@ -98,6 +98,7 @@ export default ( { ...props } ) => {
 		{ ( ( use_burger && open ) || !use_burger ) && <>
 			<A href='/'>Home</A>
 			<A href='/#/sign'>Sign</A>
+			<A href='/#/manualverify'>Verify</A>
 			<A href='/#/pay/create'>Payments</A>
 			<A href='/#/email'>Email</A>
 			<A href='https://signer.docs.apiary.io/' target='_blank'>API</A>

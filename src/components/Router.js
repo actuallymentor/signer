@@ -7,6 +7,7 @@ import ConfirmEmail from './pages/ConfirmEmail'
 import PaylinkCreate from './pages/PaylinkCreate'
 import PaylinkView from './pages/PaylinkView'
 import PaylinkSuccess from './pages/PaylinkSuccess'
+import ManualVerify from './pages/ManualVerify'
 
 function Router() {
 
@@ -36,12 +37,13 @@ function Router() {
 
 		<Route exact path='/verify/:message/' element={ <Verify /> } />
 		<Route exact path='/verify/:message/:share' element={ <Verify /> } />
+		<Route exact path='/manualverify/' element={ <ManualVerify /> } />
 
 		<Route exact path='/pay/create' element={ <PaylinkCreate /> } />
 		<Route exact path='/pay/success/' element={ <PaylinkSuccess /> } />
 		<Route exact path='/pay/success/:chain_id/:tx_hash' element={ <PaylinkSuccess /> } />
 		<Route exact path='/pay/:payment_string' element={ <PaylinkView /> } />
-		<Route exact path='/pay/:payment_string/:share' element={ <PaylinkView /> } />
+		<Route exact path='/pay/:payment_string/:action' element={ <PaylinkView /> } />
 
 		<Route exact path='/' element={ <Home /> } />
 		<Route exact path='/:signature_request' element={ <Home /> } />

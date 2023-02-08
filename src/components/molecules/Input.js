@@ -10,10 +10,17 @@ const Input = styled.div`
 	justify-content: center;
 	width: ${ ( { width='450px' } ) => width };
 	max-width: 100%;
+
+	& input[type='number'] {
+		&::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+			opacity: 1;
+		}
+	}
 	
 	& input, & select {
 		background: ${ ( { theme } ) => theme.colors.primary_invert };
 		border: none;
+		text-align: ${ ( { align='left' } ) => align };
 		&:focus {
 			border-left: 2px solid ${ ( { theme } ) => theme.colors.primary };
 		}
@@ -69,7 +76,7 @@ export default ( { expand, onChange, type, label, info, id, options=[], ...props
 
 	const input = <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } />
 
-	return <Input type={ type }>
+	return <Input type={ type } { ...props }>
 
 		{ /* For checkboxes, show input first */ }
 		{ is_checkbox && input }

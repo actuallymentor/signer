@@ -13,6 +13,7 @@
     "react-router-dom": "^6.6.2",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
+    "use-debounce": "^9.0.3",
     "wagmi": "^0.9.6"
   },
   "scripts": {

@@ -24,7 +24,8 @@ export default ( { ...props } ) => {
     const [ is_donation, set_is_donation ] = useState( false )
     const [ enable_l2, set_enable_l2 ] = useState( 'true' )
     const navigate = useNavigate()
-    log( is_donation )
+    const { pathname } = useLocation()
+    log( is_donation, location )
 
     // Handle wallet changes
     useEffect( () => {
@@ -53,6 +54,7 @@ export default ( { ...props } ) => {
                 pay_token,
                 pay_amount,
                 pay_enable_l2,
+                is_donation,
                 ...( message.length && { message } )
             } )
 
@@ -62,7 +64,7 @@ export default ( { ...props } ) => {
                 amount: pay_amount
             } )
 
-            return navigate( `/pay/${ base64_payment_string }/share` )
+            return navigate( `/pay/${ base64_payment_string }/${ is_donation ? 'donate' : 'share' }` )
 
         } catch( e ) {
             log( `Payment link generation error: `, e )
@@ -71,16 +73,15 @@ export default ( { ...props } ) => {
 
     }
 
-    log( recipient, token )
     return <Container gutter={ true } justify='center' align='center'>
 
-                <H1>Create a { is_donation ? 'donation link and button' : 'payment link' }</H1>
+                <H1>Create a { is_donation ? 'donation link' : 'payment link' }</H1>
                 <Text margin='.2rem 0 2rem'>Make it easy for others to { is_donation ? 'donate to' : 'pay' } you in 1 click.</Text>
 
                 { /* Address selection */ }
                 <AddressInput 
                     id="pay-create-recipient" 
-                    label="What address/ENS should receive the payment?"
+                    label={ `${ is_donation ? "Donation" : "Payment" } recipient address/ENS` }
                     info="This address will receive payments triggered from this payment link."
                     type="text"
                     value={ recipient }
@@ -100,8 +101,9 @@ export default ( { ...props } ) => {
                 <Input
                     id="pay-create-amount"
                     type="number"
-                    step="0.001"
-                    label="How much do you want to receive?"
+                    min="0"
+                    step={ token?.symbol == 'ETH' ? '0.001' : '1' }
+                    label={ is_donation ? "What donation amount do you want to suggest?" : "How much do you want to receive?" }
                     onChange={ ( { target } ) => set_amount( target.value ) }
                     value={ amount }
                 />
@@ -128,7 +130,7 @@ export default ( { ...props } ) => {
                     value={ message }
                 />
 
-                <Button id="pay-generate-link" onClick={ generate_payment_link }>Generate { is_donation ? 'donation link & button' : 'payment link' }</Button>
+                <Button id="pay-generate-link" onClick={ generate_payment_link }>Generate { is_donation ? 'donation link' : 'payment link' }</Button>
 
 	</Container>
 }
