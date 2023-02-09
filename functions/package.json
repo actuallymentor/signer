@@ -31,5 +31,8 @@
     "uuid": "^8.3.2",
     "web3": "^1.8.2"
   },
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "firebase-tools": "^11.22.0"
+  }
 }
