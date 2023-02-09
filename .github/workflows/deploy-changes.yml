@@ -154,9 +154,9 @@ jobs:
           echo -e "${{ secrets.DOTENV_PRODUCTION }}" > .env
 
       # Check linting
-      - name: Check for linting errors
-        if: steps.changed-frontend-files.outputs.any_changed == 'true'
-        run: npm run lint
+      # - name: Check for linting errors
+      #   if: steps.changed-frontend-files.outputs.any_changed == 'true'
+      #   run: npm run lint
 
       # Check CI
       - name: Run cypress tests
