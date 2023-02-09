@@ -5,10 +5,13 @@ import ResizingTextArea from './ResizingTextarea'
 const Input = styled.div`
 
 	display: flex;
+	flex: ${ ( { grow='intial' } ) => grow };
+	padding: ${ ( { padding='intiial' } ) => padding };
 	flex-direction: ${ ( { type } ) => [ 'radio', 'checkbox' ].includes( type ) ? 'row' : 'column' };
-	margin: 1rem 0;
+	margin: ${ ( { margin='1rem 0' } ) => margin };
 	justify-content: center;
 	width: ${ ( { width='450px' } ) => width };
+	min-width: ${ ( { min_width='initial' } ) => min_width };
 	max-width: 100%;
 
 	& input[type='number'] {
@@ -36,7 +39,7 @@ const Input = styled.div`
 	& label {
 		opacity: .5;
 		font-style: italic;
-		margin: ${ ( { type } ) => [ 'radio', 'checkbox' ].includes( type ) ? '0 0 0 .2rem' : '0 0 .5rem'  };;
+		margin: ${ ( { type, label_only } ) => label_only ? '0' :  [ 'radio', 'checkbox' ].includes( type ) ? '0 0 0 .2rem' : '0 0 .5rem'  };
 		display: flex;
 		width: ${ ( { type } ) => type == 'radio' ? 'auto' : '100%' };
 		color: ${ ( { theme } ) => theme.colors.text };
@@ -57,7 +60,7 @@ const Input = styled.div`
 
 `
 
-export default ( { expand, onChange, type, label, info, id, options=[], ...props } ) => {
+export default ( { expand, onChange, type, label, label_only=false, info, id, options=[], ...props } ) => {
 
     const { current: internalId } = useRef( id || `input-${ Math.random() }` )
     const [ expanded, setExpanded ] = useState( false )
@@ -74,18 +77,18 @@ export default ( { expand, onChange, type, label, info, id, options=[], ...props
 
     }
 
-    const input = <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' } />
+    const input = <input onClick={ handleFocus } data-testid={ internalId } { ...props } id={ internalId } onChange={ onChange } type={ type || 'text' }  />
 
-    return <Input type={ type } { ...props }>
+    return <Input type={ type } { ...props } label_only={ label_only }>
 
         { /* For checkboxes, show input first */ }
-        { is_checkbox && input }
+        { !label_only && is_checkbox && input }
 
         { label && <label htmlFor={ internalId }>{ label } { info && <span onClick={ f => alert( info ) }>?</span> }</label> }
-        { !is_dropdown && !expanded && !is_checkbox && input }
-        { !is_dropdown && expanded && <ResizingTextArea { ...props } data-testid={ internalId } id={ internalId } onChange={ onChange } /> }
+        { !label_only && !is_dropdown && !expanded && !is_checkbox && input }
+        { !label_only && !is_dropdown && expanded && <ResizingTextArea { ...props } data-testid={ internalId } id={ internalId } onChange={ onChange } /> }
 
-        { is_dropdown && <select id={ internalId } onChange={ onChange } { ...props }>
+        { !label_only && is_dropdown && <select id={ internalId } onChange={ onChange } { ...props }>
             { options.map( ( option, index ) => <option key={ index } value={ option.value }>{ option.label || option.value }</option> ) }
         </select> }
 

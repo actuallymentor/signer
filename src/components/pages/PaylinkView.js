@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useDebounce } from "use-debounce"
 import { useNetwork } from "wagmi"
 import { log_event } from "../../modules/firebase"
 import { clipboard, json_from_url_safe_base64, log } from "../../modules/helpers"
@@ -9,7 +10,7 @@ import Button from "../atoms/Button"
 import Container from "../atoms/Container"
 import QR from "../atoms/QR"
 import Section from "../atoms/Section"
-import { Br, H2, Sidenote, Text } from "../atoms/Text"
+import { Br, H2, Sidenote, Text, Hr } from "../atoms/Text"
 import Address from "../molecules/Address"
 import Card from "../molecules/Card"
 import ChainBadge from "../molecules/ChainBadge"
@@ -25,10 +26,13 @@ export default ( { ...props } ) => {
     const [ request, set_request ] = useState(  )
     const [ error, set_error ] = useState(  )
     const [ custom_amount, set_custom_amount ] = useState(  )
-    const { pay_recipient, pay_token, pay_amount, pay_enable_l2, is_donation } = request || {}
+    const { pay_recipient, pay_token, pay_amount, pay_enable_l2, is_donation, message } = request || {}
+    const { on_right_chain, make_transaction, error: transaction_error } = useMakeTransaction( pay_recipient, pay_token, custom_amount || pay_amount, pay_enable_l2 )
     const [ loading, set_loading ] = useState(  )
     const { chain } = useNetwork()
     const navigate = useNavigate()
+    const ready_to_pay = useDebounce( !!on_right_chain && !!make_transaction, 1000 )
+    const payment_amount_to_display = useDebounce( custom_amount || pay_amount, 500 )
 
     // Decode url string
     useEffect( () => {
@@ -59,7 +63,6 @@ export default ( { ...props } ) => {
     }, [ payment_string ] )
 
     // Transaction handling
-    const { on_right_chain, make_transaction, error: transaction_error } = useMakeTransaction( pay_recipient, pay_token, custom_amount || pay_amount, pay_enable_l2 )
     async function transact_with_feedback() {
 
         try {
@@ -111,7 +114,6 @@ export default ( { ...props } ) => {
     </Container>
 
     // Display payment info
-    const { message } = request || {}
     return <Container align="center" justify="center" menu={ false }>
 
         <ENSAvatar address={ pay_recipient } />
@@ -122,10 +124,11 @@ export default ( { ...props } ) => {
         
         { is_donation && <Card>
 
-            <Text align="center">Donate { custom_amount || pay_amount } { pay_token.symbol } to <Address>{ pay_recipient }</Address>.</Text>
-            <Text align="center" margin="2rem 0 0 0">Set custom donation:</Text>
+            <Text align="center">Donate { payment_amount_to_display } { pay_token.symbol } to <Address>{ pay_recipient }</Address>.</Text>
 
             { chain && <Section width="200px" align="center" padding="0" margin="0">
+
+                <Text align="center" margin="2rem 0 0 0">Set custom donation:</Text>
                 <Input
                     id="pay-create-amount"
                     type="number"
@@ -147,18 +150,18 @@ export default ( { ...props } ) => {
         <Card>
 
 
-            <Sidenote margin="2rem 0 0">Accepted networks:</Sidenote>
+            <Text margin="0 0 .5rem">Accepted networks:</Text>
             <Section margin="0" direction="row">
                 { pay_token?.chain_ids?.map( chain_id => <ChainBadge shortname key={ chain_id } chain_id={ chain_id } /> ) }
             </Section>
             { chain && !on_right_chain && <Text align="center">You are connected to an unsupported network.</Text> }
 
-        </Card>
-        <Card>
-            <WalletError error={ transaction_error } />
+            { ready_to_pay && <Hr /> }
+
+            <WalletError align="center" error={ transaction_error } />
 
             { /* Check we are on the right chain, or the chian is unknown, and the make_transaction hook is ready */ }
-            { ( on_right_chain || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>{ is_donation ? 'Donate' : 'Transfer' } { pay_amount } { pay_token.symbol }</MetamaskButton> }
+            { ( ready_to_pay || !chain ) && <MetamaskButton airdrop_tag="payment_link_paid" onClick={ transaction_error ? undefined : transact_with_feedback }>{ is_donation ? 'Donate' : 'Transfer' } { payment_amount_to_display } { pay_token.symbol }</MetamaskButton> }
             
         </Card>
 

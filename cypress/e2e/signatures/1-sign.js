@@ -7,8 +7,8 @@ context( "Signature tests", () => {
 
     it( 'Can connect & disconnect wallet', () => {
 
-		// Visit code claim page
-		cy.visit( `/sign` )
+        // Visit code claim page
+        cy.visit( `/sign` )
 
         // Connection works
         cy.contains( `hereby sign` )
@@ -20,7 +20,7 @@ context( "Signature tests", () => {
         cy.contains( `Disconnect` ).click()
         cy.connect_metamask()
 
-	} )
+    } )
 
     it( `Fails without content`, () => {
 

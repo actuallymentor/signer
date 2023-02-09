@@ -4,8 +4,8 @@ context( "Signature verification", () => {
 
     it( 'Can view and verify a valid signature', () => {
 
-		// Visit code claim page
-		cy.visit( signature_link )
+        // Visit code claim page
+        cy.visit( `/manualverify` )
 
         // Can view message verification
         cy.contains( `Message verification` )
@@ -18,7 +18,7 @@ context( "Signature verification", () => {
         cy.contains( `"signed_message": "${ message_signature }"`, { matchCase: false } )
         cy.contains( `"claimed_signatory": "${ user_address }"`, { matchCase: false } )
 
-	} )
+    } )
 
     it( 'Fails on an invalid link', () => {
 
@@ -29,12 +29,12 @@ context( "Signature verification", () => {
 
         } )
 
-		// Visit code claim page
-		cy.visit( signature_link.slice( 0, 30 ) )
+        // Visit code claim page
+        cy.visit( signature_link.slice( 0, 30 ) )
         cy.contains( `This message appears corrupted or tampered with.` )
 
 
-	} )
+    } )
 
 
 

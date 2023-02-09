@@ -30,12 +30,13 @@ const LabelWrap = styled.div`
     flex-direction: ${ ( { direction='row' } ) => direction };
     align-items: center;
     margin: ${ ( { margin } ) => margin };
+    padding: 0 .5rem;
     cursor: pointer;
     &.current_chain {
         text-decoration: underline;
     }
     &.not_current_chain {
-        opacity: .6;
+        opacity: .4;
     }
     span {
         color: ${ ( { theme } ) => theme.colors.text };

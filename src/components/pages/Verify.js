@@ -11,6 +11,7 @@ import { clipboard, json_from_url_safe_base64, log } from '../../modules/helpers
 import { useParams } from 'react-router-dom'
 import { log_event } from '../../modules/firebase'
 import Address from '../molecules/Address'
+import { ErrorLine } from '../atoms/ErrorLine'
 
 export default function Verify() {
 
@@ -74,7 +75,7 @@ export default function Verify() {
 
     if( !authenticated ) return <Container align='flex-start'>
 
-        <Text>This message appears corrupted or tampered with.</Text>
+        <ErrorLine>This message appears corrupted or tampered with.</ErrorLine>
 
     </Container>
 

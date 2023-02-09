@@ -10,6 +10,7 @@ import { log, to_url_safe_base64 } from '../../modules/helpers'
 import Button from '../atoms/Button'
 import { useNavigate } from 'react-router-dom'
 import Address from '../molecules/Address'
+import { ErrorLine } from '../atoms/ErrorLine'
 
 export default function ManualVerify() {
 
@@ -49,7 +50,7 @@ export default function ManualVerify() {
 
                 // If cancelled or invalid, exit
                 if( cancelled ) return
-                if( !is_valid ) throw new Error( `Message was not valid` )
+                if( !is_valid ) throw new Error( `cannot verify that this message was signed by this address` )
 
                 // Set states based on outcome
                 setVerifiedMessage( claimed_message )
@@ -87,9 +88,9 @@ export default function ManualVerify() {
             <H1>Input a signature to verify</H1>
             <Text>This tool allows you to verify whether a signature is valid.</Text>
             <Text>The syntax is JSON, it needs the keys: sig/signature, addr/address, msg/message</Text>
-            <ResizingTextarea id="sign-message-input" minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
+            <ResizingTextarea id="message-to-verify" minRows={ 10 } onChange={ ( { target } ) => setMessage( target.value ) } value={ message } autoFocus />
 
-            { error && <Text>Error: { error }</Text> }
+            { error && <ErrorLine>Error: { error }</ErrorLine> }
 
             { result && <>
                 <Text><Address>{ signature?.claimed_signatory }</Address> verifyably signed:</Text>

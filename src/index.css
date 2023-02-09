@@ -10,7 +10,14 @@ body {
   box-sizing: border-box;
 }
 
-textarea, select, input, button {
-    /* -webkit-appearance: none; */
-    outline: none!important;
-  }
+* {
+  box-sizing: border-box;
+}
+
+textarea,
+select,
+input,
+button {
+  /* -webkit-appearance: none; */
+  outline: none !important;
+}

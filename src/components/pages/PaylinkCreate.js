@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useAccount } from "wagmi"
 import Container from "../atoms/Container"
-import { H1, Text } from "../atoms/Text"
+import { H1, Sidenote, Text } from "../atoms/Text"
 import Input from "../molecules/Input"
 
 import { tokens } from "../../modules/web3/accepted_tokens"
@@ -12,6 +12,7 @@ import Button from "../atoms/Button"
 import { useNavigate } from "react-router-dom"
 import { log_event } from "../../modules/firebase"
 import AddressInput from "../molecules/AddressInput"
+import Section from "../atoms/Section"
 
 export default ( { ...props } ) => {
 
@@ -74,62 +75,82 @@ export default ( { ...props } ) => {
 
     return <Container gutter={ true } justify='center' align='center'>
 
-        <H1>Create a { is_donation ? 'donation link' : 'payment link' }</H1>
-        <Text margin='.2rem 0 2rem'>Make it easy for others to { is_donation ? 'donate to' : 'pay' } you in 1 click.</Text>
+        <Section width="600px">
 
-        { /* Address selection */ }
-        <AddressInput 
-            id="pay-create-recipient" 
-            label={ `${ is_donation ? "Donation" : "Payment" } recipient address/ENS` }
-            info="This address will receive payments triggered from this payment link."
-            type="text"
-            value={ recipient }
-            onChange={ ( { target } ) => set_recipient( target.value ) }
-        />
+            <H1 align="center">Create a { is_donation ? 'donation link' : 'payment link' }</H1>
+            <Text align="center" margin='.2rem 0 2rem'>Make it easy for others to { is_donation ? 'donate to' : 'pay' } you in 1 click.</Text>
 
-        { /* Token to receive */ }
-        <Input
-            type="dropdown"
-            label="What token do you want to receive?"
-            options={ tokens.map( ( { symbol } ) => ( { value: symbol } ) ) }
-            onChange={ ( { target } ) => set_token( tokens.find( ( { symbol } ) => symbol == target.value ) ) }
-            value={ token?.symbol }
-        />
+            { /* Address selection */ }
+            <AddressInput 
+                id="pay-create-recipient" 
+                label={ `${ is_donation ? "Donation" : "Payment" } recipient address/ENS` }
+                info="This address will receive payments triggered from this payment link."
+                type="text"
+                value={ recipient }
+                onChange={ ( { target } ) => set_recipient( target.value ) }
+            />
 
-        { /* How much do you want to receive? */ }
-        <Input
-            id="pay-create-amount"
-            type="number"
-            min="0"
-            step={ token?.symbol == 'ETH' ? '0.001' : '1' }
-            label={ is_donation ? "What donation amount do you want to suggest?" : "How much do you want to receive?" }
-            onChange={ ( { target } ) => set_amount( target.value ) }
-            value={ amount }
-        />
+            
 
-        { /* Which networks do you want to accept */ }
-        <Input
-            type="dropdown"
-            label="Enable L2 support?"
-            options={ [
-                { value: 'yes', label: `Yes, accept ${ token?.chain_ids?.map( chain_id_to_chain_name ).join( ', ' ) }` },
-                { value: 'no', label: `No, accept ${ chain_id_to_chain_name( token?.chain_ids?.[0] ) } only` }
-            ] }
-            onChange={ ( { target } ) => set_enable_l2( target.value ) }
-            value={ enable_l2 }
-        />
+            <Section padding="0" width="450px" direction="row">
 
-        { /* Include a message? */ }
-        <Input
-            id="pay-create-message"
-            type="text"
-            label="Message to include (optional)"
-            onChange={ ( { target } ) => set_message( target.value ) }
-            placeholder="Please pay me <3"
-            value={ message }
-        />
+                <Input margin="0" label_only='true' label={ is_donation ? "What donation amount do you want to suggest?" : "How much do you want to receive?" } />
 
-        <Button id="pay-generate-link" onClick={ generate_payment_link }>Generate { is_donation ? 'donation link' : 'payment link' }</Button>
+                { /* How much do you want to receive? */ }
+                <Input
+                    id="pay-create-amount"
+                    grow="2"
+                    min_width="120px"
+                    margin=".5rem 0 0 0"
+                    type="number"
+                    min="0"
+                    step={ token?.symbol == 'ETH' ? '0.001' : '1' }
+                    // label={ is_donation ? "What donation amount do you want to suggest?" : "How much do you want to receive?" }
+                    onChange={ ( { target } ) => set_amount( target.value ) }
+                    value={ amount }
+                />
+
+                { /* Token to receive */ }
+                <Input
+                    type="dropdown"
+                    grow="1"
+                    padding="0 0 0 .5rem"
+                    min_width="120px"
+                    margin=".5rem 0 0 0"
+                    options={ tokens.map( ( { symbol } ) => ( { value: symbol } ) ) }
+                    onChange={ ( { target } ) => set_token( tokens.find( ( { symbol } ) => symbol == target.value ) ) }
+                    value={ token?.symbol }
+                />
+
+                
+            </Section>
+
+            { /* Which networks do you want to accept */ }
+            <Input
+                type="dropdown"
+                label="Enable multi-chain payments?"
+                options={ [
+                    { value: 'yes', label: `Yes: ${ token?.chain_ids?.map( chain_id_to_chain_name ).join( ', ' ) }` },
+                    { value: 'no', label: `No, accept ${ chain_id_to_chain_name( token?.chain_ids?.[0] ) } only` }
+                ] }
+                onChange={ ( { target } ) => set_enable_l2( target.value ) }
+                value={ enable_l2 }
+            />
+
+            { /* Include a message? */ }
+            <Input
+                id="pay-create-message"
+                type="text"
+                label="Message to include (optional)"
+                onChange={ ( { target } ) => set_message( target.value ) }
+                placeholder="Please pay me <3"
+                value={ message }
+            />
+
+            <Button id="pay-generate-link" onClick={ generate_payment_link }>Generate { is_donation ? 'donation' : 'payment' } link</Button>
+            <Sidenote onClick={ () => set_is_donation( !is_donation ) }>Make { is_donation ? 'payment' : 'donation' } link instead</Sidenote>
+
+        </Section>
 
     </Container>
 }

@@ -25,6 +25,10 @@ export const A = styled.a`
 	text-align: ${ ( { align } ) => align || 'left' };
 	max-width: 90%;
 	overflow-wrap: anywhere;
+	&:hover {
+		text-decoration: 'underline';
+	}
+	
 `
 
 export const H1 = styled.h1`
@@ -57,9 +61,20 @@ export const Sidenote = styled.p`
 	font-style: italic;
 	margin-top:  1rem;
 	text-align:  ${ ( { align='left' } ) => align };
+	cursor: ${ ( { onClick } ) => onClick ? 'pointer' : 'none' };
+	&:hover {
+		text-decoration: ${ ( { onClick } ) => onClick ? 'underline' : 'none' };
+	}
 `
 
 export const Br = styled.span`
 	width: 100%;
 	margin: 1rem 0;
+`
+
+export const Hr = styled.hr`
+	width: ${ ( { width="300px" } ) => width };
+	border: 1px solid ${ ( { theme } ) => theme.colors.text };
+	opacity: .5;
+	margin: ${ ( { margin='.5rem 0' } ) => margin };
 `

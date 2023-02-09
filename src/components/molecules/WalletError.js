@@ -1,6 +1,8 @@
-import styled from 'styled-components'
 import { useAccount, useEnsName, useNetwork } from 'wagmi'
+import { useDisconnectWallets } from '../../modules/web3'
 import { chain_id_to_chain_name } from '../../modules/web3/chains'
+import Button from '../atoms/Button'
+import { ErrorLine } from '../atoms/ErrorLine'
 import { Sidenote } from '../atoms/Text'
 
 const translate = ( string, chain_name, account_or_ens ) => {
@@ -12,19 +14,6 @@ const translate = ( string, chain_name, account_or_ens ) => {
     return string
 }
 
-const ErrorLine = styled( Sidenote )`
-
-    align-items: center;
-    justify-content: center;
-    & svg {
-        height: .8rem;
-    }
-    sup {
-        margin-left: .2rem;
-        cursor: pointer;
-    }
-`
-
 export default ( { error, ...props } ) => {
 
     const { chain } = useNetwork()
@@ -32,6 +21,7 @@ export default ( { error, ...props } ) => {
     const { data: ENS } = useEnsName( { address, chainId: 1 } )
     const chain_name = chain?.id ? chain_id_to_chain_name( chain?.id ) : `this network`
     const short_id = ENS || address?.slice( 0, 10 )
+    const disconnect = useDisconnectWallets()
 
     // Destructure the wallet error and take the common user-facing properties
     const { data, error: error_data, message } = error || {}
@@ -41,9 +31,12 @@ export default ( { error, ...props } ) => {
     const show_full_error = () => alert( `Full error message: ${ JSON.stringify( error, null, 2 ) }` )
 
     if( !error ) return
-    return <ErrorLine>
-        Wallet issue: { user_facing_error }
-        <sup onClick={ show_full_error }>?</sup>
-    </ErrorLine>
+    return <>
+        <ErrorLine { ...props }>
+            Wallet issue: { user_facing_error }
+            <sup onClick={ show_full_error }>?</sup>
+        </ErrorLine>
+        { address && <Button margin="2rem 0 0 0" onClick={ disconnect }>Disconnect { ENS || address?.slice( 0, 10 ) }</Button> }
+    </>
 
 }
