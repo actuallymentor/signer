@@ -12,7 +12,6 @@ function App() {
     // ///////////////////////////////
     // Rendering
     // ///////////////////////////////
-
     return <Theme>
         <Web3Provider>
             <HashRouter>
