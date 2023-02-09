@@ -1,5 +1,5 @@
-const { db, increment, throw_if_invalid_context, dataFromSnap, ArrayUnion } = require("../firebase")
-const { log, dev } = require("../helpers")
+const { db, increment, throw_if_invalid_context, dataFromSnap, ArrayUnion } = require( "../firebase" )
+const { log, dev } = require( "../helpers" )
 
 exports.register_potential_airdrop_usage = async ( data, context ) => {
 
@@ -25,7 +25,7 @@ exports.register_potential_airdrop_usage = async ( data, context ) => {
 
         return
 
-    } catch( e ) {
+    } catch ( e ) {
         log( `Error in register_potential_airdrop_usage: `, e )
         return { error: e.message }
     }
@@ -45,7 +45,7 @@ exports.export_airdrop_data = async ( data, context ) => {
 
         log( addresses.map( ( { uid } ) => uid ).join( `\n` ) )
 
-    } catch( e ) {
+    } catch ( e ) {
         log( `Error exporting airdrop data: `, e )
         return { error: e.message }
     }

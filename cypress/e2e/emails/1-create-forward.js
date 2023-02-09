@@ -19,7 +19,7 @@ context( 'Email forwarding', () => {
 			
             expect( response ).to.contain( 'Please enter a valid email address' )
 
-		} )
+        } )
 
         cy.visit( `/email` )
         cy.connect_metamask()

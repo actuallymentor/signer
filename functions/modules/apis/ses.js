@@ -1,4 +1,4 @@
-const AWS = require('aws-sdk')
+const AWS = require( 'aws-sdk' )
 const functions = require( 'firebase-functions' )
 const { aws } = functions.config()
 const { log } = require( '../helpers' )
@@ -10,10 +10,10 @@ const SES_CONFIG = {
 const AWS_SES = new AWS.SES( SES_CONFIG )
 
 // Email templates
-const pug = require('pug')
+const pug = require( 'pug' )
 const { promises: fs } = require( 'fs' )
-const csso = require('csso')
-const juice = require('juice')
+const csso = require( 'csso' )
+const juice = require( 'juice' )
 
 async function compile_pug_to_email( pugFile, data ) {
 
@@ -44,7 +44,7 @@ async function send_email( recipient, subject, html, text ) {
         Message: {
             Body: {
                 Html: { Charset: 'UTF-8', Data: html },
-                ...( text && { Text: { Charset: 'UTF-8', Data: text } }  )
+                ... text && { Text: { Charset: 'UTF-8', Data: text } }  
             },
             Subject: { Charset: 'UTF-8', Data: subject }
         }
@@ -68,9 +68,9 @@ exports.send_verification_email = async ( auth_token, email, address, ENS ) => {
     }
     const email_html = await compile_pug_to_email( `${ __dirname }/../templates/verify.email.pug`, email_data )
     const email_text = ( await fs.readFile( `${ __dirname }/../templates/verify.email.txt`, 'utf8' ) )
-                                .replace( '%%address%%', email_data.address )
-                                .replace( '%%ENS%%', email_data.ENS )
-                                .replace( '%%verification_link%%', email_data.verification_link )
+        .replace( '%%address%%', email_data.address )
+        .replace( '%%ENS%%', email_data.ENS )
+        .replace( '%%verification_link%%', email_data.verification_link )
 
     return send_email( email, `Verify your email address`, email_html, email_text )
 
@@ -87,8 +87,8 @@ exports.send_welcome_email = async ( email, address, ENS ) => {
     }
     const email_html = await compile_pug_to_email( `${ __dirname }/../templates/welcome.email.pug`, email_data )
     const email_text = ( await fs.readFile( `${ __dirname }/../templates/welcome.email.txt`, 'utf8' ) )
-                                .replace( '%%address%%', email_data.address )
-                                .replace( '%%email%%', email_data.email )
+        .replace( '%%address%%', email_data.address )
+        .replace( '%%email%%', email_data.email )
 
     return send_email( email, `Email forward confirmed for ${ ENS || address }`, email_html, email_text )
 

@@ -1,6 +1,6 @@
 // Random number of length
 export const random_number_of_length = ( length, as_string=true ) => {
-    const num = Math.floor( Math.random() * ( 10**length ) )
+    const num = Math.floor( Math.random() *  10**length  )
     if( as_string ) return `${ num }`
     return num
 }

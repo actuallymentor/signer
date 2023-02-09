@@ -4,19 +4,19 @@ context( "Frontpage tests", () => {
 
     it( 'Can view frontpage', () => {
 
-		// Visit code claim page
-		cy.visit( `/` )
+        // Visit code claim page
+        cy.visit( `/` )
 
-		// Page renders
+        // Page renders
         cy.contains( `Share a signature with your crypto wallet` )
-		cy.contains( `Receive payments with your crypto wallet` )
-		cy.contains( `Receive emails with your crypto wallet` )
+        cy.contains( `Receive payments with your crypto wallet` )
+        cy.contains( `Receive emails with your crypto wallet` )
 
-		cy.contains( `1-click payment links` )
-		cy.contains( `Receive emails on your wallet` )
-		cy.contains( `Sign & share a message` )
+        cy.contains( `1-click payment links` )
+        cy.contains( `Receive emails on your wallet` )
+        cy.contains( `Sign & share a message` )
 
-	} )
+    } )
 
 
 } )

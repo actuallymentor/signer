@@ -3,8 +3,8 @@ const { register_potential_airdrop_usage, export_airdrop_data } = require( "./mo
 
 // Runtime config
 const generous_runtime = {
-	timeoutSeconds: 540,
-	memory: '4GB'
+    timeoutSeconds: 540,
+    memory: '4GB'
 }
 
 /* ///////////////////////////////
