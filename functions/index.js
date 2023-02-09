@@ -1,5 +1,5 @@
 const functions = require( "firebase-functions" )
-const { register_potential_airdrop_usage, export_airdrop_data } = require( "./modules/services/airdrop_score" )
+const { register_potential_airdrop_usage, export_airdrop_data } = require( './modules/services/airdrop_score' )
 
 // Runtime config
 const generous_runtime = {

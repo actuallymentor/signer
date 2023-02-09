@@ -95,7 +95,7 @@ jobs:
           steps.changed-functions-files.outputs.any_changed == 'true'
         working-directory: functions
         run: |
-          echo -e "${{ secrets.FUNCTIONS_DOTENV_PRODUCTION }}" > .env.production
+          echo -e "${{ secrets.FUNCTIONS_DOTENV_PRODUCTION }}" > .env
 
       #########
       # Deploy
