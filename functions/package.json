@@ -31,10 +31,5 @@
     "uuid": "^8.3.2",
     "web3": "^1.8.2"
   },
-  "devDependencies": {
-    "eslint": "^8.33.0",
-    "eslint-config-google": "^0.14.0",
-    "firebase-functions-test": "^3.0.0"
-  },
   "private": true
 }
