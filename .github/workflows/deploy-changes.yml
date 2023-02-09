@@ -45,6 +45,7 @@ jobs:
       - name: Deploy PROD meta to Firebase
         uses: w9jds/firebase-action@master
         if: |
+          github.ref == 'refs/heads/main' &&
           steps.changed-firebase-files.outputs.any_changed == 'true'
         with:
           args: deploy --only=firestore
