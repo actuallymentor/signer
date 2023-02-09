@@ -1,11 +1,10 @@
 const AWS = require( 'aws-sdk' )
-const functions = require( 'firebase-functions' )
-const { aws } = functions.config()
+const { AWS_SES_FROM_EMAIL, AWS_SES_SECRET_KEY, AWS_SES_REGION, AWS_SES_KEYID } = process.env
 const { log } = require( '../helpers' )
 const SES_CONFIG = {
-    accessKeyId: aws?.ses?.keyid,
-    secretAccessKey: aws?.ses?.secretkey,
-    region: aws?.ses?.region,
+    accessKeyId: AWS_SES_KEYID,
+    secretAccessKey: AWS_SES_SECRET_KEY,
+    region: AWS_SES_REGION,
 }
 const AWS_SES = new AWS.SES( SES_CONFIG )
 
@@ -36,7 +35,7 @@ async function compile_pug_to_email( pugFile, data ) {
 async function send_email( recipient, subject, html, text ) {
 
     const options = {
-        Source: aws.ses.fromemail,
+        Source: AWS_SES_FROM_EMAIL,
         Destination: {
             ToAddresses: [ recipient ]
         },

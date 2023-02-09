@@ -1,17 +1,18 @@
 const fetch = require( 'isomorphic-fetch' )
 const functions = require( 'firebase-functions' )
-const { improvmx } = functions.config()
 const { log, make_retryable } = require( '../helpers' )
+
+const { IMPROVMX_BASEURL, IMPROVMX_DOMAIN,IMPROVMX_APIKEY } = process.env
 
 async function register_forward_with_improvmx( alias='', to='' ) {
 
     /* ///////////////////////////////
 	// Register alias with API */
-    const endpoint = `${ improvmx.baseurl }/domains/${ improvmx.domain }/aliases`
+    const endpoint = `${ IMPROVMX_BASEURL }/domains/${ IMPROVMX_DOMAIN }/aliases`
     const options = {
         method: 'POST',
         headers:{
-            Authorization: `Basic api:${ improvmx.apikey }`,
+            Authorization: `Basic api:${ IMPROVMX_APIKEY }`,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify( {
@@ -37,7 +38,7 @@ async function register_forward_with_improvmx( alias='', to='' ) {
 
         log( `Entry exists, updating instead...` )
 
-        const update_endpoint = `${ improvmx.baseurl }/domains/${ improvmx.domain }/aliases/${ alias }`
+        const update_endpoint = `${ IMPROVMX_BASEURL }/domains/${ IMPROVMX_DOMAIN }/aliases/${ alias }`
         const update_options = { ...options, method: 'PUT' }
         const update_response = await fetch( update_endpoint, update_options ).then( r => r.json() )
 

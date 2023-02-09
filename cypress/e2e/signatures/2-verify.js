@@ -5,7 +5,7 @@ context( "Signature verification", () => {
     it( 'Can view and verify a valid signature', () => {
 
         // Visit code claim page
-        cy.visit( `/manualverify` )
+        cy.visit( signature_link )
 
         // Can view message verification
         cy.contains( `Message verification` )

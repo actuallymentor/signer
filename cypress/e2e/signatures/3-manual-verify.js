@@ -1,6 +1,6 @@
 import { rp_signature_string_invalid, rp_signature_string_valid } from "../../fixtures/web3"
 
-context( "Signature tests", () => {
+context( "Manual signature verification", () => {
 
 
     it( `Can verify a message`, () => {

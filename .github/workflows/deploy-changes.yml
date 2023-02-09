@@ -1,0 +1,187 @@
+name: Deploy on changes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ## ###############
+  ## 1️⃣ Deploy firebase meta changes
+  ## ###############
+  deploy-firebase-settings:
+    name: Deploy changes to meta
+    runs-on: ubuntu-latest
+    steps:
+      # Clones repo to the commit that triggered the event
+      - name: Cloning repository
+        uses: actions/checkout@v3
+      - name: Get changed files in meta file changes
+        id: changed-firebase-files
+        uses: tj-actions/changed-files@v35
+        with:
+          files: fire{base,store}*
+      - name: List all changed files
+        run: |
+          echo "Any changed: ${{ steps.changed-firebase-files.outputs.any_changed }}, base ref: ${{ github.ref }}"
+          for file in ${{ steps.changed-firebase-files.outputs.all_changed_files }}; do
+            echo "change: $file"
+          done
+
+      # Set up node and install frontend dependencies
+      - name: Set up Node.js (.nvmrc)
+        uses: actions/setup-node@v3
+        if: steps.changed-firebase-files.outputs.any_changed == 'true'
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+      - name: Install dependencies
+        if: steps.changed-firebase-files.outputs.any_changed == 'true'
+        run: npm i
+
+      #########
+      # Deploy
+
+      - name: Deploy PROD meta to Firebase
+        uses: w9jds/firebase-action@master
+        if: |
+          steps.changed-firebase-files.outputs.any_changed == 'true'
+        with:
+          args: deploy --only=firestore
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+  ## ###############
+  ## 2️⃣ Deploy functions
+  ## ###############
+  deploy-functions:
+    name: Deploy changes to functions
+    needs: deploy-firebase-settings
+    runs-on: ubuntu-latest
+    steps:
+      # Clones repo to the commit that triggered the event
+      - name: Cloning repository
+        uses: actions/checkout@v3
+      - name: Get changed files in functions folder
+        id: changed-functions-files
+        uses: tj-actions/changed-files@v35
+        with:
+          files: functions/**
+      - name: List all changed files
+        run: |
+          echo "Any changed: ${{ steps.changed-functions-files.outputs.any_changed }}, base ref: ${{ github.ref }}"
+          for file in ${{ steps.changed-functions-files.outputs.all_changed_files }}; do
+            echo "change: $file"
+          done
+
+      # Set up node and install frontend dependencies
+      - name: Set up Node.js (.nvmrc)
+        uses: actions/setup-node@v3
+        if: steps.changed-functions-files.outputs.any_changed == 'true'
+        with:
+          node-version-file: "functions/.nvmrc"
+          cache: "npm"
+      - name: Install functions dependencies
+        if: steps.changed-functions-files.outputs.any_changed == 'true'
+        run: npm i
+        working-directory: functions
+
+      #####################
+      # Set up environment
+      - name: Create PROD environment files
+        if: |
+          github.ref == 'refs/heads/main' &&
+          steps.changed-functions-files.outputs.any_changed == 'true'
+        working-directory: functions
+        run: |
+          echo -e "${{ secrets.FUNCTIONS_DOTENV_PRODUCTION }}" > .env.production
+
+      #########
+      # Deploy
+      - name: Deploy PROD functions to Firebase
+        uses: w9jds/firebase-action@master
+        if: |
+          github.ref == 'refs/heads/main' &&
+          steps.changed-functions-files.outputs.any_changed == 'true'
+        with:
+          args: deploy --only=functions
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+  ## ###############
+  ## 3️⃣ Deploy frontend changes
+  ## ###############
+  deploy-frontend:
+    name: Deploy frontend changes
+    runs-on: ubuntu-latest
+    needs: [deploy-functions, deploy-firebase-settings]
+
+    steps:
+      # Clones repo to the commit that triggered the event
+      - name: Cloning repository
+        uses: actions/checkout@v3
+      - name: Get changed files
+        id: changed-frontend-files
+        uses: tj-actions/changed-files@v35
+        with:
+          files_ignore: functions/**;fire{base,store}*;.*/**
+          files_ignore_separator: ";"
+      - name: List all changed files
+        run: |
+          echo "Any changed: ${{ steps.changed-frontend-files.outputs.any_changed }}, base ref: ${{ github.base_ref }}"
+          for file in ${{ steps.changed-frontend-files.outputs.all_changed_files }}; do
+            echo "change: $file"
+          done
+
+      # Set up node and install frontend dependencies
+      - name: Set up Node.js (.nvmrc)
+        uses: actions/setup-node@v3
+        if: steps.changed-frontend-files.outputs.any_changed == 'true'
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+      - name: Install dependencies
+        if: steps.changed-frontend-files.outputs.any_changed == 'true'
+        run: npm i
+
+      # Set up environment
+      - name: Create PROD environment files
+        if: |
+          github.ref == 'refs/heads/main' &&
+          steps.changed-frontend-files.outputs.any_changed == 'true'
+        run: |
+          echo -e "${{ secrets.DOTENV_PRODUCTION }}" > .env
+
+      # Check linting
+      - name: Check for linting errors
+        if: steps.changed-frontend-files.outputs.any_changed == 'true'
+        run: npm run lint
+
+      # Check CI
+      - name: Run cypress tests
+        if: steps.changed-frontend-files.outputs.any_changed == 'true'
+        run: npm run test:ci
+
+      # Prep env for deployment
+      - name: Remove debug token from build
+        if: steps.changed-frontend-files.outputs.any_changed == 'true'
+        run: sed -i 's/^REACT_APP_APPCHECK_DEBUG_TOKEN=.*$//g' .env
+
+      # Build frontend files
+      - name: Build website files
+        if: steps.changed-frontend-files.outputs.any_changed == 'true'
+        env:
+          NODE_ENV: production
+          CI: false
+        run: npm run build
+
+      # Deploy frontend
+      - name: Deploy to PROD Firebase
+        uses: w9jds/firebase-action@master
+        if: |
+          github.ref == 'refs/heads/main' &&
+          steps.changed-frontend-files.outputs.any_changed == 'true'
+        with:
+          args: deploy --only hosting
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
