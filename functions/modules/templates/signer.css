@@ -1,0 +1,24 @@
+/*:root {
+	--color-primary: #8076fa;
+	--color-text: rgb(77, 86, 128);
+	--color-accent: rgb( 248, 117, 136 );
+	--color-backdrop: rgba( 0, 0, 0, .05 );
+}*/
+
+/* Note that web fonts DO NOT WORK in most email clients */
+@import url('https://fonts.googleapis.com/css2?family=Archivo&family=Comfortaa:wght@500&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Archivo', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ///////////////////////////////
+// Flow text
+// /////////////////////////////*/
+html {
+  font-size: calc( 18px + .1vw );
+}

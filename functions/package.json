@@ -1,0 +1,38 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "development=true firebase emulators:start --only functions",
+    "shell": "development=true firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions && say done || say fail",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.1311.0",
+    "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
+    "csso": "^5.0.5",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.5.0",
+    "firebase-functions": "^4.2.1",
+    "graphql": "^16.6.0",
+    "isomorphic-fetch": "^3.0.0",
+    "juice": "^8.1.0",
+    "promise-parallel-throttle": "^3.3.0",
+    "promise-retry": "^2.0.1",
+    "pug": "^3.0.2",
+    "urql": "^2.2.1",
+    "uuid": "^8.3.2",
+    "web3": "^1.8.2"
+  },
+  "private": true,
+  "devDependencies": {
+    "firebase-tools": "^11.22.0"
+  }
+}

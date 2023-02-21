@@ -1,0 +1,11 @@
+Hello %%ENS%%,
+
+Your email forwarder from %%address%%@signer.is to %%email%% is now active! Apps and people can now email you at this address.
+
+🚨 Important note: we have emailed you an email with the subject "spam check", if you do not see this email in your inbox, go to your spam folder and mark it as "not spam".
+
+If you don't do the above, you might miss important emails sent to your wallet address.
+
+Have a good day,
+
+~ Signer.is

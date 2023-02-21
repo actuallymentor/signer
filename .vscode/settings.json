@@ -1,0 +1,22 @@
+// 20230208221345
+// https://raw.githubusercontent.com/poap-xyz/skunk-linter/main/.vscode/settings.json?token=GHSAT0AAAAAABWN7UGTIJ5SZ3KC3JHC7CHSY7ED2MA
+
+{
+    "i18n-ally.localesPaths": [
+      "public/locales"
+    ],
+    "i18n-ally.keystyle": "nested",
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact"
+    ],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "editor.renderWhitespace": "all",
+    "editor.formatOnSave": true,
+    "eslint.format.enable": true,
+    "eslint.run": "onType"
+  }

@@ -1,0 +1,62 @@
+{
+  "name": "signer",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@rainbow-me/rainbowkit": "^0.11.0",
+    "boring-avatars": "^1.7.0",
+    "ethers": "^5.7.2",
+    "firebase": "^9.15.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-qr-code": "^2.0.11",
+    "react-router-dom": "^6.6.2",
+    "react-scripts": "5.0.1",
+    "styled-components": "^5.3.6",
+    "use-debounce": "^9.0.3",
+    "wagmi": "^0.11.6"
+  },
+  "scripts": {
+    "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "cypress": "NODE_ENV=development $(npm bin)/cypress open --e2e --browser chrome",
+    "test:ci": "NODE_ENV=production CI=true start-server-and-test 'BROWSER=none npm start' 3000 \"$(npm bin)/cypress run --browser chrome --config 60000\"",
+    "test:ci:with_emulator": "NODE_ENV=production start-server-and-test 'BROWSER=none npm start' 3000 'cd functions && npm run serve' 4000 \"$(npm bin)/cypress run --browser chrome --config 60000\"",
+    "prepare": "husky install",
+    "lint": "eslint --fix src"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "import/no-anonymous-default-export": 0
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/preset-react": "^7.18.6",
+    "@depay/web3-mock": "^13.22.17",
+    "@poap/skunk-linter": "^0.0.1",
+    "cypress": "^12.3.0",
+    "eslint": "^8.33.0",
+    "eslint-plugin-react": "^7.32.2",
+    "husky": "^8.0.3",
+    "start-server-and-test": "^1.15.2"
+  }
+}

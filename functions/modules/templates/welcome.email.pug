@@ -1,0 +1,11 @@
+doctype html
+html( lang='en' )
+	head
+		style= headStyles
+	body
+		p Hello #{ data.ENS || 'there' },
+		p Your email forwarder from #{ data.address }@signer.is to #{ data.email } is now active! Apps and people can now email you at this address.
+		p 🚨 Important note: we have emailed you an email with the subject "spam check", if you do not see this email in your inbox, go to your spam folder and mark it as "not spam".
+		p If you don't do the above, you might miss important emails sent to your wallet address.
+		p Have a good day,
+		p ~ Signer.is
