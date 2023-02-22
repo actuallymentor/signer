@@ -163,6 +163,14 @@ jobs:
         if: steps.changed-frontend-files.outputs.any_changed == 'true'
         run: npm run test:ci
 
+      # If CI failed, upload the videos for debugging
+      - name: Testing failed
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-videos
+          path: cypress/videos # or path/to/artifact
+
       # Prep env for deployment
       - name: Remove debug token from build
         if: steps.changed-frontend-files.outputs.any_changed == 'true'
