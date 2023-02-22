@@ -5,6 +5,13 @@ set -eu
 pids=()
 CY_TEST_FILES=$( ls cypress/e2e/**/*.js )
 
+if uname | grep -q Darwin; then
+    echo -e "\n\n#####################################################################"
+    echo "Make sure the functions emulator and the sorry-cypress director are running:"
+    echo "docker ps && docker run -p 1234:1234 agoldis/sorry-cypress-director"
+    echo "cd functions && npm run serve"
+    echo -e "#####################################################################\n\n"
+fi
 for file in $CY_TEST_FILES; do
 
     # check if on mac

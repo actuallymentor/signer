@@ -9,7 +9,6 @@ module.exports = defineConfig( {
     chromeWebSecurity: false,
     watchForFileChanges: false,
     projectId: 'signer',
-    supportfile: true,
 
     e2e: {
 
