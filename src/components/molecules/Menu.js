@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useWidth } from '../../modules/hooks/window'
-import { A } from '../atoms/Text'
+import Link from './Link'
 
 const Menu = styled.nav`
 
@@ -92,16 +92,18 @@ export default ( { ...props } ) => {
         if( !use_burger ) set_open( false )
     }, [ width ] )
 
+
+
     return <Menu mobile_open={ open }>
 	
         { use_burger && <Hamburger mobile_open={ open } onClick={ f => set_open( !open ) } /> }
         { (  use_burger && open  || !use_burger ) && <>
-            <A href='/'>Home</A>
-            <A href='/sign'>Sign</A>
-            <A href='/manualverify'>Verify</A>
-            <A href='/pay/create'>Payments</A>
-            <A href='/email'>Email</A>
-            <A href='https://signer.docs.apiary.io/' target='_blank'>API</A>
+            <Link to='/'>Home</Link>
+            <Link to='/sign'>Sign</Link>
+            <Link to='/manualverify'>Verify</Link>
+            <Link to='/pay/create'>Payments</Link>
+            <Link to='/email'>Email</Link>
+            <Link href='https://signer.docs.apiary.io/' target='_blank'>API</Link>
         </> }
 
     </Menu>

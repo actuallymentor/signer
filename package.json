@@ -6,11 +6,11 @@
     "@rainbow-me/rainbowkit": "^0.11.0",
     "boring-avatars": "^1.7.0",
     "ethers": "^5.7.2",
-    "firebase": "^9.15.0",
+    "firebase": "^9.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-qr-code": "^2.0.11",
-    "react-router-dom": "^6.6.2",
+    "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.6",
     "use-debounce": "^9.0.3",
@@ -24,8 +24,11 @@
     "cypress": "NODE_ENV=development $(npm bin)/cypress open --e2e --browser chrome",
     "test:ci": "NODE_ENV=production CI=true start-server-and-test 'BROWSER=none npm start' 3000 \"$(npm bin)/cypress run --browser chrome --config 60000\"",
     "test:ci:with_emulator": "NODE_ENV=production start-server-and-test 'BROWSER=none npm start' 3000 'cd functions && npm run serve' 4000 \"$(npm bin)/cypress run --browser chrome --config 60000\"",
+    "test:ci:with_scy": "NODE_ENV=production start-server-and-test 'BROWSER=none npm start' 3000 'cd functions && npm run serve' 4000 \"CYPRESS_API_URL='http://localhost:1234/' $(npm bin)/cypress run --parallel --browser chrome --config 60000\"",
     "prepare": "husky install",
-    "lint": "eslint --fix src"
+    "lint": "eslint --fix src",
+    "upgrade:browserlist": "npx browserslist@latest --update-db",
+    "upgrade": "npm run upgrade:browserlist && ncu && npm outdated"
   },
   "eslintConfig": {
     "extends": [
@@ -52,11 +55,11 @@
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-react": "^7.18.6",
     "@depay/web3-mock": "^13.22.17",
-    "@poap/skunk-linter": "^0.0.1",
-    "cypress": "^12.3.0",
-    "eslint": "^8.33.0",
+    "@poap/skunk-linter": "^0.0.2",
+    "cypress": "^12.6.0",
+    "eslint": "^8.34.0",
     "eslint-plugin-react": "^7.32.2",
     "husky": "^8.0.3",
-    "start-server-and-test": "^1.15.2"
+    "start-server-and-test": "^1.15.4"
   }
 }
