@@ -2,7 +2,7 @@
 import './commands'
 
 // Import failfast
-// import "cypress-fail-fast"
+import "cypress-fail-fast"
 
 // Stub google analytics requests
 beforeEach( () => {
