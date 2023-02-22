@@ -29,14 +29,6 @@ jobs:
             echo "change: $file"
           done
 
-      # NPM cache
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
-
       # Set up node and install frontend dependencies
       - name: Set up Node.js (.nvmrc)
         uses: actions/setup-node@v3
@@ -86,20 +78,13 @@ jobs:
             echo "change: $file"
           done
 
-      # NPM cache
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('functions/package-lock.json') }}
-          restore-keys: npm-
-
       # Set up node and install frontend dependencies
       - name: Set up Node.js (.nvmrc)
         uses: actions/setup-node@v3
         if: steps.changed-functions-files.outputs.any_changed == 'true'
         with:
           node-version-file: "functions/.nvmrc"
+          cache-dependency-path: "functions/package-lock.json"
           cache: "npm"
 
       # Install dependencies
@@ -139,11 +124,11 @@ jobs:
     needs: [deploy-functions, deploy-firebase-settings]
 
     # Set up testing service
-    # services:
-    #   sorry-cypress:
-    #     image: agoldis/sorry-cypress-director
-    #     ports:
-    #       - 1234:1234
+    services:
+      sorry-cypress:
+        image: agoldis/sorry-cypress-director
+        ports:
+          - 1234:1234
 
     steps:
       # Clones repo to the commit that triggered the event
@@ -161,14 +146,6 @@ jobs:
           for file in ${{ steps.changed-frontend-files.outputs.all_changed_files }}; do
             echo "change: $file"
           done
-
-      # NPM cache
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
 
       # Set up node and install frontend dependencies
       - name: Set up Node.js (.nvmrc)
