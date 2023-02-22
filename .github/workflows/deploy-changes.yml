@@ -151,7 +151,16 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         if: steps.changed-frontend-files.outputs.any_changed == 'true'
-        run: npm i
+        run: npm ci
+
+      # Cache dependencies for next runs
+      # see: https://www.voorhoede.nl/en/blog/super-fast-npm-install-on-github-actions/
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
 
       # Set up environment
       - name: Create PROD environment files
