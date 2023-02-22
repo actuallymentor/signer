@@ -169,7 +169,8 @@ jobs:
       # Check CI
       - name: Run cypress tests
         if: steps.changed-frontend-files.outputs.any_changed == 'true'
-        run: npm run test:ci:with_scy
+        run: npm run test:ci
+        # run: npm run test:ci:with_scy
 
       # If CI failed, upload the videos for debugging
       - name: Testing failed
