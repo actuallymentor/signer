@@ -12,6 +12,9 @@ module.exports = defineConfig( {
 
     e2e: {
 
+        // testIsolation
+        // supportFile
+
         // Experimental flag that restores the old "run all" button, may have bugs
         experimentalRunAllSpecs: true,
 		
