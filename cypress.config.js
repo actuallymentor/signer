@@ -18,7 +18,7 @@ module.exports = defineConfig( {
         setupNodeEvents( on, config ) {
 
             // Set up failfast
-            require( "cypress-fail-fast/plugin" )( on, config )
+            // require( "cypress-fail-fast/plugin" )( on, config )
 			
             // Load environment variables
             let envFile = '.env'

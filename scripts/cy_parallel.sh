@@ -21,7 +21,7 @@ for file in $CY_TEST_FILES; do
     if uname | grep -q Darwin; then
 
         echo "Assuming we are on local macbook"
-        npm run test:scy &
+        nohup npm run test:scy &
         pids+=($!)
 
     # If not, we're probably on Github Actions and need to have a custom xvfb command

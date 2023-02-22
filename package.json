@@ -25,7 +25,7 @@
     "test:ci": "NODE_ENV=production CI=true server-test 'npm start' 3000 \"$(npm bin)/cypress run --browser chrome --config 60000\"",
     "test:ci:with_emulator": "NODE_ENV=production server-test 'npm start' 3000 'cd functions && npm run serve' 4000 \"$(npm bin)/cypress run --browser chrome --config 60000\"",
     "test:ci:with_scy": "NODE_ENV=production server-test 'npm start' 3000 'bash scripts/cy_parallel.sh'",
-    "test:scy": "CYPRESS_API_URL='http://localhost:1234' cy2 run -c numTestsKeptInMemory=0 --parallel --record --key irrelevant --ci-build-id `date +%s` --browser chrome",
+    "test:scy": "DEBUG=cy2*,cypress:* CYPRESS_API_URL='http://localhost:1234' cy2 run -c numTestsKeptInMemory=0 --parallel --record --key irrelevant --ci-build-id `date +%s` --browser chrome",
     "prepare": "husky install",
     "lint": "eslint --fix src",
     "upgrade:browserlist": "npx browserslist@latest --update-db",
