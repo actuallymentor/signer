@@ -11,24 +11,28 @@ if uname | grep -q Darwin; then
     echo "docker ps && docker run -p 1234:1234 agoldis/sorry-cypress-director"
     echo "cd functions && npm run serve"
     echo -e "#####################################################################\n\n"
+
 fi
+
+index=1
 for file in $CY_TEST_FILES; do
 
     # check if on mac
     if uname | grep -q Darwin; then
 
         echo "Assuming we are on local macbook"
-        npm run test:scy -- $file &
+        npm run test:scy -- --ci-build-id "$( date +%s )-$index" -s $file &
         pids+=($!)
 
     # If not, we're probably on Github Actions and need to have a custom xvfb command
     # see: https://github.com/cypress-io/xvfb/issues/98
     else
         echo "Assuming we are on Github Actions"
-        xvfb-run -a npm run test:scy -- $file &
+        xvfb-run -a npm run test:scy -- --ci-build-id "$( date +%s )-$index" -s $file &
         pids+=($!)
     fi
 
+    ((index+=1))
     
 done
 
