@@ -1,6 +1,9 @@
 // Import custom commands
 import './commands'
 
+// Import failfast
+import "cypress-fail-fast"
+
 // Stub google analytics requests
 beforeEach( () => {
 

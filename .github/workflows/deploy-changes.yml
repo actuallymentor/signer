@@ -118,6 +118,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: [deploy-functions, deploy-firebase-settings]
 
+    # Set up testing service
+    services:
+      sorry-cypress:
+        image: agoldis/sorry-cypress-director
+        ports:
+          - 1234:1234
+
     steps:
       # Clones repo to the commit that triggered the event
       - name: Cloning repository
