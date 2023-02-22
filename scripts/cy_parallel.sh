@@ -28,8 +28,8 @@ for file in $CY_TEST_FILES; do
     # see: https://github.com/cypress-io/xvfb/issues/98
     else
         echo "Assuming we are on Github Actions"
-        # xvfb-run -a npm run test:scy -- --ci-build-id "$( date +%s )-$port_override" -s $file &
-        # pids+=($!)
+        PORT_OVERRIDE="$port_override" SPEC_FILE="$file" xvfb-run -a npm run test:scy:run &
+        pids+=($!)
     fi
 
     ((port_override+=1))
