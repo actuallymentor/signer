@@ -42,7 +42,7 @@ beforeEach( () => {
 // this will produce higher resolution images and videos
 // https://on.cypress.io/browser-launch-api
 Cypress.on( 'before:browser:launch', ( browser = {}, launchOptions ) => {
-    
+
     console.log(
         'launching browser %s is headless? %s',
         browser.name,
@@ -63,6 +63,7 @@ Cypress.on( 'before:browser:launch', ( browser = {}, launchOptions ) => {
         launchOptions.args.push( '--force-device-scale-factor=1' )
 
         // Force devtools open
+        // See: https://github.com/cypress-io/cypress/issues/2024
         launchOptions.args.push( '--auto-open-devtools-for-tabs' )
 
     }
@@ -71,11 +72,13 @@ Cypress.on( 'before:browser:launch', ( browser = {}, launchOptions ) => {
     // might not work on CI for some reason
         launchOptions.preferences.width = width
         launchOptions.preferences.height = height
+        launchOptions.preferences.devTools = true
     }
 
     if( browser.name === 'firefox' && browser.isHeadless ) {
         launchOptions.args.push( `--width=${ width }` )
         launchOptions.args.push( `--height=${ height }` )
+        launchOptions.args.push( '-devtools' )
     }
 
     // IMPORTANT: return the updated browser launch options
