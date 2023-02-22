@@ -42,6 +42,7 @@ beforeEach( () => {
 // this will produce higher resolution images and videos
 // https://on.cypress.io/browser-launch-api
 Cypress.on( 'before:browser:launch', ( browser = {}, launchOptions ) => {
+    
     console.log(
         'launching browser %s is headless? %s',
         browser.name,
@@ -60,6 +61,10 @@ Cypress.on( 'before:browser:launch', ( browser = {}, launchOptions ) => {
 
         // force screen to be non-retina and just use our given resolution
         launchOptions.args.push( '--force-device-scale-factor=1' )
+
+        // Force devtools open
+        launchOptions.args.push( '--auto-open-devtools-for-tabs' )
+
     }
 
     if( browser.name === 'electron' && browser.isHeadless ) {

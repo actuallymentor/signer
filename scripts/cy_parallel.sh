@@ -8,18 +8,25 @@ CY_TEST_FILES=$( ls cypress/e2e/**/*.js )
 for file in $CY_TEST_FILES; do
 
     # check if on mac
-    if uname | grep Darwin; then
+    if uname | grep -q Darwin; then
+
+        echo "Assuming we are on local macbook"
         npm run test:scy -- $file &
         pids+=($!)
 
     # If not, we're probably on Github Actions and need to have a custom xvfb command
     # see: https://github.com/cypress-io/xvfb/issues/98
     else
+        echo "Assuming we are on Github Actions"
         xvfb-run -a npm run test:scy -- $file &
         pids+=($!)
     fi
+
+    
 done
 
 for pid in "${pids[@]}"; do
     wait "$pid"
 done
+
+echo "Parallel testing completed"

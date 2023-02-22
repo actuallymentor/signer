@@ -24,7 +24,7 @@
     "cypress": "NODE_ENV=development $(npm bin)/cypress open --e2e --browser chrome",
     "test:ci": "NODE_ENV=production CI=true start-server-and-test 'npm start' 3000 \"$(npm bin)/cypress run --browser chrome --config 60000\"",
     "test:ci:with_emulator": "NODE_ENV=production start-server-and-test 'npm start' 3000 'cd functions && npm run serve' 4000 \"$(npm bin)/cypress run --browser chrome --config 60000\"",
-    "test:ci:with_scy": "NODE_ENV=production start-server-and-test 'npm start' 3000 'bash scripts/cy_parallel.sh'",
+    "test:ci:with_scy": "NODE_ENV=production start-server-and-test 'npm start' 3000 'docker run -p 1234:1234 agoldis/sorry-cypress-director &> /dev/null' 1234 'bash scripts/cy_parallel.sh'",
     "test:scy": "CYPRESS_API_URL='http://localhost:1234/' cy2 run --parallel --record --key signer --ci-build-id `date +%s` --browser chrome --config 60000",
     "prepare": "husky install",
     "lint": "eslint --fix src",
