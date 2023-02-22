@@ -8,6 +8,8 @@ module.exports = defineConfig( {
     screenscreenshotOnRunFailureshots: true,
     chromeWebSecurity: false,
     watchForFileChanges: false,
+    projectId: 'signer',
+    supportfile: true,
 
     e2e: {
 

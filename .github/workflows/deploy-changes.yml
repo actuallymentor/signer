@@ -12,6 +12,7 @@ jobs:
   deploy-firebase-settings:
     name: Deploy changes to meta
     runs-on: ubuntu-latest
+
     steps:
       # Clones repo to the commit that triggered the event
       - name: Cloning repository
@@ -154,14 +155,14 @@ jobs:
           echo -e "${{ secrets.DOTENV_PRODUCTION }}" > .env
 
       # Check linting
-      # - name: Check for linting errors
-      #   if: steps.changed-frontend-files.outputs.any_changed == 'true'
-      #   run: npm run lint
+      - name: Check for linting errors
+        if: steps.changed-frontend-files.outputs.any_changed == 'true'
+        run: npm run lint
 
       # Check CI
       - name: Run cypress tests
         if: steps.changed-frontend-files.outputs.any_changed == 'true'
-        run: npm run test:ci
+        run: npm run test:ci:with_scy
 
       # If CI failed, upload the videos for debugging
       - name: Testing failed
@@ -169,7 +170,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: cypress-videos
-          path: cypress/videos # or path/to/artifact
+          path: cypress/videos
 
       # Prep env for deployment
       - name: Remove debug token from build
