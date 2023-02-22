@@ -14,25 +14,25 @@ if uname | grep -q Darwin; then
 
 fi
 
-index=1
+port_override=1000
 for file in $CY_TEST_FILES; do
 
     # check if on mac
     if uname | grep -q Darwin; then
 
         echo "Assuming we are on local macbook"
-        npm run test:scy -- --ci-build-id "$( date +%s )-$index" -s $file &
+        PORT_OVERRIDE="$port_override" SPEC_FILE="$file" npm run test:scy:run &
         pids+=($!)
 
     # If not, we're probably on Github Actions and need to have a custom xvfb command
     # see: https://github.com/cypress-io/xvfb/issues/98
     else
         echo "Assuming we are on Github Actions"
-        xvfb-run -a npm run test:scy -- --ci-build-id "$( date +%s )-$index" -s $file &
-        pids+=($!)
+        # xvfb-run -a npm run test:scy -- --ci-build-id "$( date +%s )-$port_override" -s $file &
+        # pids+=($!)
     fi
 
-    ((index+=1))
+    ((port_override+=1))
     
 done
 
