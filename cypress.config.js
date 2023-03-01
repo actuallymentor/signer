@@ -3,7 +3,7 @@ module.exports = defineConfig( {
 
     defaultCommandTimeout: 60000,
     requestTimeout: 60000,
-    video: true,
+    video: process.env.CYPRESS_API_URL ? false : true,
     videoCompression: false,
     screenscreenshotOnRunFailureshots: true,
     chromeWebSecurity: false,
@@ -35,7 +35,7 @@ module.exports = defineConfig( {
             const dotenvConfig = {
                 path: `${ __dirname }/${ envFile }`
             }
-            console.log( `Runing cypress with ${ process.env.NODE_ENV } and ${ envFile }` )
+            console.log( `Runing cypress with ${ process.env.NODE_ENV }, director ${ process.env.CYPRESS_API_URL }, and ${ envFile }` )
 
             require( 'dotenv' ).config( dotenvConfig )
 
