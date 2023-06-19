@@ -72,10 +72,7 @@ jobs:
         # if: |
         #   github.base_ref == 'main' &&
         #   steps.changed-files.outputs.any_changed == 'true'
-        run: |
-          echo -e "${{ secrets.DOTENV_PRODUCTION }}" > .env
-          # echo -e "\nREACT_APP_useEmulator=true" >> .env
-          # echo -e "${{ secrets.FUNCTIONS_DOTENV_PRODUCTION }}" > functions/.env
+        run: echo -e "${{ secrets.DOTENV_PRODUCTION }}" > .env
 
       # Check linting
       # - name: Check for linting errors
