@@ -11,6 +11,10 @@ jobs:
   do-checks:
     name: Pull request status checks
     runs-on: buildjet-4vcpu-ubuntu-2204
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [ 1,2 ]
 
     # Set up testing service
     services:
@@ -32,16 +36,16 @@ jobs:
 
       # Set up node
       - name: Set up frontend Node.js (.nvmrc)
-        if: steps.changed-files.outputs.any_changed == 'true'
+        # if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
       - name: Install frontend dependencies
-        if: steps.changed-files.outputs.any_changed == 'true'
+        # if: steps.changed-files.outputs.any_changed == 'true'
         run: npm i
       - name: Set up functions Node.js (.nvmrc)
-        if: steps.changed-files.outputs.any_changed == 'true'
+        # if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-node@v3
         with:
           node-version-file: "functions/.nvmrc"
@@ -65,9 +69,9 @@ jobs:
 
       # Set up environment
       - name: Create PROD environment files
-        if: |
-          github.base_ref == 'main' &&
-          steps.changed-files.outputs.any_changed == 'true'
+        # if: |
+        #   github.base_ref == 'main' &&
+        #   steps.changed-files.outputs.any_changed == 'true'
         run: |
           echo -e "${{ secrets.DOTENV_PRODUCTION }}" > .env
           # echo -e "\nREACT_APP_useEmulator=true" >> .env
