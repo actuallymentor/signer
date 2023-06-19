@@ -1,4 +1,5 @@
 const { defineConfig } = require( 'cypress' )
+const { cloudPlugin } = require( "cypress-cloud/plugin" )
 module.exports = defineConfig( {
 
     defaultCommandTimeout: 60000,
@@ -14,6 +15,8 @@ module.exports = defineConfig( {
 
         // testIsolation
         // supportFile
+
+        
 
         // Experimental flag that restores the old "run all" button, may have bugs
         experimentalRunAllSpecs: true,
@@ -40,7 +43,9 @@ module.exports = defineConfig( {
             require( 'dotenv' ).config( dotenvConfig )
 
             config.env.REACT_APP_publicUrl = process.env.REACT_APP_publicUrl
-            return config
+            
+            // Enable cypress cloud for sorry cypress
+            return cloudPlugin( on, config )
 		
 
         },

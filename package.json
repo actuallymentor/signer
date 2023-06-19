@@ -62,6 +62,7 @@
     "@poap/skunk-linter": "^0.0.2",
     "cy2": "^4.0.6",
     "cypress": "^12.6.0",
+    "cypress-cloud": "^1.7.4",
     "cypress-fail-fast": "^7.0.0",
     "eslint": "^8.34.0",
     "eslint-plugin-react": "^7.32.2",
