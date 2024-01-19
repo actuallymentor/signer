@@ -9,12 +9,12 @@ import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import { log } from './helpers'
 
-const { name } = require( '../../package.json' )
+import { name } from '../../package.json'
 
 /* ///////////////////////////////
 // Chain configuration
 // /////////////////////////////*/
-const { REACT_APP_alchemy_eth_mainnet_api_key, REACT_APP_alchemy_arbitrum_mainnet_api_key, REACT_APP_alchemy_polygon_mainnet_api_key } = process.env
+const { VITE_alchemy_eth_mainnet_api_key, VITE_alchemy_arbitrum_mainnet_api_key, VITE_alchemy_polygon_mainnet_api_key } = import.meta.env
 
 // Select chains 
 const enabled_chains = [ mainnet, goerli, arbitrum, polygon ]
@@ -23,9 +23,9 @@ const enabled_chains = [ mainnet, goerli, arbitrum, polygon ]
 const enabled_providers = [
 
     // Backup provider to the built-in one
-    ... REACT_APP_alchemy_eth_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_eth_mainnet_api_key } ) ] : [] ,
-    ... REACT_APP_alchemy_arbitrum_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_arbitrum_mainnet_api_key } ) ] : [] ,
-    ... REACT_APP_alchemy_polygon_mainnet_api_key ? [ alchemyProvider( { apiKey: REACT_APP_alchemy_polygon_mainnet_api_key } ) ] : [] ,
+    ... VITE_alchemy_eth_mainnet_api_key ? [ alchemyProvider( { apiKey: VITE_alchemy_eth_mainnet_api_key } ) ] : [] ,
+    ... VITE_alchemy_arbitrum_mainnet_api_key ? [ alchemyProvider( { apiKey: VITE_alchemy_arbitrum_mainnet_api_key } ) ] : [] ,
+    ... VITE_alchemy_polygon_mainnet_api_key ? [ alchemyProvider( { apiKey: VITE_alchemy_polygon_mainnet_api_key } ) ] : [] ,
 
     // The provider already exposed in this user's browser
     publicProvider()
