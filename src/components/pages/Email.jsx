@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { log } from '../../modules/helpers'
 import { useNavigate, useParams } from 'react-router-dom'
 import { log_event, register_alias_with_backend } from '../../modules/firebase'
-import { useAccount, useEnsName, useSigner } from 'wagmi'
+import { useAccount, useEnsName, useWalletClient } from 'wagmi'
 import { email_regex } from '../../modules/web3/validations'
 
 export default function Sign() {
@@ -27,7 +27,7 @@ export default function Sign() {
     const { address } = useAccount()
     const { data: ENS } = useEnsName( { address } )
     const { notice } = useParams()
-    const { data: signer } = useSigner()
+    const { data: signer, isError, isLoading } = useWalletClient()
 
     /* ///////////////////////////////
 	// Functions

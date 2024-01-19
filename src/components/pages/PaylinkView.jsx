@@ -31,7 +31,8 @@ export default ( { ...props } ) => {
     const [ loading, set_loading ] = useState(  )
     const { chain } = useNetwork()
     const navigate = useNavigate()
-    const ready_to_pay = useDebounce( !!on_right_chain && !!make_transaction, 1000 )
+    const ready_to_pay_debounced = useDebounce( !!on_right_chain && !!make_transaction, 1000 )
+    const ready_to_pay = !!on_right_chain && !!make_transaction && !!ready_to_pay_debounced
     const payment_amount_to_display = useDebounce( custom_amount || pay_amount, 500 )
 
     // Decode url string
@@ -68,6 +69,7 @@ export default ( { ...props } ) => {
         try {
 
             set_loading( `Waiting for wallet confirmation` )
+            log( `Starting transaction using `, make_transaction )
             const { hash: tx_hash } = await make_transaction()
             log( `Transaction hash: `, tx_hash )
             log_event( `payment_link_paid`, {

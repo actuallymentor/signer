@@ -22,10 +22,15 @@ function getProvider() {
 
 export async function sign_message( claimed_message, claimed_signatory, parent_signer ) {
 
+    log( `Getting signer, passed: `, parent_signer )
     const signer = parent_signer || getSigner()
     log( parent_signer, signer )
     if( !signer ) throw new Error( `Can't connect to wallet, please make sure you're connected` )
-    const signed_message = await signer.signMessage( claimed_message )
+    log( `Signing message `, claimed_message, ` on behalf of `, claimed_signatory )
+    const signed_message = await signer.signMessage( {
+        account: claimed_signatory,
+        message: claimed_message
+    } )
     const formatted_signature = {
         claimed_message,
         signed_message,

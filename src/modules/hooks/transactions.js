@@ -13,22 +13,20 @@ const useTransactETH = ( recipient, amount, enabled=true ) => {
 
     // Keep a prepared transaction
     const prepared_transaction = {
-        request: {
-            to: recipient,
-            value: eth_to_gwei( amount ),
-            chainId: chain?.id || 1
-        },
-        enabled
+        to: recipient,
+        value: eth_to_gwei( amount ),
+        chainId: chain?.id || 1
     }
     log( `${ enabled ? '' : 'NOT ' }Preparing ETH transaction to ${ recipient } for ${ amount } on ${ chain?.id }: `, prepared_transaction )
     const { config: transaction_config, error: transaction_error } = usePrepareSendTransaction( prepared_transaction )
 
     // Prepare transaction function
+    log( `useTransactETH transaction_config: `, transaction_config )
     const { sendTransactionAsync, ...rest_of_tx_meta } = useSendTransaction( {
         ...transaction_config,
     } )
 
-    log( `useTransactETH Errors: `, transaction_error, ` resulting write meta: `, rest_of_tx_meta )
+    log( `useTransactETH Errors: `, transaction_error, ` resulting write meta: `, rest_of_tx_meta, `sendTransactionAsync: `, sendTransactionAsync )
     return [ sendTransactionAsync, transaction_error ]
 
 }

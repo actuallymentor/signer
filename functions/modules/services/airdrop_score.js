@@ -1,4 +1,4 @@
-const { db, increment, throw_if_invalid_context, dataFromSnap, ArrayUnion } = require( "../firebase" )
+const { db, increment, throw_if_invalid_context, dataFromSnap, arrayUnion } = require( "../firebase" )
 const { log, dev } = require( "../helpers" )
 
 exports.register_potential_airdrop_usage = async ( data, context ) => {
@@ -20,7 +20,7 @@ exports.register_potential_airdrop_usage = async ( data, context ) => {
             [airdrop_tag]: increment( 1 ),
             updated: Date.now(),
             updated_human: new Date().toString(),
-            time_trail: ArrayUnion( Date.now() )
+            time_trail: arrayUnion( Date.now() )
         }, { merge: true } )
 
         return
