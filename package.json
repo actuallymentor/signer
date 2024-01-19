@@ -19,9 +19,7 @@
   "scripts": {
     "start": "vite",
     "start:functions": "cd functions && npm run serve &> /dev/null",
-    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "build": "vite build",
     "cypress": "NODE_ENV=development cypress open --e2e --browser chrome",
     "test:ci": "NODE_ENV=production CI=true server-test 'npm start' 3000 \" cypress run --browser chrome --config 60000\"",
     "test:ci:with_emulator": "NODE_ENV=production server-test 'start' 3000 'start:functions' 4000 'bash scripts/cy_parallel.sh'",
