@@ -165,6 +165,7 @@ jobs:
           steps.changed-frontend-files.outputs.any_changed == 'true'
         run: |
           echo -e "${{ secrets.DOTENV_PRODUCTION }}" > .env
+          sed -i 's/^VITE_useEmulator=.*$//g' .env
 
       # Check linting
       - name: Check for linting errors
