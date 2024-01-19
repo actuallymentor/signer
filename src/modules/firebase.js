@@ -4,16 +4,16 @@ import { getAnalytics, logEvent } from "firebase/analytics"
 import { log } from './helpers'
 import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check'
 
-const { REACT_APP_apiKey, REACT_APP_authDomain, REACT_APP_projectId, REACT_APP_storageBucket, REACT_APP_messagingSenderId, REACT_APP_appId, REACT_APP_measurementId, REACT_APP_APPCHECK_DEBUG_TOKEN, REACT_APP_recaptcha_site_key } = process.env
+const { VITE_apiKey, VITE_authDomain, VITE_projectId, VITE_storageBucket, VITE_messagingSenderId, VITE_appId, VITE_measurementId, VITE_APPCHECK_DEBUG_TOKEN, VITE_recaptcha_site_key } = import.meta.env
 
 const firebaseConfig = {
-    apiKey: REACT_APP_apiKey,
-    authDomain: REACT_APP_authDomain,
-    projectId: REACT_APP_projectId,
-    storageBucket: REACT_APP_storageBucket,
-    messagingSenderId: REACT_APP_messagingSenderId,
-    appId: REACT_APP_appId,
-    measurementId: REACT_APP_measurementId
+    apiKey: VITE_apiKey,
+    authDomain: VITE_authDomain,
+    projectId: VITE_projectId,
+    storageBucket: VITE_storageBucket,
+    messagingSenderId: VITE_messagingSenderId,
+    appId: VITE_appId,
+    measurementId: VITE_measurementId
 }
 
 log( `Init firebase with `, firebaseConfig )
@@ -29,26 +29,26 @@ export const register_potential_airdrop_usage = httpsCallable( functions, 'regis
 
 // Offline functions emulator
 // Connect to functions emulator
-if( process.env.REACT_APP_useEmulator ) {
+if( import.meta.env.VITE_useEmulator ) {
     connectFunctionsEmulator( functions, 'localhost', 5001 )
     log( `Using firebase functions emulator` )
 }
 
 // App check config
-if( REACT_APP_APPCHECK_DEBUG_TOKEN ) {
-    log( `🐞 Setting debug token: `, REACT_APP_APPCHECK_DEBUG_TOKEN )
-    self.FIREBASE_APPCHECK_DEBUG_TOKEN = REACT_APP_APPCHECK_DEBUG_TOKEN || true
+if( VITE_APPCHECK_DEBUG_TOKEN ) {
+    log( `🐞 Setting debug token: `, VITE_APPCHECK_DEBUG_TOKEN )
+    self.FIREBASE_APPCHECK_DEBUG_TOKEN = VITE_APPCHECK_DEBUG_TOKEN || true
 }
-log( `Initialising app check with debug token ${ REACT_APP_APPCHECK_DEBUG_TOKEN }  and recaptcha site key ${ REACT_APP_recaptcha_site_key }`, )
+log( `Initialising app check with debug token ${ VITE_APPCHECK_DEBUG_TOKEN }  and recaptcha site key ${ VITE_recaptcha_site_key }`, )
 initializeAppCheck( app, {
-    provider: new ReCaptchaV3Provider( REACT_APP_recaptcha_site_key ),
+    provider: new ReCaptchaV3Provider( VITE_recaptcha_site_key ),
     isTokenAutoRefreshEnabled: true
 } )
 
 
 export function log_event( name, details ) {
     if( !name ) return log( `🐛 Log called without name` )
-    if( process.env.NODE_ENV == 'development' ) return log( '🤡 Mock analytics event: ', name, details )
+    if( import.meta.env.NODE_ENV == 'development' ) return log( '🤡 Mock analytics event: ', name, details )
     try {
         logEvent( analytics, name, details )
     } catch ( e ) {

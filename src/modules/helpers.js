@@ -1,6 +1,5 @@
 const { location } = window
-export const dev = process.env.NODE_ENV == 'development' ||  typeof location !== 'undefined' && location.href.includes( 'debug=true' ) 
-
+export const dev = import.meta.env.NODE_ENV === 'development' || typeof location !== 'undefined' && ( location.href?.includes( 'debug=true' ) || location.href?.includes( 'localhost' ) )
 export const log = ( ...messages ) => {
     const now = new Date()
     if( dev ) console.log( `[ ${ now.toLocaleTimeString() }:${ now.getMilliseconds() } ]`, ...messages )

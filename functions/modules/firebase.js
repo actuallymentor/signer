@@ -33,5 +33,5 @@ module.exports = {
     dataFromSnap,
     throw_if_invalid_context,
     increment: FieldValue.increment,
-    ArrayUnion: FieldValue.ArrayUnion
+    arrayUnion: FieldValue.arrayUnion
 }

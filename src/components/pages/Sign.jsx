@@ -10,7 +10,7 @@ import { log, dev, to_url_safe_base64 } from '../../modules/helpers'
 import { useNavigate } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 import { log_event } from '../../modules/firebase'
-import { useAccount, useSigner } from 'wagmi'
+import { useAccount, useWalletClient } from 'wagmi'
 import Address from '../molecules/Address'
 
 export default function Sign() {
@@ -24,7 +24,7 @@ export default function Sign() {
     const [ message, setMessage ] = useState(  )
     const { signature_request } = useParams()
     const { address } = useAccount()
-    const { data: signer } = useSigner()
+    const { data: signer, isError, isLoading } = useWalletClient()
 	
 
     /* ///////////////////////////////
@@ -75,6 +75,7 @@ export default function Sign() {
             if( !address ) throw new Error( `No wallet appears to be connected. If you are sure you connected your wallet, please refresh the page.` )
 
             setLoading( 'Signing message...' )
+            log( `Starting signature` )
             const signature = await sign_message( message, address, signer )
             log( `Signed message: `, signature )
 

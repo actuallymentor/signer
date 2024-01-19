@@ -7,6 +7,8 @@ import "cypress-fail-fast"
 // Stub google analytics requests
 beforeEach( () => {
 
+    if( !cy.connect_metamask ) cy.log( `MISSING CUSTOM COMMANDS: `, cy.connect_metamask )
+
     cy.intercept( 'https://www.googletagmanager.com/**/*', { middleware: true }, req => {
 
         // Disable request caching

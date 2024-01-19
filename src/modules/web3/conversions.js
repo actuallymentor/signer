@@ -1,4 +1,5 @@
-const { utils: { parseEther, parseUnits } } = require( 'ethers' )
+import { ethers } from 'ethers'
+const { utils: { parseEther, parseUnits } } = ethers
 
 /* ///////////////////////////////
 // Number interactors

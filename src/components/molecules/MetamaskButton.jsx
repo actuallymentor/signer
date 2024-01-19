@@ -81,6 +81,7 @@ export default ( { id, children, onClick, wallet_icon=true, connect_prompt='Conn
     async function onclick_with_tracking( e ) {
 
         // Make the default onclick async
+        log( `Running onclick and airdrop registration in parallel` )
         const asynced_onclick = async ( ...f ) => onClick && onClick( ...f )
 		
         // Run onclick and airdrop registration in parallel

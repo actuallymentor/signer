@@ -28,8 +28,7 @@
     "promise-retry": "^2.0.1",
     "pug": "^3.0.2",
     "urql": "^2.2.1",
-    "uuid": "^8.3.2",
-    "web3": "^1.8.2"
+    "uuid": "^8.3.2"
   },
   "private": true,
   "devDependencies": {
