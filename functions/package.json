@@ -10,7 +10,7 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "20"
+    "node": "18"
   },
   "main": "index.js",
   "dependencies": {
@@ -28,7 +28,8 @@
     "promise-retry": "^2.0.1",
     "pug": "^3.0.2",
     "urql": "^2.2.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "web3-eth-accounts": "^4.1.1"
   },
   "private": true,
   "devDependencies": {
