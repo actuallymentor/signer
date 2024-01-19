@@ -189,7 +189,9 @@ jobs:
       # Prep env for deployment
       - name: Remove debug token from build
         if: steps.changed-frontend-files.outputs.any_changed == 'true'
-        run: sed -i 's/^REACT_APP_APPCHECK_DEBUG_TOKEN=.*$//g' .env
+        run: |
+          sed -i 's/^REACT_APP_APPCHECK_DEBUG_TOKEN=.*$//g' .env
+          sed -i 's/^VITE_APPCHECK_DEBUG_TOKEN=.*$//g' .env
 
       # Build frontend files
       - name: Build website files
